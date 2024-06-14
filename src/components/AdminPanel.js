@@ -19,11 +19,11 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const usersResponse = await fetch('http://localhost:5000/api/admin/users');
+        const usersResponse = await fetch('https://medlevel.me/api/admin/users');
         const usersData = await usersResponse.json();
         setUsers(usersData.users);
 
-        const certificatesResponse = await fetch('http://localhost:5000/api/admin/certificates');
+        const certificatesResponse = await fetch('https://medlevel.me/api/admin/certificates');
         const certificatesData = await certificatesResponse.json();
         setCertificates(certificatesData.certificates);
       } catch (error) {
