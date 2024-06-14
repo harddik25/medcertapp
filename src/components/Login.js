@@ -19,23 +19,28 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const telegram = window.Telegram.WebApp;
-      const initData = telegram.initData;
-      if (initData) {
-        const user = telegram.initDataUnsafe.user;
-        if (user) {
-          localStorage.setItem('telegramUser', JSON.stringify(user));
-          navigate('/profile');
+    const checkTelegramWebApp = () => {
+      if (window.Telegram && window.Telegram.WebApp) {
+        const telegram = window.Telegram.WebApp;
+        const initData = telegram.initData;
+        if (initData) {
+          const user = telegram.initDataUnsafe.user;
+          if (user) {
+            localStorage.setItem('telegramUser', JSON.stringify(user));
+            navigate('/profile');
+          } else {
+            console.error('Ошибка аутентификации через Telegram');
+          }
         } else {
-          console.error('Ошибка аутентификации через Telegram');
+          console.error('Telegram WebApp initData отсутствует');
         }
       } else {
-        console.error('Telegram WebApp initData отсутствует');
+        console.error('Telegram WebApp объект отсутствует. Убедитесь, что вы открываете приложение через Telegram.');
       }
-    } else {
-      console.error('Telegram WebApp объект отсутствует. Убедитесь, что вы открываете приложение через Telegram.');
-    }
+    };
+
+    // Добавляем небольшую задержку перед проверкой
+    setTimeout(checkTelegramWebApp, 1000);
   }, [navigate]);
 
   return (
