@@ -18,7 +18,7 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [certificate, setCertificate] = useState(null);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const fetchUser = async () => {
       const telegramUser = JSON.parse(localStorage.getItem('telegramUser'));
@@ -181,3 +181,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
