@@ -19,15 +19,22 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const initData = window.Telegram.WebApp.initData;
-    if (initData) {
-      const user = window.Telegram.WebApp.initDataUnsafe.user;
-      if (user) {
-        localStorage.setItem('telegramUser', JSON.stringify(user));
-        navigate('/profile');
+    const telegram = window.Telegram;
+    if (telegram && telegram.WebApp) {
+      const initData = telegram.WebApp.initData;
+      if (initData) {
+        const user = telegram.WebApp.initDataUnsafe.user;
+        if (user) {
+          localStorage.setItem('telegramUser', JSON.stringify(user));
+          navigate('/profile');
+        } else {
+          console.error('Ошибка аутентификации через Telegram');
+        }
       } else {
-        console.error('Ошибка аутентификации через Telegram');
+        console.error('Telegram WebApp initData отсутствует');
       }
+    } else {
+      console.error('Telegram WebApp объект отсутствует');
     }
   }, [navigate]);
 
@@ -60,6 +67,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 
