@@ -9,7 +9,7 @@ const WebSocketComponent = () => {
     };
 
     ws.onmessage = (event) => {
-      console.log('WebSocket message received:', event);
+      console.log('WebSocket message received:', event.data);
     };
 
     ws.onerror = (error) => {
@@ -25,7 +25,7 @@ const WebSocketComponent = () => {
     };
   }, []);
 
-  
+  return null;
 };
 
 export default WebSocketComponent;
