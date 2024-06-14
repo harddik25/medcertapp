@@ -9,7 +9,7 @@ exports.getUserByTelegramId = async (req, res) => {
 
   try {
     await client.connect();
-    const database = client.db('<dbname>'); // Замените на имя вашей базы данных
+    const database = client.db('medapp'); // Замените на имя вашей базы данных
     const collection = database.collection('users');
     const user = await collection.findOne({ telegramId });
 
