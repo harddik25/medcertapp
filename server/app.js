@@ -21,6 +21,8 @@ const app = express();
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000, // Увеличенное время ожидания выбора сервера
+  socketTimeoutMS: 45000, // Увеличенное время ожидания сокета
 });
 
 mongoose.connection.on('connected', () => {
@@ -49,6 +51,11 @@ app.use(express.static('build'));
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 module.exports = app;
