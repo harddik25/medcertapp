@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   lastName: String,
   username: String,
   photoUrl: String,
-  role: { type: String, enum: ['user', 'doctor', 'admin'], default: 'user' }, // добавляем поле role
+  role: { type: String, enum: ['user', 'doctor', 'admin'], default: 'user' },
 });
 
 module.exports = mongoose.model('User', userSchema);
