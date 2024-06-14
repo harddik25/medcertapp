@@ -59,7 +59,7 @@ const UserProfile = () => {
   }, [user]);
 
   const handleBuyCertificate = () => {
-    navigate('/survey');
+    navigate('/agreement');
   };
 
   const handleCertificateInfo = () => {
