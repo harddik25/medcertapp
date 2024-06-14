@@ -35,11 +35,36 @@ const client = new MongoClient(uri, {
   }
 });
 
+async function initializeDatabase() {
+  try {
+    const database = client.db('your_database_name');
+
+    // Проверка и создание коллекций, если они не существуют
+    const collections = ['users', 'appointments', 'certificates', 'consultations', 'surveys'];
+    const existingCollections = await database.listCollections().toArray();
+    const existingCollectionNames = existingCollections.map(col => col.name);
+
+    for (const collection of collections) {
+      if (!existingCollectionNames.includes(collection)) {
+        await database.createCollection(collection);
+        console.log(`Collection ${collection} created!`);
+      } else {
+        console.log(`Collection ${collection} already exists.`);
+      }
+    }
+  } catch (error) {
+    console.error('Ошибка при инициализации базы данных', error);
+  }
+}
+
 async function run() {
   try {
     // Подключение клиента к серверу
     await client.connect();
     console.log("Successfully connected to MongoDB!");
+
+    // Инициализация базы данных
+    await initializeDatabase();
 
     // Настройка маршрутов после успешного подключения
     app.use('/api/auth', authRoutes);
