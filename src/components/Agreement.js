@@ -45,10 +45,10 @@ const Agreement = () => {
               }}
             >
               <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
-                Добро пожаловать
+                Welcome
               </Typography>
               <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                Пожалуйста, примите соглашение о данных перед покупкой сертификата.
+                Please accept the data agreement before purchasing the certificate.
               </Typography>
               <Button
                 fullWidth
@@ -56,7 +56,7 @@ const Agreement = () => {
                 sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleAccept}
               >
-                Принять
+                Accept
               </Button>
               <Button
                 fullWidth
@@ -64,7 +64,7 @@ const Agreement = () => {
                 sx={{ mb: 2, backgroundColor: '#f44336', color: '#fff' }}
                 onClick={handleDecline}
               >
-                Отказаться
+                Decline
               </Button>
               <Button
                 fullWidth
@@ -72,7 +72,7 @@ const Agreement = () => {
                 sx={{ mb: 2, color: '#4caf50' }}
                 onClick={handlePrivacyPolicy}
               >
-                Подробнее о политике данных
+                Privacy Policy
               </Button>
             </Box>
           </Paper>
@@ -83,3 +83,4 @@ const Agreement = () => {
 };
 
 export default Agreement;
+
