@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
+import CannabisBackground from '../logos/cannabis-background.jpeg'; 
 
 const Background = styled('div')({
   display: 'flex',
@@ -50,7 +50,7 @@ const UserProfile = () => {
   }, [user]);
 
   const handleBuyCertificate = () => {
-    navigate('/survey');
+    navigate('/agreement');
   };
 
   const handleCertificateInfo = () => {
