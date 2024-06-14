@@ -1,29 +1,62 @@
 const { MongoClient } = require('mongodb');
-const uri = process.env.MONGO_URI; // Убедитесь, что MONGO_URI правильно настроен в .env файле
+const uri = process.env.MONGO_URI;
 
-exports.getUserByTelegramId = async (req, res) => {
-  const { telegramId } = req.params;
-  console.log(`Fetching user with Telegram ID: ${telegramId}`);
-
+async function getUsers(req, res) {
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
   try {
     await client.connect();
-    const database = client.db('medapp'); // Замените на имя вашей базы данных
-    const collection = database.collection('users');
-    const user = await collection.findOne({ telegramId });
-
-    if (!user) {
-      console.log(`User not found for Telegram ID: ${telegramId}`);
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    console.log(`User found: ${user}`);
-    res.json({ role: user.role });
+    const database = client.db('medapp');
+    const users = await database.collection('users').find().toArray();
+    res.json(users);
   } catch (error) {
-    console.error('Error fetching user by Telegram ID:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Ошибка при получении списка пользователей', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   } finally {
     await client.close();
   }
+}
+
+async function updateUserRole(req, res) {
+  const { userId } = req.params;
+  const { role } = req.body;
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  try {
+    await client.connect();
+    const database = client.db('medapp');
+    await database.collection('users').updateOne({ _id: new MongoClient.ObjectID(userId) }, { $set: { role } });
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Ошибка при обновлении роли пользователя', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  } finally {
+    await client.close();
+  }
+}
+
+async function getUserRole(req, res) {
+  const { telegramId } = req.params;
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  try {
+    await client.connect();
+    const database = client.db('medapp');
+    const user = await database.collection('users').findOne({ telegramId });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ role: user.role });
+  } catch (error) {
+    console.error('Ошибка при получении роли пользователя', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  } finally {
+    await client.close();
+  }
+}
+
+module.exports = {
+  getUsers,
+  updateUserRole,
+  getUserRole
 };
