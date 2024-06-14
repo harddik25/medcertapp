@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, CssBaseline, Paper } from '@mui/material';
 import { styled } from '@mui/system';
-import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
+import CannabisBackground from './path/to/your/cannabis-background.jpg'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
   display: 'flex',
@@ -16,52 +16,35 @@ const Background = styled('div')({
 const Login = () => {
   const navigate = useNavigate();
 
-  const handleTelegramLogin = useCallback((user) => {
-    // Логика обработки ответа Telegram API
-    console.log(user);
-    // Сохранение пользователя в локальное хранилище или состояние
-    localStorage.setItem('telegramUser', JSON.stringify(user));
-    navigate('/language');
-  }, [navigate]);
-
   useEffect(() => {
-    const user = localStorage.getItem('telegramUser');
-    if (user) {
-      navigate('/language');
-      return;
-    }
+    // Проверяем, поддерживает ли браузер Telegram Web App SDK
+    if (window.Telegram.WebApp) {
+      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const telegramUser = {
-      id: urlParams.get('id'),
-      first_name: urlParams.get('first_name'),
-      last_name: urlParams.get('last_name'),
-      username: urlParams.get('username'),
-      photo_url: urlParams.get('photo_url'),
-      auth_date: urlParams.get('auth_date'),
-      hash: urlParams.get('hash')
-    };
-
-    if (telegramUser.id) {
-      handleTelegramLogin(telegramUser);
-    } else {
-      const script = document.createElement('script');
-      script.src = "https://telegram.org/js/telegram-widget.js?7";
-      script.async = true;
-      script.setAttribute('data-telegram-login', 'YourBotName'); // Замените 'YourBotName' на имя вашего бота
-      script.setAttribute('data-size', 'large');
-      script.setAttribute('data-radius', '5');
-      script.setAttribute('data-auth-url', 'https://your-backend.com/api/auth/telegram'); // Замените на ваш URL обработки авторизации
-      script.setAttribute('data-request-access', 'write');
-      script.setAttribute('data-userpic', 'false');
-      script.onload = () => {
-        if (window.TelegramLoginWidget) {
-          window.TelegramLoginWidget.dataOnauth = handleTelegramLogin;
-        }
-      };
-      document.getElementById('telegram-login').appendChild(script);
+      if (telegramUser) {
+        // Сохраняем пользователя в локальное хранилище или состояние
+        localStorage.setItem('telegramUser', JSON.stringify(telegramUser));
+        
+        // Вы можете отправить данные на сервер для авторизации
+        fetch('https://medlevel.me/api/auth/telegram', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(telegramUser)
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Обработка ответа сервера
+          console.log('User authenticated:', data);
+          navigate('/language');
+        })
+        .catch(error => {
+          console.error('Error during authentication:', error);
+        });
+      }
     }
-  }, [handleTelegramLogin, navigate]);
+  }, [navigate]);
 
   return (
     <Background>
