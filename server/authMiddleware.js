@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('./models/User');
 
 exports.verifyAdmin = async (req, res, next) => {
   const adminId = req.body.adminId; // Здесь мы будем проверять ID администратора
