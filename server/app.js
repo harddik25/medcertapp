@@ -13,6 +13,7 @@ const consultationRoutes = require('./routes/consultationRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const surveyRoutes = require('./routes/surveyRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const userRoutes = require('./routes/userRoutes'); // Добавлен новый маршрут
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/api/consultations', consultationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/users', userRoutes); // Использование нового маршрута
 
 app.use(express.static('build'));
 
