@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, CssBaseline, Paper, Button } from '@mui/material';
 import { styled } from '@mui/system';
-import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
+import CannabisBackground from './path/to/your/cannabis-background.jpg';
 
 const Background = styled('div')({
   display: 'flex',
@@ -16,43 +16,29 @@ const Background = styled('div')({
 const Login = () => {
   const navigate = useNavigate();
 
-  const handleTelegramLogin = useCallback((user) => {
-    console.log(user);
-    localStorage.setItem('telegramUser', JSON.stringify(user));
-    fetch('https://medlevel.me/api/auth/telegram', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(user)
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('User authenticated:', data);
-      navigate('/language');
-    })
-    .catch(error => {
-      console.error('Error during authentication:', error);
-    });
-  }, [navigate]);
-
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = "https://telegram.org/js/telegram-widget.js?7";
-    script.async = true;
-    script.setAttribute('data-telegram-login', 'YourBotName'); // Замените 'YourBotName' на имя вашего бота
-    script.setAttribute('data-size', 'large');
-    script.setAttribute('data-radius', '5');
-    script.setAttribute('data-auth-url', 'https://medlevel.me/api/auth/telegram'); // Замените на ваш URL обработки авторизации
-    script.setAttribute('data-request-access', 'write');
-    script.setAttribute('data-userpic', 'false');
-    script.onload = () => {
-      if (window.TelegramLoginWidget) {
-        window.TelegramLoginWidget.dataOnauth = handleTelegramLogin;
+    if (window.Telegram.WebApp.initDataUnsafe) {
+      const user = window.Telegram.WebApp.initDataUnsafe.user;
+      if (user) {
+        localStorage.setItem('telegramUser', JSON.stringify(user));
+        fetch('https://medlevel.me/api/auth/telegram', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(user)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('User authenticated:', data);
+          navigate('/language');
+        })
+        .catch(error => {
+          console.error('Error during authentication:', error);
+        });
       }
-    };
-    document.getElementById('telegram-login').appendChild(script);
-  }, [handleTelegramLogin]);
+    }
+  }, [navigate]);
 
   return (
     <Background>
@@ -76,7 +62,9 @@ const Login = () => {
               color="primary"
               sx={{ mt: 3 }}
               onClick={() => {
-                document.getElementById('telegram-login').querySelector('script').click();
+                if (window.Telegram.Login) {
+                  window.Telegram.Login.login();
+                }
               }}
             >
               Войти через Telegram
