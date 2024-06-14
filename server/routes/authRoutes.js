@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');
+const { telegramAuth } = require('../controllers/authController');
 
-router.get('/telegram', authController.telegramAuth);
+router.get('/telegram', telegramAuth);
 
 module.exports = router;
