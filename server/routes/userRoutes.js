@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { updateUserRoleByTelegramId } = require('../controllers/userController');
-const { verifyAdmin } = require('../authMiddleware');
+const { getUserByTelegramId } = require('../controllers/userController');
 
-router.put('/role', verifyAdmin, updateUserRoleByTelegramId);
+router.get('/role/:telegramId', getUserByTelegramId);
 
 module.exports = router;
