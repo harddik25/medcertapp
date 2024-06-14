@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';  // Используйте именованный импорт без фигурных скобок
+import { default as jwtDecode } from 'jwt-decode';  // Используем именованный импорт правильно
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return <Navigate to="/login" />;
   }
 
-  const { role } = jwtDecode(token);  // Используем jwtDecode вместо decode
+  const { role } = jwtDecode(token);  // Используем jwtDecode для декодирования токена
   if (!allowedRoles.includes(role)) {
     return <Navigate to="/profile" />;
   }
