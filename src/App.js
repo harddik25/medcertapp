@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import UserProfile from './components/UserProfile';
 import Certificate from './components/Certificate';
@@ -31,7 +31,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <>
       <WebSocketComponent />
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -56,11 +56,10 @@ function App() {
           </ProtectedRoute>
         } />
       </Routes>
-    </Router>
+    </>
   );
 }
 
 export default App;
-
 
 
