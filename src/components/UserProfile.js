@@ -21,18 +21,9 @@ const UserProfile = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const userParam = query.get('user');
-    
-    if (userParam) {
-      const user = JSON.parse(userParam);
-      setUser(user);
-      localStorage.setItem('telegramUser', JSON.stringify(user));
-    } else {
-      const storedUser = localStorage.getItem('telegramUser');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
+    const storedUser = localStorage.getItem('telegramUser');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
   }, [location.search]);
 
@@ -137,5 +128,6 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
 
