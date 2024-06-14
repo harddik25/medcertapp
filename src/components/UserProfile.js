@@ -1,0 +1,104 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
+import { deepOrange } from '@mui/material/colors';
+import { styled } from '@mui/system';
+import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
+
+const Background = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100vh',
+  backgroundImage: `url(${CannabisBackground})`,
+  backgroundSize: 'cover',
+});
+
+const UserProfile = () => {
+  const user = JSON.parse(localStorage.getItem('telegramUser'));
+  const [certificate, setCertificate] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCertificate = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/certificates/status', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
+          }
+        });
+        const data = await response.json();
+        setCertificate(data.certificate);
+      } catch (error) {
+        console.error('Ошибка при получении статуса сертификата', error);
+      }
+    };
+
+    fetchCertificate();
+  }, [user.id]);
+
+  const handleBuyCertificate = () => {
+    navigate('/survey');
+  };
+
+  return (
+    <Background>
+      <Container component="main" maxWidth="md">
+        <CssBaseline />
+        <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80, mb: 2 }}>
+              {user.first_name[0]}
+            </Avatar>
+            <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
+              Профиль пользователя
+            </Typography>
+            <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+              Добро пожаловать, {user.first_name}!
+            </Typography>
+            {certificate ? (
+              certificate.status === 'готов' ? (
+                <Button
+                  component={Link}
+                  to="/certificate"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                >
+                  Посмотреть сертификат
+                </Button>
+              ) : (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                >
+                  Статус: {certificate.status}
+                </Button>
+              )
+            ) : (
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                onClick={handleBuyCertificate}
+              >
+                Купить сертификат
+              </Button>
+            )}
+          </Box>
+        </Paper>
+      </Container>
+    </Background>
+  );
+};
+
+export default UserProfile;
