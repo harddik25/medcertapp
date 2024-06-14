@@ -12,7 +12,6 @@ import SurveyForm from './components/SurveyForm';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -24,7 +23,7 @@ function App() {
 
   useEffect(() => {
     // Создаем новое WebSocket соединение
-    const ws = new WebSocket('wss://medlevel.me/ws');
+    const ws = new WebSocket('wss://yourdomain.com/ws');
 
     ws.onopen = () => {
       console.log('WebSocket connection established');
@@ -42,9 +41,6 @@ function App() {
     ws.onerror = (error) => {
       console.error('WebSocket error: ', error);
     };
-
-    // Сохраняем WebSocket соединение в состоянии
-    setSocket(ws);
 
     // Очищаем соединение при размонтировании компонента
     return () => {
