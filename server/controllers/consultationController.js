@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 const uri = process.env.MONGO_URI;
 
 async function getAppointments(req, res) {
-  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const client = new MongoClient(uri);
 
   try {
     await client.connect();
@@ -19,7 +19,7 @@ async function getAppointments(req, res) {
 
 async function scheduleAppointment(req, res) {
   const { date, time } = req.body;
-  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const client = new MongoClient(uri);
 
   try {
     await client.connect();
@@ -38,3 +38,4 @@ module.exports = {
   getAppointments,
   scheduleAppointment
 };
+
