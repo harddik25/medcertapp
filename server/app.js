@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const mongoose = require('mongoose');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
 
@@ -40,6 +39,23 @@ async function run() {
     // Подключение клиента к серверу
     await client.connect();
     console.log("Successfully connected to MongoDB!");
+
+    // Настройка маршрутов после успешного подключения
+    app.use('/api/auth', authRoutes);
+    app.use('/api/certificates', certificateRoutes);
+    app.use('/api/consultations', consultationRoutes);
+    app.use('/api/admin', adminRoutes);
+    app.use('/api/surveys', surveyRoutes);
+    app.use('/api/appointments', appointmentRoutes);
+    app.use('/api/users', userRoutes);
+
+    app.use(express.static('build'));
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+    });
+
+
   } catch (err) {
     console.error("Error connecting to MongoDB:", err);
   }
@@ -47,23 +63,7 @@ async function run() {
 
 run().catch(console.dir);
 
-// Использование маршрутов
-app.use('/api/auth', authRoutes);
-app.use('/api/certificates', certificateRoutes);
-app.use('/api/consultations', consultationRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/surveys', surveyRoutes);
-app.use('/api/appointments', appointmentRoutes);
-app.use('/api/users', userRoutes);
-
-app.use(express.static('build'));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-});
-
-
-
 module.exports = app;
+
 
 
