@@ -16,7 +16,7 @@ const Login = () => {
       } else {
         // Инициализация виджета Telegram для авторизации
         const script = document.createElement('script');
-        script.src = "https://telegram.org/js/telegram-widget.js?7";
+        script.src = "https://telegram.org/js/telegram-web-app.js";
         script.async = true;
         script.setAttribute('data-telegram-login', 'YourBotName'); // Замените 'YourBotName' на имя вашего бота
         script.setAttribute('data-size', 'large');
