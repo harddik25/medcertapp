@@ -41,6 +41,11 @@ const DoctorPanel = () => {
   };
 
   const handleSave = async () => {
+    if (!date || !time) {
+      alert('Дата и время обязательны');
+      return;
+    }
+
     try {
       const response = await fetch('https://medlevel.me/api/consultations/schedule', {
         method: 'POST',
