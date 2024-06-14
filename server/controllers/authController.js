@@ -4,8 +4,7 @@ const User = require('../models/User');
 exports.telegramAuth = async (req, res) => {
   const { id, first_name, last_name, username, photo_url, auth_date, hash } = req.query;
 
-  // Verify the integrity of the data
-  const secret = process.env.TELEGRAM_BOT_TOKEN; // Use your bot's token as the secret
+  const secret = process.env.TELEGRAM_BOT_TOKEN;
   const dataCheckString = Object.keys(req.query)
     .filter(key => key !== 'hash')
     .map(key => `${key}=${req.query[key]}`)
@@ -19,7 +18,6 @@ exports.telegramAuth = async (req, res) => {
     return res.status(401).send('Data is not from Telegram');
   }
 
-  // Find or create the user
   let user = await User.findOne({ telegramId: id });
   if (!user) {
     user = new User({
@@ -32,12 +30,11 @@ exports.telegramAuth = async (req, res) => {
     await user.save();
   }
 
-  // Create JWT token
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: '1h',
   });
 
-  // Set token in a cookie and redirect to the profile
   res.cookie('token', token, { httpOnly: true });
   res.redirect(`/profile?user=${encodeURIComponent(JSON.stringify(user))}`);
 };
+
