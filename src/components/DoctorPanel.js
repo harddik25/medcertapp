@@ -21,7 +21,7 @@ const DoctorPanel = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/consultations/appointments');
+        const response = await fetch('https://medlevel.me/api/consultations/appointments');
         const data = await response.json();
         setAppointments(data.appointments);
       } catch (error) {
@@ -42,7 +42,7 @@ const DoctorPanel = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/consultations/schedule', {
+      const response = await fetch('https://medlevel.me/api/consultations/schedule', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
