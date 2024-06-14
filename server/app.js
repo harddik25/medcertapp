@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const path = require('path'); // Импортируем модуль path
+const path = require('path');
 require('dotenv').config();
 
 // Импорт маршрутов
@@ -57,7 +57,7 @@ async function run() {
       res.sendFile(path.resolve('/var/www/medlevel.me', 'index.html'));
     });
 
-   
+    
 
   } catch (err) {
     console.error("Error connecting to MongoDB:", err);
@@ -67,7 +67,6 @@ async function run() {
 run().catch(console.dir);
 
 module.exports = app;
-
 
 
 
