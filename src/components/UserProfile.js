@@ -66,6 +66,14 @@ const UserProfile = () => {
     navigate('/certificate-info');
   };
 
+  const handleAdminPanel = () => {
+    navigate('/admin');
+  };
+
+  const handleDoctorPanel = () => {
+    navigate('/doctor');
+  };
+
   return (
     <Background>
       <Container component="main" maxWidth="md">
@@ -92,20 +100,18 @@ const UserProfile = () => {
                 {user.role === 'admin' && (
                   <>
                     <Button
-                      component={Link}
-                      to="/admin"
                       fullWidth
                       variant="contained"
                       sx={{ mb: 2, backgroundColor: '#f44336', color: '#fff' }}
+                      onClick={handleAdminPanel}
                     >
                       Admin Panel
                     </Button>
                     <Button
-                      component={Link}
-                      to="/doctor"
                       fullWidth
                       variant="contained"
                       sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
+                      onClick={handleDoctorPanel}
                     >
                       Doctor Panel
                     </Button>
@@ -113,11 +119,10 @@ const UserProfile = () => {
                 )}
                 {user.role === 'doctor' && (
                   <Button
-                    component={Link}
-                    to="/doctor"
                     fullWidth
                     variant="contained"
                     sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
+                    onClick={handleDoctorPanel}
                   >
                     Doctor Panel
                   </Button>
