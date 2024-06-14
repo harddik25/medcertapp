@@ -26,7 +26,10 @@ const UserProfile = () => {
         try {
           const response = await fetch(`https://medlevel.me/api/users/role/${telegramUser.id}`);
           const data = await response.json();
-          setUser({ ...telegramUser, role: data.role });
+          const userWithRole = { ...telegramUser, role: data.role };
+          setUser(userWithRole);
+          localStorage.setItem('telegramUser', JSON.stringify(userWithRole)); // Обновляем localStorage
+          console.log('User data:', userWithRole); // Отладочное сообщение
         } catch (error) {
           console.error('Ошибка при получении данных пользователя', error);
         }
@@ -49,6 +52,7 @@ const UserProfile = () => {
           });
           const data = await response.json();
           setCertificate(data.certificate);
+          console.log('Certificate data:', data.certificate); // Отладочное сообщение
         } catch (error) {
           console.error('Ошибка при получении статуса сертификата', error);
         }
@@ -67,10 +71,12 @@ const UserProfile = () => {
   };
 
   const handleAdminPanel = () => {
+    console.log('Navigating to admin panel'); // Отладочное сообщение
     navigate('/admin');
   };
 
   const handleDoctorPanel = () => {
+    console.log('Navigating to doctor panel'); // Отладочное сообщение
     navigate('/doctor');
   };
 
@@ -175,5 +181,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-
