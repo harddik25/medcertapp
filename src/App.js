@@ -11,6 +11,9 @@ import LanguageSelection from './components/LanguageSelection';
 import SurveyForm from './components/SurveyForm';
 import WebSocketComponent from './components/WebSocketComponent';
 import CertificateInfo from './components/CertificateInfo';
+import Agreement from './components/Agreement';
+import DocumentUpload from './components/DocumentUpload';
+import MainSurvey from './components/MainSurvey'; // создайте этот компонент аналогично другим
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -40,6 +43,9 @@ function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/survey" element={<SurveyForm />} />
         <Route path="/certificate-info" element={<CertificateInfo />} />
+        <Route path="/agreement" element={<Agreement />} />
+        <Route path="/document-upload" element={<DocumentUpload />} />
+        <Route path="/main-survey" element={<MainSurvey />} /> {/* создайте этот компонент */}
         <Route path="/" element={<Login />} />
       </Routes>
     </>
@@ -47,7 +53,5 @@ function App() {
 }
 
 export default App;
-
-
 
 
