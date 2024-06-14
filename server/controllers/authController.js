@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const crypto = require('crypto');
 
 exports.telegramAuth = async (req, res) => {
   const { id, first_name, last_name, username, photo_url, auth_date, hash } = req.query;
@@ -10,7 +11,7 @@ exports.telegramAuth = async (req, res) => {
     .map(key => `${key}=${req.query[key]}`)
     .sort()
     .join('\n');
-  const crypto = require('crypto');
+
   const secretKey = crypto.createHash('sha256').update(secret).digest();
   const hmac = crypto.createHmac('sha256', secretKey).update(dataCheckString).digest('hex');
 
@@ -38,4 +39,3 @@ exports.telegramAuth = async (req, res) => {
   res.cookie('token', token, { httpOnly: true });
   res.redirect(`/profile?user=${encodeURIComponent(JSON.stringify(user))}`);
 };
-
