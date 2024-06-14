@@ -47,10 +47,11 @@ app.use('/api/surveys', surveyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/users', userRoutes); // Использование нового маршрута
 
-app.use(express.static('build'));
+// Убедитесь, что сервер обслуживает статические файлы из директории /var/www/medlevel.me
+app.use(express.static(path.join('/var/www/medlevel.me', 'build')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+  res.sendFile(path.resolve('/var/www/medlevel.me', 'build', 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
