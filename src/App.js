@@ -9,6 +9,7 @@ import AdminPanel from './components/AdminPanel';
 import LoadingPage from './components/LoadingPage';
 import LanguageSelection from './components/LanguageSelection';
 import SurveyForm from './components/SurveyForm';
+import WebSocketComponent from './components/WebSocketComponent';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -26,17 +27,20 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/language" element={<LanguageSelection />} />
-      <Route path="/profile" element={<UserProfile />} />
-      <Route path="/certificate" element={<Certificate />} />
-      <Route path="/consultation" element={<Consultation />} />
-      <Route path="/doctor" element={<DoctorPanel />} />
-      <Route path="/admin" element={<AdminPanel />} />
-      <Route path="/survey" element={<SurveyForm />} />
-      <Route path="/" element={<Login />} />
-    </Routes>
+    <>
+      <WebSocketComponent />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/language" element={<LanguageSelection />} />
+        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/certificate" element={<Certificate />} />
+        <Route path="/consultation" element={<Consultation />} />
+        <Route path="/doctor" element={<DoctorPanel />} />
+        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/survey" element={<SurveyForm />} />
+        <Route path="/" element={<Login />} />
+      </Routes>
+    </>
   );
 }
 
