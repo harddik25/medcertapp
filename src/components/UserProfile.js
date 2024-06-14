@@ -43,6 +43,10 @@ const UserProfile = () => {
     navigate('/survey');
   };
 
+  const handleCertificateInfo = () => {
+    navigate('/certificate-info');
+  };
+
   return (
     <Background>
       <Container component="main" maxWidth="md">
@@ -64,6 +68,14 @@ const UserProfile = () => {
             <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
               Добро пожаловать, {user.first_name}!
             </Typography>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+              onClick={handleCertificateInfo}
+            >
+              О сертификате
+            </Button>
             {certificate ? (
               certificate.status === 'готов' ? (
                 <Button
