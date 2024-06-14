@@ -1,11 +1,8 @@
 import React, { useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { styled } from '@mui/system';
 import { Container, Box, Typography, CssBaseline, Paper } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
-
-const theme = createTheme();
+import { styled } from '@mui/system';
+import CannabisBackground from './path/to/your/cannabis-background.jpg'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
   display: 'flex',
@@ -54,7 +51,7 @@ const Login = () => {
       script.setAttribute('data-telegram-login', 'YourBotName'); // Замените 'YourBotName' на имя вашего бота
       script.setAttribute('data-size', 'large');
       script.setAttribute('data-radius', '5');
-      script.setAttribute('data-auth-url', 'https://your-backend.com/auth'); // Замените на ваш URL обработки авторизации
+      script.setAttribute('data-auth-url', 'https://your-backend.com/api/auth/telegram'); // Замените на ваш URL обработки авторизации
       script.setAttribute('data-request-access', 'write');
       script.setAttribute('data-userpic', 'false');
       script.onload = () => {
@@ -67,29 +64,28 @@ const Login = () => {
   }, [handleTelegramLogin, navigate]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Background>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-            <Box
-              sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
-                Вход через Telegram
-              </Typography>
-              <Box sx={{ mt: 1 }} id="telegram-login"></Box>
-            </Box>
-          </Paper>
-        </Container>
-      </Background>
-    </ThemeProvider>
+    <Background>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
+              Вход через Telegram
+            </Typography>
+            <Box sx={{ mt: 1 }} id="telegram-login"></Box>
+          </Box>
+        </Paper>
+      </Container>
+    </Background>
   );
 };
 
 export default Login;
+
