@@ -51,10 +51,10 @@ async function run() {
     app.use('/api/users', userRoutes);
 
     // Настройка пути к статическим файлам
-    app.use(express.static('/var/www'));
+    app.use(express.static('/var/www/medlevel.me'));
 
     app.get('*', (req, res) => {
-      res.sendFile(path.resolve('/var/www', 'index.html'));
+      res.sendFile(path.resolve('/var/www/medlevel.me', 'index.html'));
     });
 
     
