@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const path = require('path');
 
 // Импорт маршрутов
 const authRoutes = require('./routes/authRoutes');
