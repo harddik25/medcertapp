@@ -39,5 +39,9 @@ app.use('/api/consultations', consultationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/appointments', appointmentRoutes);
-
+app.get('/auth', (req, res) => {
+  const { id, first_name, last_name, username, photo_url, auth_date, hash } = req.query;
+  // Проверьте hash и сохраните данные пользователя в вашей системе
+  res.redirect('/profile');
+});
 module.exports = app;
