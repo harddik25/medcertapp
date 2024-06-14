@@ -2,11 +2,11 @@ const { MongoClient } = require('mongodb');
 const uri = process.env.MONGO_URI;
 
 async function getUsers(req, res) {
-  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const client = new MongoClient(uri);
 
   try {
     await client.connect();
-    const database = client.db('medapp');
+    const database = client.db('your_database_name');
     const users = await database.collection('users').find().toArray();
     res.json(users);
   } catch (error) {
@@ -20,7 +20,7 @@ async function getUsers(req, res) {
 async function updateUserRole(req, res) {
   const { userId } = req.params;
   const { role } = req.body;
-  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const client = new MongoClient(uri);
 
   try {
     await client.connect();
@@ -37,7 +37,7 @@ async function updateUserRole(req, res) {
 
 async function getUserRole(req, res) {
   const { telegramId } = req.params;
-  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const client = new MongoClient(uri);
 
   try {
     await client.connect();
