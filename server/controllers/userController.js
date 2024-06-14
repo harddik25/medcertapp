@@ -1,12 +1,14 @@
 const User = require('../models/User');
 
-exports.updateUserRole = async (req, res) => {
+exports.updateUserRoleByTelegramId = async (req, res) => {
+  const { telegramId, role } = req.body;
+
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findOne({ telegramId });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    user.role = req.body.role;
+    user.role = role;
     await user.save();
     res.json({ message: 'Role updated successfully' });
   } catch (error) {
