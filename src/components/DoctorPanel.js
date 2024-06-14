@@ -17,6 +17,7 @@ const DoctorPanel = () => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
+  const [patientName, setPatientName] = useState('');
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -41,8 +42,8 @@ const DoctorPanel = () => {
   };
 
   const handleSave = async () => {
-    if (!date || !time) {
-      alert('Дата и время обязательны');
+    if (!date || !time || !patientName) {
+      alert('Дата, время и имя пациента обязательны');
       return;
     }
 
@@ -52,11 +53,11 @@ const DoctorPanel = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date, time }),
+        body: JSON.stringify({ date, time, patientName }),
       });
       const data = await response.json();
       if (data.success) {
-        setAppointments([...appointments, { date, time }]);
+        setAppointments([...appointments, { date, time, patientName }]);
         setOpen(false);
       } else {
         console.error('Ошибка при сохранении времени приема');
@@ -123,6 +124,14 @@ const DoctorPanel = () => {
               }}
               value={time}
               onChange={(e) => setTime(e.target.value)}
+            />
+            <TextField
+              margin="dense"
+              label="Имя пациента"
+              type="text"
+              fullWidth
+              value={patientName}
+              onChange={(e) => setPatientName(e.target.value)}
             />
           </DialogContent>
           <DialogActions>
