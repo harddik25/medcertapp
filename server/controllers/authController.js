@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const ADMIN_TELEGRAM_IDS = ['421186689', '421186689']; // Массив Telegram ID администраторов
+const ADMIN_TELEGRAM_IDS = ['421186689']; // Массив Telegram ID администраторов
 const DOCTOR_TELEGRAM_IDS = ['1122334455', '5566778899']; // Массив Telegram ID докторов
 
 exports.telegramAuth = async (req, res) => {
@@ -49,4 +49,3 @@ exports.telegramAuth = async (req, res) => {
   res.cookie('token', token, { httpOnly: true });
   res.redirect(`/profile?token=${token}`);
 };
-
