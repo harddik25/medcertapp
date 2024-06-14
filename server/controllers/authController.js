@@ -26,11 +26,12 @@ exports.telegramAuth = async (req, res) => {
       lastName: last_name,
       username: username,
       photoUrl: photo_url,
+      role: 'user' // устанавливаем роль по умолчанию
     });
     await user.save();
   }
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: '1h',
   });
 
