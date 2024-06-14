@@ -13,6 +13,7 @@ import CertificateInfo from './components/CertificateInfo';
 import Agreement from './components/Agreement';
 import DocumentUpload from './components/DocumentUpload';
 import MainSurvey from './components/MainSurvey';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -43,8 +44,17 @@ function App() {
         <Route path="/document-upload" element={<DocumentUpload />} />
         <Route path="/main-survey" element={<MainSurvey />} />
         <Route path="/" element={<Login />} />
-        <Route path="/doctor" element={<DoctorPanel />} />
-        <Route path="/admin" element={<AdminPanel />} />
+
+        <Route path="/doctor" element={
+          <ProtectedRoute allowedRoles={['doctor', 'admin']}>
+            <DoctorPanel />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminPanel />
+          </ProtectedRoute>
+        } />
       </Routes>
     </Router>
   );
