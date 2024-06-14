@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
@@ -15,29 +15,48 @@ const Background = styled('div')({
 });
 
 const UserProfile = () => {
-  const user = JSON.parse(localStorage.getItem('telegramUser'));
+  const [user, setUser] = useState(null);
   const [certificate, setCertificate] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const fetchCertificate = async () => {
-      try {
-        const response = await fetch('https://medlevel.me/api/certificates/status', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
-          }
-        });
-        const data = await response.json();
-        setCertificate(data.certificate);
-      } catch (error) {
-        console.error('Ошибка при получении статуса сертификата', error);
+    const query = new URLSearchParams(location.search);
+    const userParam = query.get('user');
+    
+    if (userParam) {
+      const user = JSON.parse(userParam);
+      setUser(user);
+      localStorage.setItem('telegramUser', JSON.stringify(user));
+    } else {
+      const storedUser = localStorage.getItem('telegramUser');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
       }
-    };
+    }
+  }, [location.search]);
 
-    fetchCertificate();
-  }, [user.id]);
+  useEffect(() => {
+    if (user) {
+      const fetchCertificate = async () => {
+        try {
+          const response = await fetch('https://medlevel.me/api/certificates/status', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
+            }
+          });
+          const data = await response.json();
+          setCertificate(data.certificate);
+        } catch (error) {
+          console.error('Ошибка при получении статуса сертификата', error);
+        }
+      };
+
+      fetchCertificate();
+    }
+  }, [user]);
 
   const handleBuyCertificate = () => {
     navigate('/survey');
@@ -46,6 +65,10 @@ const UserProfile = () => {
   const handleCertificateInfo = () => {
     navigate('/certificate-info');
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <Background>
@@ -114,4 +137,5 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
