@@ -1,25 +1,16 @@
-const jwt = require('jsonwebtoken');
-const User = require('./models/User');
+const User = require('../models/User');
 
-exports.verifyToken = (req, res, next) => {
-  const token = req.cookies.token || req.headers['authorization'];
-  if (!token) {
-    return res.status(401).json({ message: 'No token, authorization denied' });
+exports.verifyAdmin = async (req, res, next) => {
+  const adminId = req.body.adminId; // Здесь мы будем проверять ID администратора
+
+  if (!adminId) {
+    return res.status(400).json({ message: 'Admin ID is required' });
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (err) {
-    res.status(401).json({ message: 'Token is not valid' });
-  }
-};
-
-exports.isAdmin = async (req, res, next) => {
-  const user = await User.findById(req.user.id);
-  if (user.role !== 'admin') {
+  const user = await User.findOne({ telegramId: adminId });
+  if (!user || user.role !== 'admin') {
     return res.status(403).json({ message: 'Access denied' });
   }
+
   next();
 };
