@@ -23,7 +23,7 @@ function App() {
 
   useEffect(() => {
     // Создаем новое WebSocket соединение
-    const ws = new WebSocket('wss://yourdomain.com/ws');
+    const ws = new WebSocket('wss://medlevel.me/ws');
 
     ws.onopen = () => {
       console.log('WebSocket connection established');
