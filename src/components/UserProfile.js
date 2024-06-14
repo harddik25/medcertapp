@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from '../logos/cannabis-background.jpeg';
+import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
   display: 'flex',
@@ -26,7 +26,7 @@ const UserProfile = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.id}`
+            'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
           }
         });
         const data = await response.json();
@@ -52,7 +52,13 @@ const UserProfile = () => {
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
             <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80, mb: 2 }}>
               {user.first_name[0]}
             </Avatar>
@@ -63,15 +69,26 @@ const UserProfile = () => {
               Добро пожаловать, {user.first_name}!
             </Typography>
             {user.role === 'admin' && (
-              <Button
-                component={Link}
-                to="/admin"
-                fullWidth
-                variant="contained"
-                sx={{ mb: 2, backgroundColor: '#f44336', color: '#fff' }}
-              >
-                Admin Panel
-              </Button>
+              <>
+                <Button
+                  component={Link}
+                  to="/admin"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mb: 2, backgroundColor: '#f44336', color: '#fff' }}
+                >
+                  Admin Panel
+                </Button>
+                <Button
+                  component={Link}
+                  to="/doctor"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
+                >
+                  Doctor Panel
+                </Button>
+              </>
             )}
             {user.role === 'doctor' && (
               <Button
@@ -130,7 +147,6 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
 
 
 
