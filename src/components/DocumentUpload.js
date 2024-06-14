@@ -46,11 +46,11 @@ const DocumentUpload = () => {
               }}
             >
               <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
-                Загрузка документов и выбор заболевания
+                Upload Documents and Select Disease
               </Typography>
               <TextField
                 select
-                label="Выберите заболевание"
+                label="Select Disease"
                 value={selectedDisease}
                 onChange={(e) => setSelectedDisease(e.target.value)}
                 fullWidth
@@ -64,7 +64,7 @@ const DocumentUpload = () => {
                 ))}
               </TextField>
               <TextField
-                label="Есть ли аллергия на лекарства?"
+                label="Do you have any drug allergies?"
                 value={allergyInfo}
                 onChange={(e) => setAllergyInfo(e.target.value)}
                 fullWidth
@@ -77,7 +77,7 @@ const DocumentUpload = () => {
                 sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleSubmit}
               >
-                Продолжить
+                Continue
               </Button>
             </Box>
           </Paper>
@@ -88,3 +88,4 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
+
