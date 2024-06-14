@@ -40,6 +40,16 @@ exports.telegramAuth = async (req, res) => {
       role: role // Устанавливаем роль на основе Telegram ID
     });
     await user.save();
+  } else {
+    // Обновим роль, если пользователь уже существует
+    if (ADMIN_TELEGRAM_IDS.includes(id)) {
+      user.role = 'admin';
+    } else if (DOCTOR_TELEGRAM_IDS.includes(id)) {
+      user.role = 'doctor';
+    } else {
+      user.role = 'user';
+    }
+    await user.save();
   }
 
   const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
