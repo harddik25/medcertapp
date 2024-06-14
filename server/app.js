@@ -40,8 +40,26 @@ app.use('/api/appointments', appointmentRoutes);
 // Маршрут для обработки аутентификации через Telegram
 app.get('/auth', (req, res) => {
   const { id, first_name, last_name, username, photo_url, auth_date, hash } = req.query;
+  
   // Проверьте hash и сохраните данные пользователя в вашей системе
-  res.json({ id, first_name, last_name, username, photo_url, auth_date, hash });
+  // Например, используя JWT токен для авторизации
+  const token = generateJWTToken({ id, first_name, last_name, username });
+  
+  // Сохраните пользователя в базе данных, если его еще нет
+  User.findOneAndUpdate({ telegramId: id }, {
+    first_name,
+    last_name,
+    username,
+    photo_url
+  }, { upsert: true, new: true }, (err, user) => {
+    if (err) {
+      return res.status(500).json({ error: 'Ошибка при сохранении пользователя' });
+    }
+    
+    // Установите JWT токен в cookies и перенаправьте на страницу профиля
+    res.cookie('token', token, { httpOnly: true });
+    res.redirect('/profile');
+  });
 });
 
 app.use(express.static('build'));
