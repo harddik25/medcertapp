@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, CssBaseline, Paper, Button } from '@mui/material';
 import { styled } from '@mui/system';
-import CannabisBackground from './path/to/your/cannabis-background.jpg'; // Замените на путь к вашему фоновому изображению
+import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
   display: 'flex',
