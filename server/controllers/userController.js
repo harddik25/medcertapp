@@ -6,7 +6,7 @@ async function getUsers(req, res) {
 
   try {
     await client.connect();
-    const database = client.db('your_database_name');
+    const database = client.db('medapp');
     const users = await database.collection('users').find().toArray();
     res.json(users);
   } catch (error) {
