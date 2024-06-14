@@ -1,40 +1,24 @@
-const { MongoClient } = require('mongodb');
-const uri = process.env.MONGO_URI;
+const Consultation = require('../models/Consultation');
 
-async function getAppointments(req, res) {
-  const client = new MongoClient(uri);
-
+exports.scheduleAppointment = async (req, res) => {
   try {
-    await client.connect();
-    const database = client.db('medapp');
-    const appointments = await database.collection('appointments').find().toArray();
-    res.json({ appointments });
-  } catch (error) {
-    console.error('Ошибка при получении списка консультаций', error);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
-  } finally {
-    await client.close();
-  }
-}
+    const { date, time } = req.body;
 
-async function scheduleAppointment(req, res) {
-  const { date, time } = req.body;
-  const client = new MongoClient(uri);
+    // Проверьте, что данные переданы корректно
+    if (!date || !time) {
+      return res.status(400).json({ message: 'Дата и время обязательны' });
+    }
 
-  try {
-    await client.connect();
-    const database = client.db('medapp');
-    const result = await database.collection('appointments').insertOne({ date, time });
-    res.json({ success: true, appointment: result.ops[0] });
+    const newAppointment = new Consultation({
+      date,
+      time,
+      patientName: req.user ? req.user.username : 'Unknown'
+    });
+
+    await newAppointment.save();
+    res.status(201).json({ success: true, appointment: newAppointment });
   } catch (error) {
     console.error('Ошибка при сохранении времени приема', error);
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
-  } finally {
-    await client.close();
   }
-}
-
-module.exports = {
-  getAppointments,
-  scheduleAppointment
 };
