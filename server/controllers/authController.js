@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const crypto = require('crypto');
+
+const ADMIN_TELEGRAM_IDS = ['421186689', '421186689']; // Массив Telegram ID администраторов
+const DOCTOR_TELEGRAM_IDS = ['1122334455', '5566778899']; // Массив Telegram ID докторов
 
 exports.telegramAuth = async (req, res) => {
   const { id, first_name, last_name, username, photo_url, auth_date, hash } = req.query;
@@ -11,7 +13,7 @@ exports.telegramAuth = async (req, res) => {
     .map(key => `${key}=${req.query[key]}`)
     .sort()
     .join('\n');
-
+  const crypto = require('crypto');
   const secretKey = crypto.createHash('sha256').update(secret).digest();
   const hmac = crypto.createHmac('sha256', secretKey).update(dataCheckString).digest('hex');
 
@@ -21,13 +23,21 @@ exports.telegramAuth = async (req, res) => {
 
   let user = await User.findOne({ telegramId: id });
   if (!user) {
+    let role = 'user'; // Роль по умолчанию
+
+    if (ADMIN_TELEGRAM_IDS.includes(id)) {
+      role = 'admin';
+    } else if (DOCTOR_TELEGRAM_IDS.includes(id)) {
+      role = 'doctor';
+    }
+
     user = new User({
       telegramId: id,
       firstName: first_name,
       lastName: last_name,
       username: username,
       photoUrl: photo_url,
-      role: 'user' // устанавливаем роль по умолчанию
+      role: role // Устанавливаем роль на основе Telegram ID
     });
     await user.save();
   }
@@ -37,5 +47,6 @@ exports.telegramAuth = async (req, res) => {
   });
 
   res.cookie('token', token, { httpOnly: true });
-  res.redirect(`/profile?user=${encodeURIComponent(JSON.stringify(user))}`);
+  res.redirect(`/profile?token=${token}`);
 };
+
