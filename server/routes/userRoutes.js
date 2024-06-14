@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getUserByTelegramId } = require('../controllers/userController');
+const { getUsers, updateUserRole, getUserRole } = require('../controllers/userController');
 
-router.get('/role/:telegramId', getUserByTelegramId);
+router.get('/', getUsers);
+router.put('/:userId/role', updateUserRole);
+router.get('/role/:telegramId', getUserRole);
 
 module.exports = router;
