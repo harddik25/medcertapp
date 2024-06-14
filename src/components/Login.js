@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, CssBaseline, Paper } from '@mui/material';
+import { styled } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
 
