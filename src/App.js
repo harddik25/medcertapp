@@ -12,7 +12,8 @@ import WebSocketComponent from './components/WebSocketComponent';
 import CertificateInfo from './components/CertificateInfo';
 import Agreement from './components/Agreement';
 import DocumentUpload from './components/DocumentUpload';
-import MainSurvey from './components/MainSurvey'; // создайте этот компонент аналогично другим
+import MainSurvey from './components/MainSurvey';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -38,13 +39,22 @@ function App() {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/certificate" element={<Certificate />} />
         <Route path="/consultation" element={<Consultation />} />
-        <Route path="/doctor" element={<DoctorPanel />} />
-        <Route path="/admin" element={<AdminPanel />} />
         <Route path="/certificate-info" element={<CertificateInfo />} />
         <Route path="/agreement" element={<Agreement />} />
         <Route path="/document-upload" element={<DocumentUpload />} />
-        <Route path="/main-survey" element={<MainSurvey />} /> {/* создайте этот компонент */}
+        <Route path="/main-survey" element={<MainSurvey />} />
         <Route path="/" element={<Login />} />
+
+        <Route path="/doctor" element={
+          <ProtectedRoute allowedRoles={['doctor', 'admin']}>
+            <DoctorPanel />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminPanel />
+          </ProtectedRoute>
+        } />
       </Routes>
     </>
   );
