@@ -8,7 +8,6 @@ import DoctorPanel from './components/DoctorPanel';
 import AdminPanel from './components/AdminPanel';
 import LoadingPage from './components/LoadingPage';
 import LanguageSelection from './components/LanguageSelection';
-import SurveyForm from './components/SurveyForm';
 import WebSocketComponent from './components/WebSocketComponent';
 import CertificateInfo from './components/CertificateInfo';
 import Agreement from './components/Agreement';
@@ -41,7 +40,6 @@ function App() {
         <Route path="/consultation" element={<Consultation />} />
         <Route path="/doctor" element={<DoctorPanel />} />
         <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/survey" element={<SurveyForm />} />
         <Route path="/certificate-info" element={<CertificateInfo />} />
         <Route path="/agreement" element={<Agreement />} />
         <Route path="/document-upload" element={<DocumentUpload />} />
