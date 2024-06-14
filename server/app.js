@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const path = require('path');
 require('dotenv').config();
+const path = require('path');
 
 // Импорт маршрутов
 const authRoutes = require('./routes/authRoutes');
@@ -52,4 +52,5 @@ app.get('*', (req, res) => {
 });
 
 module.exports = app;
+
 
