@@ -20,6 +20,14 @@ mongoose.connect('mongodb+srv://admin:Gonga!2599@medapp.gugm54i.mongodb.net/', {
   useUnifiedTopology: true,
 });
 
+mongoose.connection.on('connected', () => {
+  console.log('Connected to MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error('Error connecting to MongoDB', err);
+});
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
