@@ -1,31 +1,43 @@
-const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-exports.telegramAuth = (req, res) => {
-  const { id, ...userData } = req.body;
-  const hash = req.body.hash;
-  const secret = crypto.createHash('sha256').update(process.env.TELEGRAM_BOT_TOKEN).digest();
+exports.telegramAuth = async (req, res) => {
+  const { id, first_name, last_name, username, photo_url, auth_date, hash } = req.query;
 
-  const checkString = Object.keys(userData)
+  // Verify the integrity of the data
+  const secret = process.env.TELEGRAM_BOT_TOKEN; // Use your bot's token as the secret
+  const dataCheckString = Object.keys(req.query)
+    .filter(key => key !== 'hash')
+    .map(key => `${key}=${req.query[key]}`)
     .sort()
-    .map((key) => `${key}=${userData[key]}`)
     .join('\n');
+  const crypto = require('crypto');
+  const secretKey = crypto.createHash('sha256').update(secret).digest();
+  const hmac = crypto.createHmac('sha256', secretKey).update(dataCheckString).digest('hex');
 
-  const hmac = crypto.createHmac('sha256', secret)
-    .update(checkString)
-    .digest('hex');
-
-  if (hmac === hash) {
-    User.findOneAndUpdate(
-      { telegramId: id },
-      { telegramId: id, ...userData },
-      { upsert: true, new: true },
-      (err, user) => {
-        if (err) return res.status(500).send(err);
-        res.status(200).send(user);
-      }
-    );
-  } else {
-    res.status(401).send('Unauthorized');
+  if (hmac !== hash) {
+    return res.status(401).send('Data is not from Telegram');
   }
+
+  // Find or create the user
+  let user = await User.findOne({ telegramId: id });
+  if (!user) {
+    user = new User({
+      telegramId: id,
+      firstName: first_name,
+      lastName: last_name,
+      username: username,
+      photoUrl: photo_url,
+    });
+    await user.save();
+  }
+
+  // Create JWT token
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '1h',
+  });
+
+  // Set token in a cookie and redirect to the profile
+  res.cookie('token', token, { httpOnly: true });
+  res.redirect(`/profile?user=${encodeURIComponent(JSON.stringify(user))}`);
 };
