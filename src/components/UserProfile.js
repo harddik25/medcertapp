@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from '../logos/cannabis-background.jpeg'; 
+import CannabisBackground from '../logos/cannabis-background.jpeg';
 
 const Background = styled('div')({
   display: 'flex',
@@ -15,64 +15,44 @@ const Background = styled('div')({
 });
 
 const UserProfile = () => {
-  const [user, setUser] = useState(null);
+  const user = JSON.parse(localStorage.getItem('telegramUser'));
   const [certificate, setCertificate] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('telegramUser');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, [location.search]);
+    const fetchCertificate = async () => {
+      try {
+        const response = await fetch('https://medlevel.me/api/certificates/status', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.id}`
+          }
+        });
+        const data = await response.json();
+        setCertificate(data.certificate);
+      } catch (error) {
+        console.error('Ошибка при получении статуса сертификата', error);
+      }
+    };
 
-  useEffect(() => {
-    if (user) {
-      const fetchCertificate = async () => {
-        try {
-          const response = await fetch('https://medlevel.me/api/certificates/status', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
-            }
-          });
-          const data = await response.json();
-          setCertificate(data.certificate);
-        } catch (error) {
-          console.error('Ошибка при получении статуса сертификата', error);
-        }
-      };
-
-      fetchCertificate();
-    }
-  }, [user]);
+    fetchCertificate();
+  }, [user.id]);
 
   const handleBuyCertificate = () => {
-    navigate('/agreement');
+    navigate('/survey');
   };
 
   const handleCertificateInfo = () => {
     navigate('/certificate-info');
   };
 
-  if (!user) {
-    return null;
-  }
-
   return (
     <Background>
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80, mb: 2 }}>
               {user.first_name[0]}
             </Avatar>
@@ -82,6 +62,28 @@ const UserProfile = () => {
             <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
               Добро пожаловать, {user.first_name}!
             </Typography>
+            {user.role === 'admin' && (
+              <Button
+                component={Link}
+                to="/admin"
+                fullWidth
+                variant="contained"
+                sx={{ mb: 2, backgroundColor: '#f44336', color: '#fff' }}
+              >
+                Admin Panel
+              </Button>
+            )}
+            {user.role === 'doctor' && (
+              <Button
+                component={Link}
+                to="/doctor"
+                fullWidth
+                variant="contained"
+                sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
+              >
+                Doctor Panel
+              </Button>
+            )}
             <Button
               fullWidth
               variant="contained"
@@ -128,6 +130,7 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
 
 
