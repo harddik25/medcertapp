@@ -17,10 +17,10 @@ const userRoutes = require('./routes/userRoutes'); // Добавлен новы�
 
 const app = express();
 
+
 // Подключение к MongoDB
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  // Обновленные параметры подключения
 });
 
 mongoose.connection.on('connected', () => {
@@ -30,6 +30,7 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', (err) => {
   console.error('Error connecting to MongoDB', err);
 });
+
 
 app.use(cors());
 app.use(bodyParser.json());
