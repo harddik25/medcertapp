@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return <Navigate to="/login" />;
   }
 
-  const { role } = decode(token);
+  const { role } = jwtDecode(token);
   if (!allowedRoles.includes(role)) {
     return <Navigate to="/profile" />;
   }
