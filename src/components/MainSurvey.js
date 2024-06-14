@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem } from '@mui/material';
@@ -11,9 +10,18 @@ const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: '100vh',
+  minHeight: '100vh',
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
+  paddingTop: '20px', // Добавляем отступ сверху
+  paddingBottom: '20px', // Добавляем отступ снизу
+});
+
+const ScrollablePaper = styled(Paper)({
+  maxHeight: 'calc(100vh - 40px)', // Уменьшаем высоту Paper, чтобы он умещался на экране с отступами
+  overflowY: 'auto', // Добавляем прокрутку по вертикали
+  padding: 3,
+  backgroundColor: 'rgba(255, 255, 255, 0.8)',
 });
 
 const MainSurvey = () => {
@@ -49,7 +57,7 @@ const MainSurvey = () => {
       <Background>
         <Container component="main" maxWidth="sm">
           <CssBaseline />
-          <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+          <ScrollablePaper elevation={3}>
             <Box
               sx={{
                 marginTop: 8,
@@ -210,7 +218,7 @@ const MainSurvey = () => {
                 Continue
               </Button>
             </Box>
-          </Paper>
+          </ScrollablePaper>
         </Container>
       </Background>
     </ThemeProvider>
@@ -218,5 +226,6 @@ const MainSurvey = () => {
 };
 
 export default MainSurvey;
+
 
 
