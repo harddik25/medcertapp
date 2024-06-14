@@ -28,3 +28,4 @@ exports.telegramAuth = (req, res) => {
     res.status(401).send('Unauthorized');
   }
 };
+
