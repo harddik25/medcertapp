@@ -1,86 +1,114 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Typography, CssBaseline, List, ListItem, ListItemText, Button, Paper } from '@mui/material';
-import { styled } from '@mui/system';
-import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
+import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem } from '@mui/material';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import CannabisBackground from '../logos/cannabis-background.jpeg';
+
+const theme = createTheme();
 
 const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: '100vh',
+  minHeight: '100vh',
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
+  paddingTop: '20px',
+  paddingBottom: '20px',
 });
+
+const roles = [
+  { value: 'user', label: 'User' },
+  { value: 'doctor', label: 'Doctor' },
+  { value: 'admin', label: 'Admin' },
+];
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
-  const [certificates, setCertificates] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedRole, setSelectedRole] = useState('');
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const usersResponse = await fetch('https://medlevel.me/api/admin/users');
-        const usersData = await usersResponse.json();
-        setUsers(usersData.users);
-
-        const certificatesResponse = await fetch('https://medlevel.me/api/admin/certificates');
-        const certificatesData = await certificatesResponse.json();
-        setCertificates(certificatesData.certificates);
-      } catch (error) {
-        console.error('Ошибка при получении данных', error);
-      }
+    const fetchUsers = async () => {
+      const response = await fetch('https://medlevel.me/api/users');
+      const data = await response.json();
+      setUsers(data);
     };
-
-    fetchData();
+    fetchUsers();
   }, []);
 
+  const handleRoleChange = async () => {
+    if (selectedUser && selectedRole) {
+      await fetch(`https://medlevel.me/api/users/${selectedUser}/role`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ role: selectedRole }),
+      });
+      alert('Role updated successfully');
+    }
+  };
+
   return (
-    <Background>
-      <Container component="main" maxWidth="md">
-        <CssBaseline />
-        <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
-              Кабинет администратора
-            </Typography>
-            <Box sx={{ mt: 3, width: '100%' }}>
-              <Typography variant="h6" sx={{ color: '#4caf50' }}>Пользователи</Typography>
-              <List>
+    <ThemeProvider theme={theme}>
+      <Background>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
+                Admin Panel
+              </Typography>
+              <TextField
+                select
+                label="Select User"
+                value={selectedUser}
+                onChange={(e) => setSelectedUser(e.target.value)}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              >
                 {users.map((user) => (
-                  <ListItem key={user.id} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <ListItemText
-                      primary={user.name}
-                      secondary={`ID: ${user.id}`}
-                      sx={{ color: '#388e3c' }}
-                    />
-                    <Button variant="contained" color="secondary">Удалить</Button>
-                  </ListItem>
+                  <MenuItem key={user._id} value={user._id}>
+                    {user.firstName} {user.lastName} ({user.username})
+                  </MenuItem>
                 ))}
-              </List>
-              <Typography variant="h6" sx={{ mt: 3, color: '#4caf50' }}>Сертификаты</Typography>
-              <List>
-                {certificates.map((certificate) => (
-                  <ListItem key={certificate.id} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <ListItemText
-                      primary={certificate.name}
-                      secondary={`ID: ${certificate.id}`}
-                      sx={{ color: '#388e3c' }}
-                    />
-                    <Button variant="contained" color="secondary">Удалить</Button>
-                  </ListItem>
+              </TextField>
+              <TextField
+                select
+                label="Select Role"
+                value={selectedRole}
+                onChange={(e) => setSelectedRole(e.target.value)}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              >
+                {roles.map((role) => (
+                  <MenuItem key={role.value} value={role.value}>
+                    {role.label}
+                  </MenuItem>
                 ))}
-              </List>
+              </TextField>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                onClick={handleRoleChange}
+              >
+                Update Role
+              </Button>
             </Box>
-          </Box>
-        </Paper>
-      </Container>
-    </Background>
+          </Paper>
+        </Container>
+      </Background>
+    </ThemeProvider>
   );
 };
 
