@@ -42,7 +42,6 @@ app.get('/auth', (req, res) => {
   const { id, first_name, last_name, username, photo_url, auth_date, hash } = req.query;
   
   // Проверьте hash и сохраните данные пользователя в вашей системе
-  // Например, используя JWT токен для авторизации
   const token = generateJWTToken({ id, first_name, last_name, username });
   
   // Сохраните пользователя в базе данных, если его еще нет
@@ -58,7 +57,7 @@ app.get('/auth', (req, res) => {
     
     // Установите JWT токен в cookies и перенаправьте на страницу профиля
     res.cookie('token', token, { httpOnly: true });
-    res.redirect('/profile');
+    res.redirect(`/profile?user=${encodeURIComponent(JSON.stringify(user))}`);
   });
 });
 
