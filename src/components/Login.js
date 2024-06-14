@@ -61,7 +61,7 @@ const Login = () => {
                 Вход через Telegram
               </Typography>
               <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                Пожалуйста, откройте это приложение через Telegram для автоматической аутентификации.
+                Загрузка...
               </Typography>
             </Box>
           </Paper>
