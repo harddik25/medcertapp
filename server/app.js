@@ -37,7 +37,7 @@ const client = new MongoClient(uri, {
 
 async function initializeDatabase() {
   try {
-    const database = client.db('your_database_name');
+    const database = client.db('medapp');
 
     // Проверка и создание коллекций, если они не существуют
     const collections = ['users', 'appointments', 'certificates', 'consultations', 'surveys'];
