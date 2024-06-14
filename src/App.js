@@ -10,6 +10,7 @@ import LoadingPage from './components/LoadingPage';
 import LanguageSelection from './components/LanguageSelection';
 import SurveyForm from './components/SurveyForm';
 import WebSocketComponent from './components/WebSocketComponent';
+import CertificateInfo from './components/CertificateInfo';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -38,6 +39,7 @@ function App() {
         <Route path="/doctor" element={<DoctorPanel />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/survey" element={<SurveyForm />} />
+        <Route path="/certificate-info" element={<CertificateInfo />} />
         <Route path="/" element={<Login />} />
       </Routes>
     </>
