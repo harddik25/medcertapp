@@ -1,5 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { Container, Box, Typography, CssBaseline, Paper } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
@@ -16,21 +15,7 @@ const Background = styled('div')({
 });
 
 const Login = () => {
-  const navigate = useNavigate();
-
-  const handleTelegramLogin = useCallback((user) => {
-    console.log(user);
-    localStorage.setItem('telegramUser', JSON.stringify(user));
-    navigate('/language');
-  }, [navigate]);
-
   useEffect(() => {
-    const user = localStorage.getItem('telegramUser');
-    if (user) {
-      navigate('/language');
-      return;
-    }
-
     const script = document.createElement('script');
     script.src = "https://telegram.org/js/telegram-widget.js?7";
     script.async = true;
@@ -40,13 +25,8 @@ const Login = () => {
     script.setAttribute('data-auth-url', 'https://medlevel.me/auth'); // Замените на ваш URL обработки авторизации
     script.setAttribute('data-request-access', 'write');
     script.setAttribute('data-userpic', 'false');
-    script.onload = () => {
-      if (window.TelegramLoginWidget) {
-        window.TelegramLoginWidget.dataOnauth = handleTelegramLogin;
-      }
-    };
     document.getElementById('telegram-login').appendChild(script);
-  }, [handleTelegramLogin, navigate]);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
