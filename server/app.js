@@ -21,8 +21,6 @@ const app = express();
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000, // Увеличенное время ожидания выбора сервера
-  socketTimeoutMS: 45000, // Увеличенное время ожидания сокета
 });
 
 mongoose.connection.on('connected', () => {
@@ -47,13 +45,12 @@ app.use('/api/surveys', surveyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/users', userRoutes); // Использование нового маршрута
 
-// Убедитесь, что сервер обслуживает статические файлы из директории /var/www/medlevel.me
-app.use(express.static(path.join('/var/www', 'medlevel.me')));
+app.use(express.static('build'));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve('/var/www', 'medlevel.me', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 
-
 module.exports = app;
+
 
