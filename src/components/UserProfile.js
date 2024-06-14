@@ -15,29 +15,48 @@ const Background = styled('div')({
 });
 
 const UserProfile = () => {
-  const user = JSON.parse(localStorage.getItem('telegramUser'));
+  const [user, setUser] = useState(null);
   const [certificate, setCertificate] = useState(null);
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    const fetchUser = async () => {
+      const telegramUser = JSON.parse(localStorage.getItem('telegramUser'));
+      if (telegramUser) {
+        try {
+          const response = await fetch(`https://medlevel.me/api/users/role/${telegramUser.id}`);
+          const data = await response.json();
+          setUser({ ...telegramUser, role: data.role });
+        } catch (error) {
+          console.error('Ошибка при получении данных пользователя', error);
+        }
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     const fetchCertificate = async () => {
-      try {
-        const response = await fetch('https://medlevel.me/api/certificates/status', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
-          }
-        });
-        const data = await response.json();
-        setCertificate(data.certificate);
-      } catch (error) {
-        console.error('Ошибка при получении статуса сертификата', error);
+      if (user) {
+        try {
+          const response = await fetch('https://medlevel.me/api/certificates/status', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
+            }
+          });
+          const data = await response.json();
+          setCertificate(data.certificate);
+        } catch (error) {
+          console.error('Ошибка при получении статуса сертификата', error);
+        }
       }
     };
 
     fetchCertificate();
-  }, [user.id]);
+  }, [user]);
 
   const handleBuyCertificate = () => {
     navigate('/survey');
@@ -59,85 +78,89 @@ const UserProfile = () => {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80, mb: 2 }}>
-              {user.first_name[0]}
-            </Avatar>
-            <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
-              Профиль пользователя
-            </Typography>
-            <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-              Добро пожаловать, {user.first_name}!
-            </Typography>
-            {user.role === 'admin' && (
+            {user && (
               <>
+                <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80, mb: 2 }}>
+                  {user.first_name[0]}
+                </Avatar>
+                <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
+                  Профиль пользователя
+                </Typography>
+                <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+                  Добро пожаловать, {user.first_name}!
+                </Typography>
+                {user.role === 'admin' && (
+                  <>
+                    <Button
+                      component={Link}
+                      to="/admin"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mb: 2, backgroundColor: '#f44336', color: '#fff' }}
+                    >
+                      Admin Panel
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/doctor"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
+                    >
+                      Doctor Panel
+                    </Button>
+                  </>
+                )}
+                {user.role === 'doctor' && (
+                  <Button
+                    component={Link}
+                    to="/doctor"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
+                  >
+                    Doctor Panel
+                  </Button>
+                )}
                 <Button
-                  component={Link}
-                  to="/admin"
                   fullWidth
                   variant="contained"
-                  sx={{ mb: 2, backgroundColor: '#f44336', color: '#fff' }}
+                  sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                  onClick={handleCertificateInfo}
                 >
-                  Admin Panel
+                  О сертификате
                 </Button>
-                <Button
-                  component={Link}
-                  to="/doctor"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
-                >
-                  Doctor Panel
-                </Button>
+                {certificate ? (
+                  certificate.status === 'готов' ? (
+                    <Button
+                      component={Link}
+                      to="/certificate"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                    >
+                      Посмотреть сертификат
+                    </Button>
+                  ) : (
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                    >
+                      Статус: {certificate.status}
+                    </Button>
+                  )
+                ) : (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                    onClick={handleBuyCertificate}
+                  >
+                    Купить сертификат
+                  </Button>
+                )}
               </>
-            )}
-            {user.role === 'doctor' && (
-              <Button
-                component={Link}
-                to="/doctor"
-                fullWidth
-                variant="contained"
-                sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
-              >
-                Doctor Panel
-              </Button>
-            )}
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-              onClick={handleCertificateInfo}
-            >
-              О сертификате
-            </Button>
-            {certificate ? (
-              certificate.status === 'готов' ? (
-                <Button
-                  component={Link}
-                  to="/certificate"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                >
-                  Посмотреть сертификат
-                </Button>
-              ) : (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                >
-                  Статус: {certificate.status}
-                </Button>
-              )
-            ) : (
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                onClick={handleBuyCertificate}
-              >
-                Купить сертификат
-              </Button>
             )}
           </Box>
         </Paper>
@@ -147,5 +170,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
 
