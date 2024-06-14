@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
+// Импорт маршрутов
 const authRoutes = require('./routes/authRoutes');
 const certificateRoutes = require('./routes/certificateRoutes');
 const consultationRoutes = require('./routes/consultationRoutes');
@@ -13,6 +15,7 @@ const appointmentRoutes = require('./routes/appointmentRoutes');
 
 const app = express();
 
+// Подключение к MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -29,37 +32,15 @@ mongoose.connection.on('error', (err) => {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
+// Использование маршрутов
 app.use('/api/auth', authRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/appointments', appointmentRoutes);
-
-// Маршрут для обработки аутентификации через Telegram
-app.get('/auth', (req, res) => {
-  const { id, first_name, last_name, username, photo_url, auth_date, hash } = req.query;
-  
-  // Проверьте hash и сохраните данные пользователя в вашей системе
-  const token = generateJWTToken({ id, first_name, last_name, username });
-  
-  // Сохраните пользователя в базе данных, если его еще нет
-  User.findOneAndUpdate({ telegramId: id }, {
-    first_name,
-    last_name,
-    username,
-    photo_url
-  }, { upsert: true, new: true }, (err, user) => {
-    if (err) {
-      return res.status(500).json({ error: 'Ошибка при сохранении пользователя' });
-    }
-    
-    // Установите JWT токен в cookies и перенаправьте на страницу профиля
-    res.cookie('token', token, { httpOnly: true });
-    res.redirect(`/profile?user=${encodeURIComponent(JSON.stringify(user))}`);
-  });
-});
 
 app.use(express.static('build'));
 
