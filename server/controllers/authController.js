@@ -2,7 +2,8 @@ const crypto = require('crypto');
 const User = require('../models/User');
 
 exports.telegramAuth = (req, res) => {
-  const { hash, ...userData } = req.body;
+  const { id, ...userData } = req.body;
+  const hash = req.body.hash;
   const secret = crypto.createHash('sha256').update(process.env.TELEGRAM_BOT_TOKEN).digest();
 
   const checkString = Object.keys(userData)
@@ -16,8 +17,8 @@ exports.telegramAuth = (req, res) => {
 
   if (hmac === hash) {
     User.findOneAndUpdate(
-      { telegramId: userData.id },
-      { ...userData },
+      { telegramId: id },
+      { telegramId: id, ...userData },
       { upsert: true, new: true },
       (err, user) => {
         if (err) return res.status(500).send(err);
