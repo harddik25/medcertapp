@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, CssBaseline, Paper } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
@@ -15,18 +16,20 @@ const Background = styled('div')({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = "https://telegram.org/js/telegram-widget.js?7";
-    script.async = true;
-    script.setAttribute('data-telegram-login', 'Fedcan_bot'); // Замените 'YourBotName' на имя вашего бота
-    script.setAttribute('data-size', 'large');
-    script.setAttribute('data-radius', '5');
-    script.setAttribute('data-auth-url', 'https://medlevel.me/auth'); // Замените на ваш URL обработки авторизации
-    script.setAttribute('data-request-access', 'write');
-    script.setAttribute('data-userpic', 'false');
-    document.getElementById('telegram-login').appendChild(script);
-  }, []);
+    const initData = window.Telegram.WebApp.initData;
+    if (initData) {
+      const user = window.Telegram.WebApp.initDataUnsafe.user;
+      if (user) {
+        localStorage.setItem('telegramUser', JSON.stringify(user));
+        navigate('/profile');
+      } else {
+        console.error('Ошибка аутентификации через Telegram');
+      }
+    }
+  }, [navigate]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -45,7 +48,9 @@ const Login = () => {
               <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
                 Вход через Telegram
               </Typography>
-              <Box sx={{ mt: 1 }} id="telegram-login"></Box>
+              <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+                Пожалуйста, откройте это приложение через Telegram для автоматической аутентификации.
+              </Typography>
             </Box>
           </Paper>
         </Container>
@@ -55,6 +60,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 
