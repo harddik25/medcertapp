@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
@@ -18,7 +18,7 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [certificate, setCertificate] = useState(null);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const fetchUser = async () => {
       const telegramUser = JSON.parse(localStorage.getItem('telegramUser'));
@@ -138,11 +138,10 @@ const UserProfile = () => {
                 {certificate ? (
                   certificate.status === 'готов' ? (
                     <Button
-                      component={Link}
-                      to="/certificate"
                       fullWidth
                       variant="contained"
                       sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                      onClick={() => navigate('/certificate')}
                     >
                       Посмотреть сертификат
                     </Button>
