@@ -27,7 +27,7 @@ const Consultation = () => {
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/consultations/available');
+        const response = await fetch('https://medlevel.me/api/consultations/available');
         const data = await response.json();
         setAvailableSlots(data.slots);
       } catch (error) {
@@ -40,7 +40,7 @@ const Consultation = () => {
 
   const handleBooking = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/consultations/book', {
+      const response = await fetch('https://medlevel.me/api/consultations/book', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
