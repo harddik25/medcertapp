@@ -6,7 +6,7 @@ async function getAppointments(req, res) {
 
   try {
     await client.connect();
-    const database = client.db('your_database_name');
+    const database = client.db('medapp');
     const appointments = await database.collection('appointments').find().toArray();
     res.json({ appointments });
   } catch (error) {
@@ -23,7 +23,7 @@ async function scheduleAppointment(req, res) {
 
   try {
     await client.connect();
-    const database = client.db('your_database_name');
+    const database = client.db('medapp');
     const result = await database.collection('appointments').insertOne({ date, time });
     res.json({ success: true, appointment: result.ops[0] });
   } catch (error) {
