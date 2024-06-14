@@ -13,24 +13,35 @@ const Background = styled('div')({
 });
 
 const DoctorPanel = () => {
-  const [appointments, setAppointments] = useState([]);
+  const [freeSlots, setFreeSlots] = useState([]);
+  const [futureAppointments, setFutureAppointments] = useState([]);
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const [patientName, setPatientName] = useState('');
 
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchFreeSlots = async () => {
       try {
-        const response = await fetch('https://medlevel.me/api/consultations/appointments');
+        const response = await fetch('https://medlevel.me/api/consultations/free-slots');
         const data = await response.json();
-        setAppointments(data.appointments);
+        setFreeSlots(data.freeSlots);
       } catch (error) {
-        console.error('Ошибка при получении списка консультаций', error);
+        console.error('Ошибка при получении свободного времени', error);
       }
     };
 
-    fetchAppointments();
+    const fetchFutureAppointments = async () => {
+      try {
+        const response = await fetch('https://medlevel.me/api/consultations/future-appointments');
+        const data = await response.json();
+        setFutureAppointments(data.appointments);
+      } catch (error) {
+        console.error('Ошибка при получении будущих консультаций', error);
+      }
+    };
+
+    fetchFreeSlots();
+    fetchFutureAppointments();
   }, []);
 
   const handleClickOpen = () => {
@@ -42,28 +53,28 @@ const DoctorPanel = () => {
   };
 
   const handleSave = async () => {
-    if (!date || !time || !patientName) {
-      alert('Дата, время и имя пациента обязательны');
+    if (!date || !time) {
+      alert('Дата и время обязательны');
       return;
     }
 
     try {
-      const response = await fetch('https://medlevel.me/api/consultations/schedule', {
+      const response = await fetch('https://medlevel.me/api/consultations/add-free-slot', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date, time, patientName }),
+        body: JSON.stringify({ date, time }),
       });
       const data = await response.json();
       if (data.success) {
-        setAppointments([...appointments, { date, time, patientName }]);
+        setFreeSlots([...freeSlots, { date, time }]);
         setOpen(false);
       } else {
-        console.error('Ошибка при сохранении времени приема');
+        console.error('Ошибка при сохранении свободного времени');
       }
     } catch (error) {
-      console.error('Ошибка при сохранении времени приема', error);
+      console.error('Ошибка при сохранении свободного времени', error);
     }
   };
 
@@ -84,10 +95,13 @@ const DoctorPanel = () => {
             </Typography>
             <Box sx={{ mt: 1, width: '100%' }}>
               <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
-                Добавить время приема
+                Добавить свободное время для приема
+              </Button>
+              <Button variant="contained" color="secondary" sx={{ mb: 2 }} onClick={fetchFutureAppointments}>
+                Будущие консультации
               </Button>
               <List>
-                {appointments.map((appointment, index) => (
+                {futureAppointments.map((appointment, index) => (
                   <ListItem key={index}>
                     <ListItemText
                       primary={`${appointment.date} ${appointment.time}`}
@@ -101,7 +115,7 @@ const DoctorPanel = () => {
           </Box>
         </Paper>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Добавить время приема</DialogTitle>
+          <DialogTitle>Добавить свободное время для приема</DialogTitle>
           <DialogContent>
             <TextField
               margin="dense"
@@ -124,14 +138,6 @@ const DoctorPanel = () => {
               }}
               value={time}
               onChange={(e) => setTime(e.target.value)}
-            />
-            <TextField
-              margin="dense"
-              label="Имя пациента"
-              type="text"
-              fullWidth
-              value={patientName}
-              onChange={(e) => setPatientName(e.target.value)}
             />
           </DialogContent>
           <DialogActions>
