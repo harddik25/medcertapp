@@ -38,6 +38,6 @@ app.use('/api/certificates', certificateRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/surveys', surveyRoutes);
-app.use('/api/consultations', appointmentRoutes);
+app.use('/api/appointments', appointmentRoutes);
 
 module.exports = app;
