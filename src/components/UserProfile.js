@@ -22,7 +22,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchCertificate = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/certificates/status', {
+        const response = await fetch('https://medlevel.me/api/certificates/status', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
