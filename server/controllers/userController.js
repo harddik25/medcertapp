@@ -6,7 +6,7 @@ async function getUsers(req, res) {
 
   try {
     await client.connect();
-    const database = client.db('medapp');
+    const database = client.db('test');
     const users = await database.collection('users').find().toArray();
     res.json(users);
   } catch (error) {
@@ -24,7 +24,7 @@ async function updateUserRole(req, res) {
 
   try {
     await client.connect();
-    const database = client.db('medapp');
+    const database = client.db('test');
     await database.collection('users').updateOne({ _id: new MongoClient.ObjectID(userId) }, { $set: { role } });
     res.json({ success: true });
   } catch (error) {
@@ -41,7 +41,7 @@ async function getUserRole(req, res) {
 
   try {
     await client.connect();
-    const database = client.db('medapp');
+    const database = client.db('test');
     const user = await database.collection('users').findOne({ telegramId });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
