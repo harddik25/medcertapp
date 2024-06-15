@@ -1,7 +1,7 @@
 const Consultation = require('../models/Consultation');
 const FreeSlot = require('../models/FreeSlot');
 
-exports.scheduleAppointment = async (req, res) => {
+const scheduleAppointment = async (req, res) => {
   try {
     const { date, time, patientName } = req.body;
 
@@ -24,7 +24,7 @@ exports.scheduleAppointment = async (req, res) => {
   }
 };
 
-exports.getFreeSlots = async (req, res) => {
+const getFreeSlots = async (req, res) => {
   try {
     const freeSlots = await FreeSlot.find();
     res.status(200).json({ freeSlots });
@@ -34,7 +34,7 @@ exports.getFreeSlots = async (req, res) => {
   }
 };
 
-exports.bookFreeSlot = async (req, res) => {
+const bookFreeSlot = async (req, res) => {
   try {
     const { date, time, userId } = req.body;
 
@@ -63,7 +63,7 @@ exports.bookFreeSlot = async (req, res) => {
   }
 };
 
-exports.getAppointments = async (req, res) => {
+const getAppointments = async (req, res) => {
   try {
     const appointments = await Consultation.find();
     res.status(200).json({ appointments });
@@ -73,7 +73,7 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
-exports.getFutureAppointments = async (req, res) => {
+const getFutureAppointments = async (req, res) => {
   try {
     const futureAppointments = await Consultation.find();
     res.status(200).json({ appointments: futureAppointments });
@@ -82,4 +82,14 @@ exports.getFutureAppointments = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
+
+module.exports = {
+  scheduleAppointment,
+  getFreeSlots,
+  bookFreeSlot,
+  getAppointments,
+  getFutureAppointments,
+  addFreeSlot: scheduleAppointment, // Assuming addFreeSlot is similar to scheduleAppointment
+};
+
 
