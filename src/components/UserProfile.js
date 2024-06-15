@@ -105,13 +105,13 @@ const UserProfile = () => {
             {user && (
               <>
                 <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80, mb: 2 }}>
-                  {user.first_name[0]}
+                  {user.firstName[0]}
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
                   Профиль пользователя
                 </Typography>
                 <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                  Добро пожаловать, {user.first_name}!
+                  Добро пожаловать, {user.firstName}!
                 </Typography>
                 {user.role === 'admin' && (
                   <>
