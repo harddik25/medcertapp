@@ -6,7 +6,7 @@ async function getUsers(req, res) {
 
   try {
     await client.connect();
-    const database = client.db(); // Использует базу данных по умолчанию
+    const database = client.db();
     const users = await database.collection('users').find().toArray();
     res.json(users);
   } catch (error) {
@@ -24,9 +24,9 @@ async function updateUserRole(req, res) {
 
   try {
     await client.connect();
-    const database = client.db(); // Использует базу данных по умолчанию
+    const database = client.db();
     const result = await database.collection('users').updateOne(
-      { _id: new ObjectID(userId) },
+      { telegramId: userId },
       { $set: { role } }
     );
 
@@ -49,7 +49,7 @@ async function getUserRole(req, res) {
 
   try {
     await client.connect();
-    const database = client.db(); // Использует базу данных по умолчанию
+    const database = client.db();
     const user = await database.collection('users').findOne({ telegramId });
 
     if (!user) {
@@ -70,4 +70,5 @@ module.exports = {
   updateUserRole,
   getUserRole
 };
+
 
