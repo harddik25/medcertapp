@@ -9,5 +9,6 @@ router.post('/add-free-slot', consultationController.addFreeSlot);
 router.get('/free-slots', consultationController.getFreeSlots);
 router.post('/book', consultationController.bookFreeSlot);
 router.get('/future-appointments', consultationController.getFutureAppointments);
+router.get('/appointments/:userId', consultationController.getAppointmentByUserId);
 
 module.exports = router;
