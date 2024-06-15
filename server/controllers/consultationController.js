@@ -65,3 +65,13 @@ exports.getFreeSlots = async (req, res) => {
   }
 };
 
+exports.getFutureAppointments = async (req, res) => {
+  try {
+    const futureAppointments = await Consultation.find();
+    res.status(200).json({ appointments: futureAppointments });
+  } catch (error) {
+    console.error('Ошибка при получении будущих консультаций', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
+
