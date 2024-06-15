@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getUsers, updateUserRole, getUserRole } = require('../controllers/userController');
+const userController = require('../controllers/userController');
 
-router.get('/', getUsers);
-router.put('/:userId/role', updateUserRole);
-router.get('/role/:telegramId', getUserRole);
+router.get('/role/:telegramId', userController.getUserRole);
+router.put('/role/:userId', userController.updateUserRole);
+router.get('/', userController.getUsers);
 
 module.exports = router;
