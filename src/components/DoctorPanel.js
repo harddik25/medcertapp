@@ -30,19 +30,18 @@ const DoctorPanel = () => {
       }
     };
 
-    const fetchFutureAppointments = async () => {
-      try {
-        const response = await fetch('https://medlevel.me/api/consultations/future-appointments');
-        const data = await response.json();
-        setFutureAppointments(data.appointments);
-      } catch (error) {
-        console.error('Ошибка при получении будущих консультаций', error);
-      }
-    };
-
     fetchFreeSlots();
-    fetchFutureAppointments();
   }, []);
+
+  const fetchFutureAppointments = async () => {
+    try {
+      const response = await fetch('https://medlevel.me/api/consultations/future-appointments');
+      const data = await response.json();
+      setFutureAppointments(data.appointments);
+    } catch (error) {
+      console.error('Ошибка при получении будущих консультаций', error);
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
