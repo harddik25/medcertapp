@@ -23,7 +23,26 @@ exports.scheduleAppointment = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
+exports.addFreeSlot = async (req, res) => {
+  try {
+    const { date, time } = req.body;
 
+    if (!date || !time) {
+      return res.status(400).json({ message: 'Дата и время обязательны' });
+    }
+
+    const newFreeSlot = new FreeSlot({
+      date,
+      time
+    });
+
+    await newFreeSlot.save();
+    res.status(201).json({ success: true, freeSlot: newFreeSlot });
+  } catch (error) {
+    console.error('Ошибка при сохранении свободного времени', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
 exports.getAppointments = async (req, res) => {
   try {
     const appointments = await Consultation.find();
