@@ -31,7 +31,7 @@ const LoadingPage = () => {
         >
           <img src={CompanyLogo} alt="Company Logo" style={{ width: '150px', marginBottom: '20px' }} />
           <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: '20px' }}>
-            Добро пожаловать в Медицинский Сертификат
+            Welcome to MedLevel
           </Typography>
           <CircularProgress sx={{ color: '#388e3c' }} />
         </Box>
