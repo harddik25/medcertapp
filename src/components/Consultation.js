@@ -27,9 +27,9 @@ const Consultation = () => {
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       try {
-        const response = await fetch('https://medlevel.me/api/consultations/free-slots');
+        const response = await fetch('https://medlevel.me/api/consultations/available');
         const data = await response.json();
-        setAvailableSlots(data.freeSlots);
+        setAvailableSlots(data.slots);
       } catch (error) {
         console.error('Ошибка при получении доступных временных слотов', error);
       }
@@ -39,20 +39,13 @@ const Consultation = () => {
   }, []);
 
   const handleBooking = async () => {
-    const user = JSON.parse(localStorage.getItem('telegramUser'));
-    if (!user) {
-      setBookingStatus('Ошибка: пользователь не авторизован');
-      setOpenSnackbar(true);
-      return;
-    }
-
     try {
       const response = await fetch('https://medlevel.me/api/consultations/book', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date, time, userId: user.id }), // Замените на ID пользователя
+        body: JSON.stringify({ date, time, userId: 'USER_ID' }), // Замените на ID пользователя
       });
       const data = await response.json();
       if (data.success) {
@@ -88,48 +81,58 @@ const Consultation = () => {
               Видеоконсультация
             </Typography>
             <Box sx={{ mt: 1, width: '100%' }}>
-              <TextField
-                select
-                variant="outlined"
-                fullWidth
-                label="Дата"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                sx={{ mb: 2 }}
-              >
-                {availableSlots.map((slot, index) => (
-                  <MenuItem key={index} value={slot.date}>
-                    {slot.date}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                variant="outlined"
-                fullWidth
-                label="Время"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                sx={{ mb: 2 }}
-                disabled={!date}
-              >
-                {availableSlots
-                  .filter((slot) => slot.date === date)
-                  .map((slot, index) => (
-                    <MenuItem key={index} value={slot.time}>
-                      {slot.time}
-                    </MenuItem>
-                  ))}
-              </TextField>
-              <Button
-                type="button"
-                fullWidth
-                variant="contained"
-                sx={{ backgroundColor: '#4caf50', color: '#fff' }}
-                onClick={handleBooking}
-              >
-                Забронировать
-              </Button>
+              {availableSlots.length > 0 ? (
+                <>
+                  <TextField
+                    select
+                    variant="outlined"
+                    fullWidth
+                    label="Дата"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    sx={{ mb: 2 }}
+                  >
+                    {availableSlots.map((slot, index) => (
+                      <MenuItem key={index} value={slot.date}>
+                        {slot.date}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField
+                    select
+                    variant="outlined"
+                    fullWidth
+                    label="Время"
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    sx={{ mb: 2 }}
+                    disabled={!date}
+                  >
+                    {availableSlots
+                      .filter((slot) => slot.date === date)
+                      .map((slot, index) => (
+                        slot.times.map((timeSlot, timeIndex) => (
+                          <MenuItem key={timeIndex} value={timeSlot}>
+                            {timeSlot}
+                          </MenuItem>
+                        ))
+                      ))}
+                  </TextField>
+                  <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    sx={{ backgroundColor: '#4caf50', color: '#fff' }}
+                    onClick={handleBooking}
+                  >
+                    Забронировать
+                  </Button>
+                </>
+              ) : (
+                <Typography variant="body1" sx={{ color: '#f44336' }}>
+                  Нет доступных временных слотов
+                </Typography>
+              )}
               {bookingStatus && (
                 <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                   <Alert onClose={handleCloseSnackbar} severity={bookingStatus.includes('успешно') ? 'success' : 'error'}>
