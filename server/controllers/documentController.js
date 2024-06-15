@@ -4,7 +4,8 @@ const fs = require('fs');
 
 async function uploadToFTP(localPath, remotePath) {
   const client = new ftp.Client();
-  client.ftp.verbose = true; // Убедитесь, что включен режим подробного вывода для отладки
+  client.ftp.verbose = true; // Включаем подробный вывод для отладки
+
   try {
     await client.access({
       host: process.env.FTP_HOST,
@@ -15,8 +16,14 @@ async function uploadToFTP(localPath, remotePath) {
 
     // Ensure directory exists on FTP server
     const directoryPath = path.dirname(remotePath);
-    await client.ensureDir(directoryPath);
-    await client.uploadFrom(localPath, remotePath);
+    const directories = directoryPath.split('/');
+
+    for (const dir of directories) {
+      await client.ensureDir(dir);
+      await client.cd(dir);
+    }
+
+    await client.uploadFrom(localPath, path.basename(remotePath));
   } catch (error) {
     console.error('Error uploading to FTP:', error);
     throw error;
@@ -56,4 +63,5 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
+
 
