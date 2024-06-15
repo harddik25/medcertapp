@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
   display: 'flex',
@@ -47,7 +47,7 @@ const UserProfile = () => {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.telegramId}` // Замените на ваш метод аутентификации
+              'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
             }
           });
           const data = await response.json();
@@ -61,7 +61,7 @@ const UserProfile = () => {
     const fetchAppointment = async () => {
       if (user) {
         try {
-          const response = await fetch(`https://medlevel.me/api/consultations/appointments/${user.telegramId}`);
+          const response = await fetch(`https://medlevel.me/api/consultations/appointments/${user.id}`);
           const data = await response.json();
           setAppointment(data.appointment);
         } catch (error) {
@@ -105,13 +105,13 @@ const UserProfile = () => {
             {user && (
               <>
                 <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80, mb: 2 }}>
-                  {user.firstName[0]}
+                  {user.first_name[0]}
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
                   Профиль пользователя
                 </Typography>
                 <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                  Добро пожаловать, {user.firstName}!
+                  Добро пожаловать, {user.first_name}!
                 </Typography>
                 {user.role === 'admin' && (
                   <>
@@ -149,47 +149,43 @@ const UserProfile = () => {
                   </Typography>
                 ) : (
                   <>
-                    {user.role !== 'admin' && user.role !== 'doctor' && (
-                      <>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                      onClick={handleCertificateInfo}
+                    >
+                      О сертификате
+                    </Button>
+                    {certificate ? (
+                      certificate.status === 'готов' ? (
+                        <Button
+                          component={Link}
+                          to="/certificate"
+                          fullWidth
+                          variant="contained"
+                          sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                        >
+                          Посмотреть сертификат
+                        </Button>
+                      ) : (
                         <Button
                           fullWidth
                           variant="contained"
                           sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                          onClick={handleCertificateInfo}
                         >
-                          О сертификате
+                          Статус: {certificate.status}
                         </Button>
-                        {certificate ? (
-                          certificate.status === 'готов' ? (
-                            <Button
-                              component={Link}
-                              to="/certificate"
-                              fullWidth
-                              variant="contained"
-                              sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                            >
-                              Посмотреть сертификат
-                            </Button>
-                          ) : (
-                            <Button
-                              fullWidth
-                              variant="contained"
-                              sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                            >
-                              Статус: {certificate.status}
-                            </Button>
-                          )
-                        ) : (
-                          <Button
-                            fullWidth
-                            variant="contained"
-                            sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                            onClick={handleBuyCertificate}
-                          >
-                            Купить сертификат
-                          </Button>
-                        )}
-                      </>
+                      )
+                    ) : (
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                        onClick={handleBuyCertificate}
+                      >
+                        Купить сертификат
+                      </Button>
                     )}
                   </>
                 )}
