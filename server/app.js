@@ -4,6 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
 
 // Импорт маршрутов
@@ -44,6 +45,8 @@ async function run() {
     console.error("Error connecting to MongoDB:", err);
   }
 }
+
+run().catch(console.dir);
 
   // Настройка маршрутов после успешного подключения
   app.use('/api/auth', authRoutes);
