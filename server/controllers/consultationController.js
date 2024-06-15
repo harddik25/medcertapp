@@ -1,15 +1,6 @@
 const Consultation = require('../models/Consultation');
 const FreeSlot = require('../models/FreeSlot');
 
-// Функция для проверки и создания коллекции, если она не существует
-const ensureCollectionExists = async (model, collectionName) => {
-  const collections = await model.db.db.listCollections({ name: collectionName }).toArray();
-  if (collections.length === 0) {
-    await model.createCollection();
-    console.log(`Collection ${collectionName} created!`);
-  }
-};
-
 exports.scheduleAppointment = async (req, res) => {
   try {
     const { date, time, patientName } = req.body;
@@ -17,8 +8,6 @@ exports.scheduleAppointment = async (req, res) => {
     if (!date || !time || !patientName) {
       return res.status(400).json({ message: 'Дата, время и имя пациента обязательны' });
     }
-
-    await ensureCollectionExists(Consultation, 'consultations');
 
     const newAppointment = new Consultation({
       date,
@@ -37,7 +26,6 @@ exports.scheduleAppointment = async (req, res) => {
 
 exports.getAppointments = async (req, res) => {
   try {
-    await ensureCollectionExists(Consultation, 'consultations');
     const appointments = await Consultation.find();
     res.status(200).json({ appointments });
   } catch (error) {
@@ -54,8 +42,6 @@ exports.addFreeSlot = async (req, res) => {
       return res.status(400).json({ message: 'Дата и время обязательны' });
     }
 
-    await ensureCollectionExists(FreeSlot, 'freeslots');
-
     const newFreeSlot = new FreeSlot({
       date,
       time
@@ -71,7 +57,6 @@ exports.addFreeSlot = async (req, res) => {
 
 exports.getFreeSlots = async (req, res) => {
   try {
-    await ensureCollectionExists(FreeSlot, 'freeslots');
     const freeSlots = await FreeSlot.find();
     res.status(200).json({ freeSlots });
   } catch (error) {
@@ -82,7 +67,6 @@ exports.getFreeSlots = async (req, res) => {
 
 exports.getFutureAppointments = async (req, res) => {
   try {
-    await ensureCollectionExists(Consultation, 'consultations');
     const futureAppointments = await Consultation.find();
     res.status(200).json({ appointments: futureAppointments });
   } catch (error) {
