@@ -28,11 +28,22 @@ app.use(cookieParser());
 // Подключение к MongoDB с использованием Mongoose
 const uri = process.env.MONGO_URI;
 
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log("Successfully connected to MongoDB!");
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    await client.connect();
+    console.log("Successfully connected to MongoDB!");
+  } catch (err) {
+    console.error("Error connecting to MongoDB:", err);
+  }
+}
 
   // Настройка маршрутов после успешного подключения
   app.use('/api/auth', authRoutes);
