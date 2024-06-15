@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import CannabisBackground from '../logos/cannabis-background.jpeg'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
   display: 'flex',
@@ -61,7 +61,7 @@ const UserProfile = () => {
     const fetchAppointment = async () => {
       if (user) {
         try {
-          const response = await fetch(`https://medlevel.me/api/consultations/appointments/${user.id}`);
+          const response = await fetch(`https://medlevel.me/api/consultations/user/${user.id}`);
           const data = await response.json();
           setAppointment(data.appointment);
         } catch (error) {
@@ -143,11 +143,7 @@ const UserProfile = () => {
                     Doctor Panel
                   </Button>
                 )}
-                {appointment ? (
-                  <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                    Ваша запись на консультацию: {appointment.date} {appointment.time}
-                  </Typography>
-                ) : (
+                {user.role !== 'admin' && user.role !== 'doctor' && !appointment && (
                   <>
                     <Button
                       fullWidth
@@ -189,6 +185,11 @@ const UserProfile = () => {
                     )}
                   </>
                 )}
+                {appointment && (
+                  <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+                    Ваша запись на консультацию: {appointment.date} {appointment.time}
+                  </Typography>
+                )}
               </>
             )}
           </Box>
@@ -199,3 +200,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
