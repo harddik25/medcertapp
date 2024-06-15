@@ -149,43 +149,47 @@ const UserProfile = () => {
                   </Typography>
                 ) : (
                   <>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                      onClick={handleCertificateInfo}
-                    >
-                      О сертификате
-                    </Button>
-                    {certificate ? (
-                      certificate.status === 'готов' ? (
-                        <Button
-                          component={Link}
-                          to="/certificate"
-                          fullWidth
-                          variant="contained"
-                          sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                        >
-                          Посмотреть сертификат
-                        </Button>
-                      ) : (
+                    {user.role !== 'admin' && user.role !== 'doctor' && (
+                      <>
                         <Button
                           fullWidth
                           variant="contained"
                           sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                          onClick={handleCertificateInfo}
                         >
-                          Статус: {certificate.status}
+                          О сертификате
                         </Button>
-                      )
-                    ) : (
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                        onClick={handleBuyCertificate}
-                      >
-                        Купить сертификат
-                      </Button>
+                        {certificate ? (
+                          certificate.status === 'готов' ? (
+                            <Button
+                              component={Link}
+                              to="/certificate"
+                              fullWidth
+                              variant="contained"
+                              sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                            >
+                              Посмотреть сертификат
+                            </Button>
+                          ) : (
+                            <Button
+                              fullWidth
+                              variant="contained"
+                              sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                            >
+                              Статус: {certificate.status}
+                            </Button>
+                          )
+                        ) : (
+                          <Button
+                            fullWidth
+                            variant="contained"
+                            sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                            onClick={handleBuyCertificate}
+                          >
+                            Купить сертификат
+                          </Button>
+                        )}
+                      </>
                     )}
                   </>
                 )}
@@ -199,5 +203,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
 
