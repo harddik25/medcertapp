@@ -103,3 +103,18 @@ exports.getFutureAppointments = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
+
+exports.getAppointmentByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const appointment = await Consultation.findOne({ patientName: userId });
+    if (!appointment) {
+      return res.status(404).json({ message: 'Запись не найдена' });
+    }
+    res.status(200).json({ appointment });
+  } catch (error) {
+    console.error('Ошибка при получении записи на консультацию', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
+
