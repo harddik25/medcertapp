@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem } from '@mui/material';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { styled } from '@mui/system';
 import CannabisBackground from '../logos/cannabis-background.jpeg';
-
-const theme = createTheme();
+import { useNavigate } from 'react-router-dom';
 
 const Background = styled('div')({
   display: 'flex',
@@ -15,77 +13,112 @@ const Background = styled('div')({
   backgroundSize: 'cover',
 });
 
-const diseases = [
-  { value: 'Alzheimer', label: 'Alzheimer' },
-  { value: 'Anorexia', label: 'Anorexia' },
-  // добавьте другие заболевания
+const documentTypes = [
+  { value: 'NIE', label: 'NIE' },
+  { value: 'DNI', label: 'DNI' },
+  { value: 'PASSPORT', label: 'Passport' },
 ];
 
 const DocumentUpload = () => {
-  const [selectedDisease, setSelectedDisease] = useState('');
-  const [allergyInfo, setAllergyInfo] = useState('');
+  const [documentType, setDocumentType] = useState('');
+  const [document, setDocument] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    // Обработка данных и переход к основному опроснику
-    navigate('/main-survey');
+  const handleDocumentChange = (event) => {
+    setDocumentType(event.target.value);
+  };
+
+  const handleFileChange = (event) => {
+    setDocument(event.target.files[0]);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!documentType || !document) {
+      alert('Please select a document type and upload a document.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('documentType', documentType);
+    formData.append('document', document);
+
+    try {
+      const response = await fetch('https://medlevel.me/api/documents/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      if (data.success) {
+        navigate('/main-survey');
+      } else {
+        alert('Error uploading document');
+      }
+    } catch (error) {
+      console.error('Error uploading document', error);
+      alert('Error uploading document');
+    }
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Background>
-        <Container component="main" maxWidth="sm">
-          <CssBaseline />
-          <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-            <Box
-              sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
+    <Background>
+      <Container component="main" maxWidth="md">
+        <CssBaseline />
+        <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+          <Box
+            component="form"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+            onSubmit={handleSubmit}
+          >
+            <Typography component="h1" variant="h5" sx={{ color: '#388e3c', mb: 2 }}>
+              Upload Document
+            </Typography>
+            <TextField
+              select
+              label="Document Type"
+              value={documentType}
+              onChange={handleDocumentChange}
+              fullWidth
+              sx={{ mb: 2 }}
             >
-              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
-                Upload Documents and Select Disease
-              </Typography>
-              <TextField
-                select
-                label="Select Disease"
-                value={selectedDisease}
-                onChange={(e) => setSelectedDisease(e.target.value)}
-                fullWidth
-                margin="normal"
-                variant="outlined"
-              >
-                {diseases.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                label="Do you have any drug allergies?"
-                value={allergyInfo}
-                onChange={(e) => setAllergyInfo(e.target.value)}
-                fullWidth
-                margin="normal"
-                variant="outlined"
+              {documentTypes.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            <Button
+              variant="contained"
+              component="label"
+              fullWidth
+              sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+            >
+              Upload File
+              <input
+                type="file"
+                hidden
+                onChange={handleFileChange}
               />
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                onClick={handleSubmit}
-              >
-                Continue
-              </Button>
-            </Box>
-          </Paper>
-        </Container>
-      </Background>
-    </ThemeProvider>
+            </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ backgroundColor: '#4caf50', color: '#fff' }}
+            >
+              Submit
+            </Button>
+          </Box>
+        </Paper>
+      </Container>
+    </Background>
   );
 };
 
 export default DocumentUpload;
+
 
