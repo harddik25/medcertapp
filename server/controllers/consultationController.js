@@ -63,3 +63,23 @@ exports.bookFreeSlot = async (req, res) => {
   }
 };
 
+exports.getAppointments = async (req, res) => {
+  try {
+    const appointments = await Consultation.find();
+    res.status(200).json({ appointments });
+  } catch (error) {
+    console.error('Ошибка при получении списка консультаций', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
+
+exports.getFutureAppointments = async (req, res) => {
+  try {
+    const futureAppointments = await Consultation.find();
+    res.status(200).json({ appointments: futureAppointments });
+  } catch (error) {
+    console.error('Ошибка при получении будущих консультаций', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
+
