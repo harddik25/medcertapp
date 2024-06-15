@@ -44,11 +44,11 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 
-app.use(express.static('build'));
+app.use(express.static('/var/www/medlevel.me'));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-});
+    app.get('*', (req, res) => {
+      res.sendFile(path.resolve('/var/www/medlevel.me', 'index.html'));
+    });
 
 wss.on('connection', (ws) => {
   console.log('WebSocket connection established');
