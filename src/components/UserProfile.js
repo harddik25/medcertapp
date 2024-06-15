@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import CannabisBackground from '../cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
   display: 'flex',
@@ -58,6 +58,10 @@ const UserProfile = () => {
       }
     };
 
+    fetchCertificate();
+  }, [user]);
+
+  useEffect(() => {
     const fetchAppointment = async () => {
       if (user) {
         try {
@@ -70,7 +74,6 @@ const UserProfile = () => {
       }
     };
 
-    fetchCertificate();
     fetchAppointment();
   }, [user]);
 
@@ -143,7 +146,7 @@ const UserProfile = () => {
                     Doctor Panel
                   </Button>
                 )}
-                {user.role !== 'admin' && user.role !== 'doctor' && !appointment && (
+                {user.role === 'user' && !appointment && (
                   <>
                     <Button
                       fullWidth
@@ -186,9 +189,12 @@ const UserProfile = () => {
                   </>
                 )}
                 {appointment && (
-                  <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                    Ваша запись на консультацию: {appointment.date} {appointment.time}
-                  </Typography>
+                  <Box sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+                    <Typography variant="h6">Ваша консультация:</Typography>
+                    <Typography variant="body1">
+                      Дата: {appointment.date} Время: {appointment.time}
+                    </Typography>
+                  </Box>
                 )}
               </>
             )}
