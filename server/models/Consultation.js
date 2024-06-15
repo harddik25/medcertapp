@@ -16,4 +16,3 @@ const consultationSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Consultation', consultationSchema);
-
