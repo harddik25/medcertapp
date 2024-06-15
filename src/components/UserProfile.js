@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from './cannabis-background.webp';
+import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
   display: 'flex',
@@ -29,7 +29,7 @@ const UserProfile = () => {
           const data = await response.json();
           const userWithRole = { ...telegramUser, role: data.role };
           setUser(userWithRole);
-          localStorage.setItem('telegramUser', JSON.stringify(userWithRole));
+          localStorage.setItem('telegramUser', JSON.stringify(userWithRole)); // Обновляем localStorage
         } catch (error) {
           console.error('Ошибка при получении данных пользователя', error);
         }
@@ -47,7 +47,7 @@ const UserProfile = () => {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.id}`
+              'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
             }
           });
           const data = await response.json();
@@ -61,7 +61,7 @@ const UserProfile = () => {
     const fetchAppointment = async () => {
       if (user) {
         try {
-          const response = await fetch(`https://medlevel.me/api/consultations/${user.id}`);
+          const response = await fetch(`https://medlevel.me/api/consultations/appointments/${user.id}`);
           const data = await response.json();
           setAppointment(data.appointment);
         } catch (error) {
@@ -143,7 +143,11 @@ const UserProfile = () => {
                     Doctor Panel
                   </Button>
                 )}
-                {user.role === 'user' && !appointment && (
+                {appointment ? (
+                  <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+                    Ваша запись на консультацию: {appointment.date} {appointment.time}
+                  </Typography>
+                ) : (
                   <>
                     <Button
                       fullWidth
@@ -185,11 +189,6 @@ const UserProfile = () => {
                     )}
                   </>
                 )}
-                {user.role === 'user' && appointment && (
-                  <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                    Вы записаны на консультацию: {appointment.date} {appointment.time}
-                  </Typography>
-                )}
               </>
             )}
           </Box>
@@ -198,6 +197,9 @@ const UserProfile = () => {
     </Background>
   );
 };
+
+export default UserProfile;
+
 
 export default UserProfile;
 
