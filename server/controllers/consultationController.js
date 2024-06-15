@@ -5,7 +5,6 @@ exports.scheduleAppointment = async (req, res) => {
   try {
     const { date, time, patientName } = req.body;
 
-    // Проверьте, что данные переданы корректно
     if (!date || !time || !patientName) {
       return res.status(400).json({ message: 'Дата, время и имя пациента обязательны' });
     }
@@ -17,7 +16,6 @@ exports.scheduleAppointment = async (req, res) => {
     });
 
     await newAppointment.save();
-    // Удаляем свободное время, которое было забронировано
     await FreeSlot.deleteOne({ date, time });
     res.status(201).json({ success: true, appointment: newAppointment });
   } catch (error) {
@@ -66,3 +64,4 @@ exports.getFreeSlots = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
+
