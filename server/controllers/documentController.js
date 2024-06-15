@@ -1,5 +1,6 @@
 const ftp = require('basic-ftp');
 const path = require('path');
+const fs = require('fs');
 
 async function uploadToFTP(localPath, remotePath) {
   const client = new ftp.Client();
@@ -31,7 +32,6 @@ exports.uploadDocument = async (req, res) => {
     const localPath = path.join(__dirname, '..', 'uploads', documentType, document.originalname);
 
     // Сохраняем файл локально
-    const fs = require('fs');
     const uploadPath = path.dirname(localPath);
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
