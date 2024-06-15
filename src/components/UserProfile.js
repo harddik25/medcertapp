@@ -29,7 +29,7 @@ const UserProfile = () => {
           const data = await response.json();
           const userWithRole = { ...telegramUser, role: data.role };
           setUser(userWithRole);
-          localStorage.setItem('telegramUser', JSON.stringify(userWithRole)); // Обновляем localStorage
+          localStorage.setItem('telegramUser', JSON.stringify(userWithRole));
         } catch (error) {
           console.error('Ошибка при получении данных пользователя', error);
         }
@@ -47,7 +47,7 @@ const UserProfile = () => {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
+              'Authorization': `Bearer ${user.id}`
             }
           });
           const data = await response.json();
@@ -199,6 +199,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-
 
