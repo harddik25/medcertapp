@@ -49,9 +49,10 @@ mongoose.connect(uri, {
     res.sendFile(path.resolve('/var/www/medlevel.me', 'index.html'));
   });
 
-  
+ 
 }).catch(err => {
   console.error("Error connecting to MongoDB:", err);
 });
 
 module.exports = app;
+
