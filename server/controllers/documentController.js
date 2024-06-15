@@ -14,11 +14,10 @@ async function uploadToFTP(localPath, remotePath) {
       secure: false,
     });
 
-    // Split remote path into directories and filename
+    // Ensure directory exists on FTP server
     const directories = remotePath.split('/');
     const fileName = directories.pop();
 
-    // Ensure directory exists on FTP server
     for (const dir of directories) {
       await client.ensureDir(dir);
       await client.cd(dir);
