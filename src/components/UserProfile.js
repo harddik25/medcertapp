@@ -47,7 +47,7 @@ const UserProfile = () => {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
+              'Authorization': `Bearer ${user.telegramId}` // Замените на ваш метод аутентификации
             }
           });
           const data = await response.json();
@@ -61,7 +61,7 @@ const UserProfile = () => {
     const fetchAppointment = async () => {
       if (user) {
         try {
-          const response = await fetch(`https://medlevel.me/api/consultations/appointments/${user.id}`);
+          const response = await fetch(`https://medlevel.me/api/consultations/appointments/${user.telegramId}`);
           const data = await response.json();
           setAppointment(data.appointment);
         } catch (error) {
