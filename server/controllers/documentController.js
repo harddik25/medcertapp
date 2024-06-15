@@ -12,10 +12,9 @@ async function uploadToFTP(localPath, remotePath) {
       secure: false,
     });
 
-    // Создаем директорию, если она не существует
+    // Ensure directory exists on FTP server
     const directoryPath = path.dirname(remotePath);
     await client.ensureDir(directoryPath);
-
     await client.uploadFrom(localPath, remotePath);
   } catch (error) {
     console.error('Error uploading to FTP:', error);
@@ -35,24 +34,25 @@ exports.uploadDocument = async (req, res) => {
     }
 
     const localPath = path.join(__dirname, '..', 'uploads', documentType, document.originalname);
-    // Сохраняем файл локально
-const uploadPath = path.dirname(localPath);
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
-}
-fs.writeFileSync(localPath, document.buffer);
 
-// Загружаем файл на FTP
-const remotePath = `${documentType}/${document.originalname}`;
-await uploadToFTP(localPath, remotePath);
+    // Ensure local directory exists
+    const uploadPath = path.dirname(localPath);
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    fs.writeFileSync(localPath, document.buffer);
 
-// Удаляем локальный файл после загрузки на FTP
-fs.unlinkSync(localPath);
+    // Upload to FTP
+    const remotePath = `${documentType}/${document.originalname}`;
+    await uploadToFTP(localPath, remotePath);
 
-res.status(201).json({ success: true, message: 'Document uploaded successfully.' });
-} catch (error) {
-console.error('Error uploading document:', error);
-res.status(500).json({ success: false, message: 'Server error.' });
-}
+    // Remove local file after upload
+    fs.unlinkSync(localPath);
+
+    res.status(201).json({ success: true, message: 'Document uploaded successfully.' });
+  } catch (error) {
+    console.error('Error uploading document:', error);
+    res.status(500).json({ success: false, message: 'Server error.' });
+  }
 };
 
