@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from '../logos/cannabis-background.jpeg';
+import CannabisBackground from './cannabis-background.webp';
 
 const Background = styled('div')({
   display: 'flex',
