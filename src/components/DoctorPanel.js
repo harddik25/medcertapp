@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, List, ListItem, ListItemText, IconButton,Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, List, ListItem, ListItemText, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { styled } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CannabisBackground from '../logos/cannabis-background.jpeg';
+import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
   display: 'flex',
@@ -177,4 +177,5 @@ const DoctorPanel = () => {
 };
 
 export default DoctorPanel;
+
 
