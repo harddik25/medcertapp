@@ -179,3 +179,4 @@ const DoctorPanel = () => {
 
 export default DoctorPanel;
 
+
