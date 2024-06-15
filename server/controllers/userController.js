@@ -1,74 +1,35 @@
-const { MongoClient, ObjectID } = require('mongodb');
-const uri = process.env.MONGO_URI;
+const User = require('../models/User');
 
-async function getUsers(req, res) {
-  const client = new MongoClient(uri);
-
+exports.getUserRoleByTelegramId = async (req, res) => {
   try {
-    await client.connect();
-    const database = client.db();
-    const users = await database.collection('users').find().toArray();
-    res.json(users);
-  } catch (error) {
-    console.error('Ошибка при получении списка пользователей', error);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
-  } finally {
-    await client.close();
-  }
-}
-
-async function updateUserRole(req, res) {
-  const { userId } = req.params;
-  const { role } = req.body;
-  const client = new MongoClient(uri);
-
-  try {
-    await client.connect();
-    const database = client.db();
-    const result = await database.collection('users').updateOne(
-      { telegramId: userId },
-      { $set: { role } }
-    );
-
-    if (result.modifiedCount === 0) {
-      return res.status(404).json({ message: 'Пользователь не найден' });
-    }
-
-    res.json({ success: true });
-  } catch (error) {
-    console.error('Ошибка при обновлении роли пользователя', error);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
-  } finally {
-    await client.close();
-  }
-}
-
-async function getUserRole(req, res) {
-  const { telegramId } = req.params;
-  const client = new MongoClient(uri);
-
-  try {
-    await client.connect();
-    const database = client.db();
-    const user = await database.collection('users').findOne({ telegramId });
+    const { telegramId } = req.params;
+    const user = await User.findOne({ telegramId });
 
     if (!user) {
-      return res.status(404).json({ message: 'Пользователь не найден' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    res.json({ role: user.role });
+    res.status(200).json({ role: user.role });
   } catch (error) {
-    console.error('Ошибка при получении роли пользователя', error);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
-  } finally {
-    await client.close();
+    console.error('Error fetching user by Telegram ID:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
-}
+};
 
-module.exports = {
-  getUsers,
-  updateUserRole,
-  getUserRole
+exports.getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error('Error fetching user by ID:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
 };
 
 
