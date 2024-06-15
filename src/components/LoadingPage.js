@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Box, Typography, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
-import CompanyLogo from '../logos/MedLevel.jpg'; // Замените на путь к вашему логотипу
+import CompanyLogo from './MedLevel.webp'; // Замените на путь к вашему логотипу
 import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
