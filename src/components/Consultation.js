@@ -27,9 +27,9 @@ const Consultation = () => {
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       try {
-        const response = await fetch('https://medlevel.me/api/consultations/available');
+        const response = await fetch('https://medlevel.me/api/consultations/free-slots');
         const data = await response.json();
-        setAvailableSlots(data.slots);
+        setAvailableSlots(data.freeSlots);
       } catch (error) {
         console.error('Ошибка при получении доступных временных слотов', error);
       }
@@ -39,13 +39,20 @@ const Consultation = () => {
   }, []);
 
   const handleBooking = async () => {
+    const user = JSON.parse(localStorage.getItem('telegramUser'));
+    if (!user) {
+      setBookingStatus('Ошибка: пользователь не авторизован');
+      setOpenSnackbar(true);
+      return;
+    }
+
     try {
       const response = await fetch('https://medlevel.me/api/consultations/book', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date, time, userId: 'USER_ID' }), // Замените на ID пользователя
+        body: JSON.stringify({ date, time, userId: user.id }), // Замените на ID пользователя
       });
       const data = await response.json();
       if (data.success) {
@@ -109,11 +116,9 @@ const Consultation = () => {
                 {availableSlots
                   .filter((slot) => slot.date === date)
                   .map((slot, index) => (
-                    slot.times.map((timeSlot, timeIndex) => (
-                      <MenuItem key={timeIndex} value={timeSlot}>
-                        {timeSlot}
-                      </MenuItem>
-                    ))
+                    <MenuItem key={index} value={slot.time}>
+                      {slot.time}
+                    </MenuItem>
                   ))}
               </TextField>
               <Button
@@ -141,3 +146,4 @@ const Consultation = () => {
 };
 
 export default Consultation;
+
