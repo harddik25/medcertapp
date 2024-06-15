@@ -37,7 +37,7 @@ const client = new MongoClient(uri, {
 
 async function initializeDatabase() {
   try {
-    const database = client.db('medapp');
+    const database = client.db('your_database_name');
 
     // Проверка и создание коллекций, если они не существуют
     const collections = ['users', 'appointments', 'certificates', 'consultations', 'surveys'];
@@ -83,6 +83,7 @@ async function run() {
     });
 
     
+
   } catch (err) {
     console.error("Error connecting to MongoDB:", err);
   }
@@ -91,4 +92,5 @@ async function run() {
 run().catch(console.dir);
 
 module.exports = app;
+
 
