@@ -31,25 +31,7 @@ const client = new MongoClient(uri, {
   }
 });
 
-async function initializeDatabase() {
-  try {
-    const database = client.db('your_database_name');
-    const collections = ['users', 'appointments', 'certificates', 'consultations', 'surveys', 'freeslots'];
-    const existingCollections = await database.listCollections().toArray();
-    const existingCollectionNames = existingCollections.map(col => col.name);
 
-    for (const collection of collections) {
-      if (!existingCollectionNames.includes(collection)) {
-        await database.createCollection(collection);
-        console.log(`Collection ${collection} created!`);
-      } else {
-        console.log(`Collection ${collection} already exists.`);
-      }
-    }
-  } catch (error) {
-    console.error('Ошибка при инициализации базы данных', error);
-  }
-}
 
 async function run() {
   try {
