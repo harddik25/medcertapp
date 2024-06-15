@@ -17,6 +17,7 @@ const Background = styled('div')({
 const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [certificate, setCertificate] = useState(null);
+  const [appointment, setAppointment] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +30,6 @@ const UserProfile = () => {
           const userWithRole = { ...telegramUser, role: data.role };
           setUser(userWithRole);
           localStorage.setItem('telegramUser', JSON.stringify(userWithRole)); // Обновляем localStorage
-          console.log('User data:', userWithRole); // Отладочное сообщение
         } catch (error) {
           console.error('Ошибка при получении данных пользователя', error);
         }
@@ -52,14 +52,26 @@ const UserProfile = () => {
           });
           const data = await response.json();
           setCertificate(data.certificate);
-          console.log('Certificate data:', data.certificate); // Отладочное сообщение
         } catch (error) {
           console.error('Ошибка при получении статуса сертификата', error);
         }
       }
     };
 
+    const fetchAppointment = async () => {
+      if (user) {
+        try {
+          const response = await fetch(`https://medlevel.me/api/consultations/appointments/${user.id}`);
+          const data = await response.json();
+          setAppointment(data.appointment);
+        } catch (error) {
+          console.error('Ошибка при получении записи на консультацию', error);
+        }
+      }
+    };
+
     fetchCertificate();
+    fetchAppointment();
   }, [user]);
 
   const handleBuyCertificate = () => {
@@ -71,12 +83,10 @@ const UserProfile = () => {
   };
 
   const handleAdminPanel = () => {
-    console.log('Navigating to admin panel'); // Отладочное сообщение
     navigate('/admin');
   };
 
   const handleDoctorPanel = () => {
-    console.log('Navigating to doctor panel'); // Отладочное сообщение
     navigate('/doctor');
   };
 
@@ -133,43 +143,51 @@ const UserProfile = () => {
                     Doctor Panel
                   </Button>
                 )}
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                  onClick={handleCertificateInfo}
-                >
-                  О сертификате
-                </Button>
-                {certificate ? (
-                  certificate.status === 'готов' ? (
-                    <Button
-                      component={Link}
-                      to="/certificate"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                    >
-                      Посмотреть сертификат
-                    </Button>
-                  ) : (
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                    >
-                      Статус: {certificate.status}
-                    </Button>
-                  )
+                {appointment ? (
+                  <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+                    Ваша запись на консультацию: {appointment.date} {appointment.time}
+                  </Typography>
                 ) : (
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                    onClick={handleBuyCertificate}
-                  >
-                    Купить сертификат
-                  </Button>
+                  <>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                      onClick={handleCertificateInfo}
+                    >
+                      О сертификате
+                    </Button>
+                    {certificate ? (
+                      certificate.status === 'готов' ? (
+                        <Button
+                          component={Link}
+                          to="/certificate"
+                          fullWidth
+                          variant="contained"
+                          sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                        >
+                          Посмотреть сертификат
+                        </Button>
+                      ) : (
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                        >
+                          Статус: {certificate.status}
+                        </Button>
+                      )
+                    ) : (
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                        onClick={handleBuyCertificate}
+                      >
+                        Купить сертификат
+                      </Button>
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -181,4 +199,5 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
