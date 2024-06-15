@@ -23,26 +23,7 @@ exports.scheduleAppointment = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
-exports.addFreeSlot = async (req, res) => {
-  try {
-    const { date, time } = req.body;
 
-    if (!date || !time) {
-      return res.status(400).json({ message: 'Дата и время обязательны' });
-    }
-
-    const newFreeSlot = new FreeSlot({
-      date,
-      time
-    });
-
-    await newFreeSlot.save();
-    res.status(201).json({ success: true, freeSlot: newFreeSlot });
-  } catch (error) {
-    console.error('Ошибка при сохранении свободного времени', error);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
-  }
-};
 exports.getAppointments = async (req, res) => {
   try {
     const appointments = await Consultation.find();
@@ -77,10 +58,7 @@ exports.addFreeSlot = async (req, res) => {
 exports.getFreeSlots = async (req, res) => {
   try {
     const freeSlots = await FreeSlot.find();
-    if (freeSlots.length === 0) {
-      return res.status(200).json({ message: 'No free slots available', slots: [] });
-    }
-    res.status(200).json({ slots: freeSlots });
+    res.status(200).json({ freeSlots });
   } catch (error) {
     console.error('Ошибка при получении списка свободного времени', error);
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
@@ -125,7 +103,6 @@ exports.getFutureAppointments = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
-
 exports.getAppointmentByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -139,4 +116,3 @@ exports.getAppointmentByUserId = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
-
