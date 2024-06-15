@@ -1,6 +1,27 @@
 const Consultation = require('../models/Consultation');
 const FreeSlot = require('../models/FreeSlot');
 
+exports.deleteFreeSlot = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: 'Идентификатор слота обязателен' });
+    }
+
+    const deletedSlot = await FreeSlot.findByIdAndDelete(id);
+
+    if (!deletedSlot) {
+      return res.status(404).json({ message: 'Слот не найден' });
+    }
+
+    res.status(200).json({ success: true, message: 'Слот удален', slot: deletedSlot });
+  } catch (error) {
+    console.error('Ошибка при удалении слота', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
+
 exports.scheduleAppointment = async (req, res) => {
   try {
     const { date, time, patientName } = req.body;
