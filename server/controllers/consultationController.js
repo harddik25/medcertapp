@@ -38,7 +38,7 @@ exports.bookFreeSlot = async (req, res) => {
   try {
     const { date, time, userId } = req.body;
 
-    if (!date || неtime || неuserId) {
+    if (!date || !time || !userId) {
       return res.status(400).json({ message: 'Дата, время и идентификатор пользователя обязательны' });
     }
 
