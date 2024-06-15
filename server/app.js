@@ -14,7 +14,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const surveyRoutes = require('./routes/surveyRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const userRoutes = require('./routes/userRoutes');
-
+const documentRoutes = require('./routes/documentRoutes');
 // Инициализация приложения
 const app = express();
 
@@ -41,7 +41,7 @@ mongoose.connect(uri, {
   app.use('/api/surveys', surveyRoutes);
   app.use('/api/appointments', appointmentRoutes);
   app.use('/api/users', userRoutes);
-
+  app.use('/api/documents', documentRoutes);
   // Настройка пути к статическим файлам
   app.use(express.static('/var/www/medlevel.me'));
 
