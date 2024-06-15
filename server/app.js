@@ -15,6 +15,7 @@ const surveyRoutes = require('./routes/surveyRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const userRoutes = require('./routes/userRoutes');
 const documentRoutes = require('./routes/documentRoutes');
+
 // Инициализация приложения
 const app = express();
 
@@ -42,6 +43,7 @@ mongoose.connect(uri, {
   app.use('/api/appointments', appointmentRoutes);
   app.use('/api/users', userRoutes);
   app.use('/api/documents', documentRoutes);
+
   // Настройка пути к статическим файлам
   app.use(express.static('/var/www/medlevel.me'));
 
@@ -49,9 +51,9 @@ mongoose.connect(uri, {
     res.sendFile(path.resolve('/var/www/medlevel.me', 'index.html'));
   });
 
-  
 }).catch(err => {
   console.error("Error connecting to MongoDB:", err);
 });
 
 module.exports = app;
+
