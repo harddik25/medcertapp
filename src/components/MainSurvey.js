@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import CannabisBackground from '../logos/cannabis-background.jpeg';
+import CannabisBackground from './cannabis-background.webp';
 
 const theme = createTheme();
 
