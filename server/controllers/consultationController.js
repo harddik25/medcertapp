@@ -1,26 +1,7 @@
 const Consultation = require('../models/Consultation');
 const FreeSlot = require('../models/FreeSlot');
-const addFreeSlot = async (req, res) => {
-  try {
-    const { date, time } = req.body;
 
-    if (!date || !time) {
-      return res.status(400).json({ message: 'Дата и время обязательны' });
-    }
-
-    const newFreeSlot = new FreeSlot({
-      date,
-      time
-    });
-
-    await newFreeSlot.save();
-    res.status(201).json({ success: true, freeSlot: newFreeSlot });
-  } catch (error) {
-    console.error('Ошибка при добавлении свободного времени', error);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
-  }
-};
-const scheduleAppointment = async (req, res) => {
+exports.scheduleAppointment = async (req, res) => {
   try {
     const { date, time, patientName } = req.body;
 
@@ -43,7 +24,38 @@ const scheduleAppointment = async (req, res) => {
   }
 };
 
-const getFreeSlots = async (req, res) => {
+exports.getAppointments = async (req, res) => {
+  try {
+    const appointments = await Consultation.find();
+    res.status(200).json({ appointments });
+  } catch (error) {
+    console.error('Ошибка при получении списка консультаций', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
+
+exports.addFreeSlot = async (req, res) => {
+  try {
+    const { date, time } = req.body;
+
+    if (!date || !time) {
+      return res.status(400).json({ message: 'Дата и время обязательны' });
+    }
+
+    const newFreeSlot = new FreeSlot({
+      date,
+      time
+    });
+
+    await newFreeSlot.save();
+    res.status(201).json({ success: true, freeSlot: newFreeSlot });
+  } catch (error) {
+    console.error('Ошибка при сохранении свободного времени', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
+
+exports.getFreeSlots = async (req, res) => {
   try {
     const freeSlots = await FreeSlot.find();
     res.status(200).json({ freeSlots });
@@ -53,7 +65,7 @@ const getFreeSlots = async (req, res) => {
   }
 };
 
-const bookFreeSlot = async (req, res) => {
+exports.bookFreeSlot = async (req, res) => {
   try {
     const { date, time, userId } = req.body;
 
@@ -82,17 +94,7 @@ const bookFreeSlot = async (req, res) => {
   }
 };
 
-const getAppointments = async (req, res) => {
-  try {
-    const appointments = await Consultation.find();
-    res.status(200).json({ appointments });
-  } catch (error) {
-    console.error('Ошибка при получении списка консультаций', error);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
-  }
-};
-
-const getFutureAppointments = async (req, res) => {
+exports.getFutureAppointments = async (req, res) => {
   try {
     const futureAppointments = await Consultation.find();
     res.status(200).json({ appointments: futureAppointments });
@@ -101,14 +103,3 @@ const getFutureAppointments = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
-
-module.exports = {
-  scheduleAppointment,
-  getFreeSlots,
-  bookFreeSlot,
-  getAppointments,
-  getFutureAppointments,
-  addFreeSlot: scheduleAppointment, // Assuming addFreeSlot is similar to scheduleAppointment
-};
-
-
