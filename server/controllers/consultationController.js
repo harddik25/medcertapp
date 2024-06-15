@@ -1,6 +1,25 @@
 const Consultation = require('../models/Consultation');
 const FreeSlot = require('../models/FreeSlot');
+const addFreeSlot = async (req, res) => {
+  try {
+    const { date, time } = req.body;
 
+    if (!date || !time) {
+      return res.status(400).json({ message: 'Дата и время обязательны' });
+    }
+
+    const newFreeSlot = new FreeSlot({
+      date,
+      time
+    });
+
+    await newFreeSlot.save();
+    res.status(201).json({ success: true, freeSlot: newFreeSlot });
+  } catch (error) {
+    console.error('Ошибка при добавлении свободного времени', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
 const scheduleAppointment = async (req, res) => {
   try {
     const { date, time, patientName } = req.body;
