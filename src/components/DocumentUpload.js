@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem } from '@mui/material';
 import { styled } from '@mui/system';
-import CannabisBackground from '../logos/cannabis-background.jpeg';
+import CannabisBackground from './cannabis-background.webp';
 import { useNavigate } from 'react-router-dom';
 
 const Background = styled('div')({
