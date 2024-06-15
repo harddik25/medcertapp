@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import CannabisBackground from '../logos/cannabis-background.jpeg';
 
 const Background = styled('div')({
   display: 'flex',
@@ -29,7 +29,7 @@ const UserProfile = () => {
           const data = await response.json();
           const userWithRole = { ...telegramUser, role: data.role };
           setUser(userWithRole);
-          localStorage.setItem('telegramUser', JSON.stringify(userWithRole)); // Обновляем localStorage
+          localStorage.setItem('telegramUser', JSON.stringify(userWithRole));
         } catch (error) {
           console.error('Ошибка при получении данных пользователя', error);
         }
@@ -47,7 +47,7 @@ const UserProfile = () => {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
+              'Authorization': `Bearer ${user.id}`
             }
           });
           const data = await response.json();
@@ -58,14 +58,10 @@ const UserProfile = () => {
       }
     };
 
-    fetchCertificate();
-  }, [user]);
-
-  useEffect(() => {
     const fetchAppointment = async () => {
       if (user) {
         try {
-          const response = await fetch(`https://medlevel.me/api/consultations/user/${user.id}`);
+          const response = await fetch(`https://medlevel.me/api/consultations/${user.id}`);
           const data = await response.json();
           setAppointment(data.appointment);
         } catch (error) {
@@ -74,6 +70,7 @@ const UserProfile = () => {
       }
     };
 
+    fetchCertificate();
     fetchAppointment();
   }, [user]);
 
@@ -188,13 +185,10 @@ const UserProfile = () => {
                     )}
                   </>
                 )}
-                {appointment && (
-                  <Box sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                    <Typography variant="h6">Ваша консультация:</Typography>
-                    <Typography variant="body1">
-                      Дата: {appointment.date} Время: {appointment.time}
-                    </Typography>
-                  </Box>
+                {user.role === 'user' && appointment && (
+                  <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+                    Вы записаны на консультацию: {appointment.date} {appointment.time}
+                  </Typography>
                 )}
               </>
             )}
