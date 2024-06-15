@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const mongoose = require('mongoose');
 const path = require('path');
 require('dotenv').config();
 
@@ -14,6 +14,7 @@ const surveyRoutes = require('./routes/surveyRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const userRoutes = require('./routes/userRoutes');
 const documentRoutes = require('./routes/documentRoutes');
+
 const app = express();
 
 app.use(cors());
@@ -21,65 +22,41 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const uri = process.env.MONGO_URI; // Убедитесь, что MONGO_URI правильно настроен в .env файле
+const uri = process.env.MONGO_URI;
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-async function initializeDatabase() {
-  try {
-    const database = client.db('your_database_name');
+mongoose.connection.on('connected', () => {
+  console.log('Connected to MongoDB');
+});
 
-    const collections = ['users', 'appointments', 'certificates', 'consultations', 'surveys'];
-    const existingCollections = await database.listCollections().toArray();
-    const existingCollectionNames = existingCollections.map(col => col.name);
+mongoose.connection.on('error', (err) => {
+  console.error('Error connecting to MongoDB', err);
+});
 
-    for (const collection of collections) {
-      if (!existingCollectionNames.includes(collection)) {
-        await database.createCollection(collection);
-        console.log(`Collection ${collection} created!`);
-      } else {
-        console.log(`Collection ${collection} already exists.`);
-      }
-    }
-  } catch (error) {
-    console.error('Ошибка при инициализации базы данных', error);
-  }
-}
+mongoose.connection.on('disconnected', () => {
+  console.log('Disconnected from MongoDB');
+});
 
-async function run() {
-  try {
-    await client.connect();
-    console.log("Successfully connected to MongoDB!");
+// Настройка маршрутов
+app.use('/api/auth', authRoutes);
+app.use('/api/certificates', certificateRoutes);
+app.use('/api/consultations', consultationRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/surveys', surveyRoutes);
+app.use('/api/appointments', appointmentRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/document', documentRoutes);
 
-    await initializeDatabase();
+app.use(express.static('/var/www/medlevel.me'));
 
-    // Настройка маршрутов после успешного подключения
-    app.use('/api/auth', authRoutes);
-    app.use('/api/certificates', certificateRoutes);
-    app.use('/api/consultations', consultationRoutes);
-    app.use('/api/admin', adminRoutes);
-    app.use('/api/surveys', surveyRoutes);
-    app.use('/api/appointments', appointmentRoutes);
-    app.use('/api/users', userRoutes);
-     app.use('/api/document', documentRoutes);
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('/var/www/medlevel.me', 'index.html'));
+});
 
-    app.use(express.static('/var/www/medlevel.me'));
 
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve('/var/www/medlevel.me', 'index.html'));
-    });
-
-  } catch (err) {
-    console.error("Error connecting to MongoDB:", err);
-  }
-}
-
-run().catch(console.dir);
 
 module.exports = app;
