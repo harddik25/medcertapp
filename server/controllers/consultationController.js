@@ -58,12 +58,16 @@ exports.addFreeSlot = async (req, res) => {
 exports.getFreeSlots = async (req, res) => {
   try {
     const freeSlots = await FreeSlot.find();
-    res.status(200).json({ freeSlots });
+    if (freeSlots.length === 0) {
+      return res.status(200).json({ message: 'No free slots available', slots: [] });
+    }
+    res.status(200).json({ slots: freeSlots });
   } catch (error) {
     console.error('Ошибка при получении списка свободного времени', error);
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
+
 
 exports.bookFreeSlot = async (req, res) => {
   try {
