@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const uri = process.env.MONGO_URI;
+const uri = process.env.MONGO_URI; // Убедитесь, что MONGO_URI правильно настроен в .env файле
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -31,7 +31,26 @@ const client = new MongoClient(uri, {
   }
 });
 
+async function initializeDatabase() {
+  try {
+    const database = client.db('your_database_name');
 
+    const collections = ['users', 'appointments', 'certificates', 'consultations', 'surveys'];
+    const existingCollections = await database.listCollections().toArray();
+    const existingCollectionNames = existingCollections.map(col => col.name);
+
+    for (const collection of collections) {
+      if (!existingCollectionNames.includes(collection)) {
+        await database.createCollection(collection);
+        console.log(`Collection ${collection} created!`);
+      } else {
+        console.log(`Collection ${collection} already exists.`);
+      }
+    }
+  } catch (error) {
+    console.error('Ошибка при инициализации базы данных', error);
+  }
+}
 
 async function run() {
   try {
@@ -40,6 +59,7 @@ async function run() {
 
     await initializeDatabase();
 
+    // Настройка маршрутов после успешного подключения
     app.use('/api/auth', authRoutes);
     app.use('/api/certificates', certificateRoutes);
     app.use('/api/consultations', consultationRoutes);
@@ -47,8 +67,8 @@ async function run() {
     app.use('/api/surveys', surveyRoutes);
     app.use('/api/appointments', appointmentRoutes);
     app.use('/api/users', userRoutes);
-     app.use('/api/documents', documentRoutes);
-    
+     app.use('/api/document', documentRoutes);
+
     app.use(express.static('/var/www/medlevel.me'));
 
     app.get('*', (req, res) => {
