@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const path = require('path');
 require('dotenv').config();
 
@@ -12,57 +13,82 @@ const consultationRoutes = require('./routes/consultationRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const surveyRoutes = require('./routes/surveyRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const userRoutes = require('./routes/userRoutes');
 
+// Инициализация приложения
 const app = express();
-const server = require('http').createServer(app);
-const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ server });
-
-// Подключение к MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-mongoose.connection.on('connected', () => {
-  console.log('Connected to MongoDB');
-});
-
-mongoose.connection.on('error', (err) => {
-  console.error('Error connecting to MongoDB', err);
-});
-
+// Настройка middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// Использование маршрутов
-app.use('/api/auth', authRoutes);
-app.use('/api/certificates', certificateRoutes);
-app.use('/api/consultations', consultationRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/surveys', surveyRoutes);
-app.use('/api/appointments', appointmentRoutes);
+// Подключение к MongoDB с использованием MongoClient
+const uri = process.env.MONGO_URI; // Убедитесь, что MONGO_URI правильно настроен в .env файле
 
-app.use(express.static('/var/www/medlevel.me'));
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function initializeDatabase() {
+  try {
+    const database = client.db('your_database_name');
+
+    // Проверка и создание коллекций, если они не существуют
+    const collections = ['users', 'appointments', 'certificates', 'consultations', 'surveys'];
+    const existingCollections = await database.listCollections().toArray();
+    const existingCollectionNames = existingCollections.map(col => col.name);
+
+    for (const collection of collections) {
+      if (!existingCollectionNames.includes(collection)) {
+        await database.createCollection(collection);
+        console.log(`Collection ${collection} created!`);
+      } else {
+        console.log(`Collection ${collection} already exists.`);
+      }
+    }
+  } catch (error) {
+    console.error('Ошибка при инициализации базы данных', error);
+  }
+}
+
+async function run() {
+  try {
+    // Подключение клиента к серверу
+    await client.connect();
+    console.log("Successfully connected to MongoDB!");
+
+    // Инициализация базы данных
+    await initializeDatabase();
+
+    // Настройка маршрутов после успешного подключения
+    app.use('/api/auth', authRoutes);
+    app.use('/api/certificates', certificateRoutes);
+    app.use('/api/consultations', consultationRoutes);
+    app.use('/api/admin', adminRoutes);
+    app.use('/api/surveys', surveyRoutes);
+    app.use('/api/appointments', appointmentRoutes);
+    app.use('/api/users', userRoutes);
+
+    // Настройка пути к статическим файлам
+    app.use(express.static('/var/www/medlevel.me'));
 
     app.get('*', (req, res) => {
       res.sendFile(path.resolve('/var/www/medlevel.me', 'index.html'));
     });
 
-wss.on('connection', (ws) => {
-  console.log('WebSocket connection established');
-  ws.on('message', (message) => {
-    console.log('Received:', message);
-    ws.send(`Echo: ${message}`);
-  });
-  ws.on('close', () => {
-    console.log('WebSocket connection closed');
-  });
-});
+    
+  } catch (err) {
+    console.error("Error connecting to MongoDB:", err);
+  }
+}
 
-
+run().catch(console.dir);
 
 module.exports = app;
 
