@@ -27,10 +27,9 @@ const Consultation = () => {
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       try {
-        const response = await fetch('https://medlevel.me/api/consultations/available');
+        const response = await fetch('https://medlevel.me/api/consultations/free-slots');
         const data = await response.json();
-        console.log('Available slots:', data.slots); // Лог для отладки
-        setAvailableSlots(data.slots);
+        setAvailableSlots(data.freeSlots);
       } catch (error) {
         console.error('Ошибка при получении доступных временных слотов', error);
       }
@@ -40,14 +39,20 @@ const Consultation = () => {
   }, []);
 
   const handleBooking = async () => {
+    const user = JSON.parse(localStorage.getItem('telegramUser'));
+    if (!user) {
+      setBookingStatus('Ошибка: пользователь не авторизован');
+      setOpenSnackbar(true);
+      return;
+    }
+
     try {
-      const user = JSON.parse(localStorage.getItem('telegramUser'));
       const response = await fetch('https://medlevel.me/api/consultations/book', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date, time, userId: user.id }),
+        body: JSON.stringify({ date, time, userId: user.id }), // Замените на ID пользователя
       });
       const data = await response.json();
       if (data.success) {
@@ -141,4 +146,3 @@ const Consultation = () => {
 };
 
 export default Consultation;
-
