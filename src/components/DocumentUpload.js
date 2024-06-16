@@ -23,6 +23,7 @@ const DocumentUpload = () => {
   const [documentType, setDocumentType] = useState('');
   const [document, setDocument] = useState(null);
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('telegramUser'));
 
   const handleDocumentChange = (event) => {
     setDocumentType(event.target.value);
@@ -42,6 +43,7 @@ const DocumentUpload = () => {
     const formData = new FormData();
     formData.append('documentType', documentType);
     formData.append('document', document);
+    formData.append('userId', user.id); // Add userId to formData
 
     try {
       const response = await fetch('https://medlevel.me/api/documents/upload', {
