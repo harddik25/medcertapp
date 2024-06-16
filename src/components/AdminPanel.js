@@ -71,9 +71,9 @@ const AdminPanel = () => {
           <CssBaseline />
           <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
             <Header>
-              <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
+              <Button onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
                 <img src={BackImage} alt="Back" style={{ width: '30px', height: '30px' }} />
-              </IconButton>
+              </Button>
               <Typography component="h1" variant="h5" sx={{ color: '#388e3c', textAlign: 'center', flexGrow: 1 }}>
                 Admin Panel
               </Typography>
