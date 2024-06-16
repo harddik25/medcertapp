@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, Typography, Button, CssBaseline, Paper } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import BackImage from './back.webp'; // Замените на путь к изображению кнопки "Назад"
 
 const theme = createTheme();
 
@@ -24,6 +25,13 @@ const StyledBox = styled(Box)({
   marginTop: '24px', // Отступ сверху
 });
 
+const Header = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+});
+
 const CertificateInfo = () => {
   const navigate = useNavigate();
 
@@ -37,9 +45,15 @@ const CertificateInfo = () => {
         <Container component="main" maxWidth="md">
           <CssBaseline />
           <StyledBox elevation={3}>
-            <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
-              Medicinal Cannabis Certificate
-            </Typography>
+            <Header>
+              <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
+                <img src={BackImage} alt="Back" style={{ width: '30px', height: '30px' }} />
+              </IconButton>
+              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
+                Medicinal Cannabis Certificate
+              </Typography>
+              <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
+            </Header>
             <Typography variant="body2" sx={{ textAlign: 'justify', color: '#000', fontSize: '0.875rem' }}>
               This certificate allows the use of all cannabinoids (THC or CBD) legally, including carrying them in public and exempting drivers from penalties if prescribed by a doctor.
               <br /><br />
@@ -77,9 +91,7 @@ const CertificateInfo = () => {
               <br />
               The UN Single Convention on Narcotic Drugs (1961) allows medical and scientific use of narcotics. In Spain, the therapeutic use of Cannabis has been legal since 1967, though strictly regulated.
             </Typography>
-            <Button variant="contained" color="primary" sx={{ marginTop: 3 }} onClick={handleBackClick}>
-              Назад к личному кабинету
-            </Button>
+            
           </StyledBox>
         </Container>
       </Background>
@@ -88,6 +100,7 @@ const CertificateInfo = () => {
 };
 
 export default CertificateInfo;
+
 
 
 
