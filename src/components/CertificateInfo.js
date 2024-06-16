@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Paper, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import CannabisBackground from '../logos/cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
-import BackImage from '../logos/back.webp'; // Замените на путь к изображению кнопки "Назад"
+import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import BackImage from './back.webp'; // Замените на путь к изображению кнопки "Назад"
 
 const theme = createTheme();
 
