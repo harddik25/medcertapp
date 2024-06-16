@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, CssBaseline, List, ListItem, ListItemText, Button, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
 import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
-import BackImage from './back.webp'; // Импорт изображения back.webp
 
 const Background = styled('div')({
   display: 'flex',
@@ -13,21 +12,6 @@ const Background = styled('div')({
   height: '100vh',
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
-});
-
-const Header = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
-  padding: '10px 0',
-});
-
-const BackButton = styled('img')({
-  width: 40,
-  height: 40,
-  cursor: 'pointer',
-  marginRight: 10,
 });
 
 const DoctorPanel = () => {
@@ -112,7 +96,7 @@ const DoctorPanel = () => {
     }
   };
 
-  const handleBackClick = () => {
+  const handleBack = () => {
     navigate('/profile');
   };
 
@@ -126,23 +110,20 @@ const DoctorPanel = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              width: '100%',
             }}
           >
-            <Header>
-              <IconButton onClick={handleBackClick}>
-                <BackButton src={BackImage} alt="Назад" />
-              </IconButton>
-              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', mt: 2, flexGrow: 1, textAlign: 'center' }}>
-                Кабинет врача
-              </Typography>
-            </Header>
+            <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
+              Кабинет врача
+            </Typography>
             <Box sx={{ mt: 1, width: '100%' }}>
               <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
                 Добавить свободное время для приема
               </Button>
               <Button variant="contained" color="secondary" sx={{ mb: 2 }} onClick={fetchFutureAppointments}>
                 Будущие консультации
+              </Button>
+              <Button variant="contained" color="default" onClick={handleBack} sx={{ mb: 2 }}>
+                Назад
               </Button>
               <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
                 Свободные даты
@@ -216,6 +197,8 @@ const DoctorPanel = () => {
     </Background>
   );
 };
+
+export default DoctorPanel;
 
 export default DoctorPanel;
 
