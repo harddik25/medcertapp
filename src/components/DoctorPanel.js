@@ -15,11 +15,26 @@ const Background = styled('div')({
   backgroundSize: 'cover',
 });
 
+const Header = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  padding: '10px 0',
+  '@media (max-width: 600px)': {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+});
+
 const BackButton = styled('img')({
   width: 40,
   height: 40,
   cursor: 'pointer',
   marginRight: 10,
+  '@media (max-width: 600px)': {
+    marginBottom: 10,
+  },
 });
 
 const DoctorPanel = () => {
@@ -120,21 +135,14 @@ const DoctorPanel = () => {
               alignItems: 'center',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                justifyContent: 'space-between',
-              }}
-            >
+            <Header>
               <IconButton onClick={handleBackClick}>
                 <BackButton src={BackImage} alt="Назад" />
               </IconButton>
               <Typography component="h1" variant="h5" sx={{ color: '#388e3c', mt: 2, flexGrow: 1, textAlign: 'center' }}>
                 Кабинет врача
               </Typography>
-            </Box>
+            </Header>
             <Box sx={{ mt: 1, width: '100%' }}>
               <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
                 Добавить свободное время для приема
