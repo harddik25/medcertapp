@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, CssBaseline, List, ListItem, ListItemText, Button, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Импортируем иконку стрелки назад
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CannabisBackground from './cannabis-background.webp';
-import BackImage from './back.webp'; // Импортируем изображение кнопки "Назад"
+import BackImage from './back.webp';
 
 const Background = styled('div')({
   display: 'flex',
@@ -13,6 +13,13 @@ const Background = styled('div')({
   height: '100vh',
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
+});
+
+const Header = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
 });
 
 const DoctorPanel = () => {
@@ -97,7 +104,7 @@ const DoctorPanel = () => {
   };
 
   const handleBackClick = () => {
-    window.history.back(); // Переход на предыдущую страницу
+    window.history.back();
   };
 
   return (
@@ -105,57 +112,51 @@ const DoctorPanel = () => {
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
+          <Header>
             <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
               <img src={BackImage} alt="Back" style={{ width: '30px', height: '30px' }} />
             </IconButton>
             <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
               Кабинет врача
             </Typography>
-            <Box sx={{ mt: 1, width: '100%' }}>
-              <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
-                Добавить свободное время для приема
-              </Button>
-              <Button variant="contained" color="secondary" sx={{ mb: 2 }} onClick={fetchFutureAppointments}>
-                Будущие консультации
-              </Button>
-              <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
-                Свободные даты
-              </Typography>
-              <List>
-                {freeSlots.map((slot, index) => (
-                  <ListItem key={index}>
-                    <ListItemText
-                      primary={`${slot.date} ${slot.time}`}
-                      sx={{ color: '#388e3c' }}
-                    />
-                    <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteSlot(slot._id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItem>
-                ))}
-              </List>
-              <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
-                Будущие консультации
-              </Typography>
-              <List>
-                {futureAppointments.map((appointment, index) => (
-                  <ListItem key={index}>
-                    <ListItemText
-                      primary={`${appointment.date} ${appointment.time}`}
-                      secondary={`Пациент: ${appointment.patientName || 'Нет записей'}`}
-                      sx={{ color: '#388e3c' }}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
+          </Header>
+          <Box sx={{ mt: 1, width: '100%' }}>
+            <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
+              Добавить свободное время для приема
+            </Button>
+            <Button variant="contained" color="secondary" sx={{ mb: 2 }} onClick={fetchFutureAppointments}>
+              Будущие консультации
+            </Button>
+            <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
+              Свободные даты
+            </Typography>
+            <List>
+              {freeSlots.map((slot, index) => (
+                <ListItem key={index}>
+                  <ListItemText
+                    primary={`${slot.date} ${slot.time}`}
+                    sx={{ color: '#388e3c' }}
+                  />
+                  <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteSlot(slot._id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItem>
+              ))}
+            </List>
+            <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
+              Будущие консультации
+            </Typography>
+            <List>
+              {futureAppointments.map((appointment, index) => (
+                <ListItem key={index}>
+                  <ListItemText
+                    primary={`${appointment.date} ${appointment.time}`}
+                    secondary={`Пациент: ${appointment.patientName || 'Нет записей'}`}
+                    sx={{ color: '#388e3c' }}
+                  />
+                </ListItem>
+              ))}
+            </List>
           </Box>
         </Paper>
         <Dialog open={open} onClose={handleClose}>
