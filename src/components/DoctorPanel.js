@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Typography, CssBaseline, List, ListItem, ListItemText, Button, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Container, Box, Typography, CssBaseline, List, ListItem, ListItemText, Button, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
+import DeleteIcon from '@mui/icons-material/Delete';
 import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
 
 const Background = styled('div')({
@@ -20,18 +21,18 @@ const DoctorPanel = () => {
   const [time, setTime] = useState('');
 
   useEffect(() => {
-    const fetchFreeSlots = async () => {
-      try {
-        const response = await fetch('https://medlevel.me/api/consultations/free-slots');
-        const data = await response.json();
-        setFreeSlots(data.freeSlots);
-      } catch (error) {
-        console.error('Ошибка при получении свободного времени', error);
-      }
-    };
-
     fetchFreeSlots();
   }, []);
+
+  const fetchFreeSlots = async () => {
+    try {
+      const response = await fetch('https://medlevel.me/api/consultations/free-slots');
+      const data = await response.json();
+      setFreeSlots(data.freeSlots);
+    } catch (error) {
+      console.error('Ошибка при получении свободного времени', error);
+    }
+  };
 
   const fetchFutureAppointments = async () => {
     try {
@@ -77,6 +78,22 @@ const DoctorPanel = () => {
     }
   };
 
+  const handleDeleteSlot = async (slotId) => {
+    try {
+      const response = await fetch(`https://medlevel.me/api/consultations/free-slots/${slotId}`, {
+        method: 'DELETE',
+      });
+      const data = await response.json();
+      if (data.success) {
+        setFreeSlots(freeSlots.filter(slot => slot._id !== slotId));
+      } else {
+        console.error('Ошибка при удалении свободного времени');
+      }
+    } catch (error) {
+      console.error('Ошибка при удалении свободного времени', error);
+    }
+  };
+
   return (
     <Background>
       <Container component="main" maxWidth="md">
@@ -99,6 +116,25 @@ const DoctorPanel = () => {
               <Button variant="contained" color="secondary" sx={{ mb: 2 }} onClick={fetchFutureAppointments}>
                 Будущие консультации
               </Button>
+              <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
+                Свободные даты
+              </Typography>
+              <List>
+                {freeSlots.map((slot, index) => (
+                  <ListItem key={index}>
+                    <ListItemText
+                      primary={`${slot.date} ${slot.time}`}
+                      sx={{ color: '#388e3c' }}
+                    />
+                    <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteSlot(slot._id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItem>
+                ))}
+              </List>
+              <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
+                Будущие консультации
+              </Typography>
               <List>
                 {futureAppointments.map((appointment, index) => (
                   <ListItem key={index}>
