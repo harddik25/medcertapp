@@ -3,21 +3,14 @@ const FreeSlot = require('../models/FreeSlot');
 
 exports.deleteFreeSlot = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    if (!id) {
-      return res.status(400).json({ message: 'Идентификатор слота обязателен' });
-    }
-
-    const deletedSlot = await FreeSlot.findByIdAndDelete(id);
-
-    if (!deletedSlot) {
+    const { slotId } = req.params;
+    const result = await FreeSlot.findByIdAndDelete(slotId);
+    if (!result) {
       return res.status(404).json({ message: 'Слот не найден' });
     }
-
-    res.status(200).json({ success: true, message: 'Слот удален', slot: deletedSlot });
+    res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Ошибка при удалении слота', error);
+    console.error('Ошибка при удалении свободного времени', error);
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
