@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import CannabisBackground from '../logos/cannabis-background.webp';
-import BackImage from '../logos/back.webp';
+import CannabisBackground from './cannabis-background.webp';
+import BackImage from './back.webp';
 
 const theme = createTheme();
 
