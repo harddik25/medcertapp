@@ -1,16 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const userController = require('../controllers/userController');
+const consultationController = require('../controllers/consultationController');
 
-router.get('/role/:id', async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findOne({ telegramId: id });
-
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-
-  res.json({ role: user.role });
-});
+router.get('/role/:telegramId', userController.getUserRoleByTelegramId);
+router.get('/user/:userId', userController.getUserById); // Добавлено для получения информации о пользователе
+router.get('/consultations/user/:userId', consultationController.getAppointmentByUserId);
 
 module.exports = router;
