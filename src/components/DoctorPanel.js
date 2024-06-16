@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, CssBaseline, List, ListItem, ListItemText, Button, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Импортируем иконку стрелки назад
+import CannabisBackground from './cannabis-background.webp';
+import BackImage from './back.webp'; // Импортируем изображение кнопки "Назад"
 
 const Background = styled('div')({
   display: 'flex',
@@ -20,7 +21,6 @@ const DoctorPanel = () => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchFreeSlots();
@@ -96,8 +96,8 @@ const DoctorPanel = () => {
     }
   };
 
-  const handleBack = () => {
-    navigate('/profile');
+  const handleBackClick = () => {
+    window.history.back(); // Переход на предыдущую страницу
   };
 
   return (
@@ -112,6 +112,9 @@ const DoctorPanel = () => {
               alignItems: 'center',
             }}
           >
+            <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
+              <img src={BackImage} alt="Back" style={{ width: '30px', height: '30px' }} />
+            </IconButton>
             <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
               Кабинет врача
             </Typography>
@@ -121,9 +124,6 @@ const DoctorPanel = () => {
               </Button>
               <Button variant="contained" color="secondary" sx={{ mb: 2 }} onClick={fetchFutureAppointments}>
                 Будущие консультации
-              </Button>
-              <Button variant="contained" color="default" onClick={handleBack} sx={{ mb: 2 }}>
-                Назад
               </Button>
               <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
                 Свободные даты
@@ -199,4 +199,3 @@ const DoctorPanel = () => {
 };
 
 export default DoctorPanel;
-
