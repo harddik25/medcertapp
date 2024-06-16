@@ -26,11 +26,11 @@ async function uploadToFTP(localPath, remotePath) {
 
 exports.uploadDocument = async (req, res) => {
   try {
-    const { documentType, userId } = req.body; // Получаем userId из запроса
+    const { documentType, userId } = req.body;
     const document = req.file;
 
     if (!documentType || !document || !userId) {
-      return res.status(400).json({ success: false, message: 'Document type, user ID and file are required.' });
+      return res.status(400).json({ success: false, message: 'Document type, user ID, and file are required.' });
     }
 
     const localPath = path.join(__dirname, '..', 'uploads', userId, documentType, document.originalname);
@@ -55,5 +55,3 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
-
-
