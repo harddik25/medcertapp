@@ -21,10 +21,6 @@ const Header = styled('div')({
   justifyContent: 'space-between',
   width: '100%',
   padding: '10px 0',
-  '@media (max-width: 600px)': {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-  },
 });
 
 const BackButton = styled('img')({
@@ -32,9 +28,6 @@ const BackButton = styled('img')({
   height: 40,
   cursor: 'pointer',
   marginRight: 10,
-  '@media (max-width: 600px)': {
-    marginBottom: 10,
-  },
 });
 
 const DoctorPanel = () => {
@@ -133,6 +126,7 @@ const DoctorPanel = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              width: '100%',
             }}
           >
             <Header>
