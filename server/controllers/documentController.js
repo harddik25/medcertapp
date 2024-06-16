@@ -14,7 +14,6 @@ async function uploadToFTP(localPath, remotePath) {
       secure: false,
     });
 
-    // Ensure directory exists on FTP server
     await client.ensureDir(path.dirname(remotePath));
     await client.uploadFrom(localPath, remotePath);
   } catch (error) {
@@ -27,14 +26,14 @@ async function uploadToFTP(localPath, remotePath) {
 
 exports.uploadDocument = async (req, res) => {
   try {
-    const { documentType } = req.body;
+    const { documentType, userId } = req.body; // Получаем userId из запроса
     const document = req.file;
 
-    if (!documentType || !document) {
-      return res.status(400).json({ success: false, message: 'Document type and file are required.' });
+    if (!documentType || !document || !userId) {
+      return res.status(400).json({ success: false, message: 'Document type, user ID and file are required.' });
     }
 
-    const localPath = path.join(__dirname, '..', 'uploads', documentType, document.originalname);
+    const localPath = path.join(__dirname, '..', 'uploads', userId, documentType, document.originalname);
 
     // Ensure local directory exists
     const uploadPath = path.dirname(localPath);
@@ -44,7 +43,7 @@ exports.uploadDocument = async (req, res) => {
     fs.writeFileSync(localPath, document.buffer);
 
     // FTP remote path
-    const remotePath = `/var/www/user4806313/data/${documentType}/${document.originalname}`;
+    const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${document.originalname}`;
     await uploadToFTP(localPath, remotePath);
 
     // Remove local file after upload
@@ -56,6 +55,5 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
-
 
 
