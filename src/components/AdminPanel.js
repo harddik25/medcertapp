@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import CannabisBackground from './cannabis-background.webp';
+import CannabisBackground from '../logos/cannabis-background.webp';
+import BackImage from '../logos/back.webp';
 
 const theme = createTheme();
 
@@ -14,6 +15,13 @@ const Background = styled('div')({
   backgroundSize: 'cover',
   paddingTop: '20px',
   paddingBottom: '20px',
+});
+
+const Header = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
 });
 
 const roles = [
@@ -49,12 +57,25 @@ const AdminPanel = () => {
     }
   };
 
+  const handleBackClick = () => {
+    window.history.back();
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Background>
         <Container component="main" maxWidth="sm">
           <CssBaseline />
           <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+            <Header>
+              <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
+                <img src={BackImage} alt="Back" style={{ width: '30px', height: '30px' }} />
+              </IconButton>
+              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
+                Admin Panel
+              </Typography>
+              <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
+            </Header>
             <Box
               sx={{
                 marginTop: 8,
@@ -63,9 +84,6 @@ const AdminPanel = () => {
                 alignItems: 'center',
               }}
             >
-              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
-                Admin Panel
-              </Typography>
               <TextField
                 select
                 label="Select User"
@@ -113,3 +131,4 @@ const AdminPanel = () => {
 };
 
 export default AdminPanel;
+
