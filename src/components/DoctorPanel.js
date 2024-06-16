@@ -17,9 +17,6 @@ const Background = styled('div')({
 });
 
 const BackButton = styled('img')({
-  position: 'absolute',
-  top: 10,
-  left: 10,
   width: 40,
   height: 40,
   cursor: 'pointer',
@@ -113,58 +110,59 @@ const DoctorPanel = () => {
 
   return (
     <Background>
-      <BackButton src={BackImage} alt="Назад" onClick={handleBackClick} />
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'center',
+              width: '100%',
+              mb: 2,
             }}
           >
-            <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
+            <BackButton src={BackImage} alt="Назад" onClick={handleBackClick} />
+            <Typography component="h1" variant="h5" sx={{ color: '#388e3c', ml: 2 }}>
               Кабинет врача
             </Typography>
-            <Box sx={{ mt: 1, width: '100%' }}>
-              <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
-                Добавить свободное время для приема
-              </Button>
-              <Button variant="contained" color="secondary" sx={{ mb: 2 }} onClick={fetchFutureAppointments}>
-                Будущие консультации
-              </Button>
-              <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
-                Свободные даты
-              </Typography>
-              <List>
-                {freeSlots.map((slot, index) => (
-                  <ListItem key={index}>
-                    <ListItemText
-                      primary={`${slot.date} ${slot.time}`}
-                      sx={{ color: '#388e3c' }}
-                    />
-                    <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteSlot(slot._id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItem>
-                ))}
-              </List>
-              <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
-                Будущие консультации
-              </Typography>
-              <List>
-                {futureAppointments.map((appointment, index) => (
-                  <ListItem key={index}>
-                    <ListItemText
-                      primary={`${appointment.date} ${appointment.time}`}
-                      secondary={`Пациент: ${appointment.patientName || 'Нет записей'}`}
-                      sx={{ color: '#388e3c' }}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
+          </Box>
+          <Box sx={{ mt: 1, width: '100%' }}>
+            <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
+              Добавить свободное время для приема
+            </Button>
+            <Button variant="contained" color="secondary" sx={{ mb: 2 }} onClick={fetchFutureAppointments}>
+              Будущие консультации
+            </Button>
+            <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
+              Свободные даты
+            </Typography>
+            <List>
+              {freeSlots.map((slot, index) => (
+                <ListItem key={index}>
+                  <ListItemText
+                    primary={`${slot.date} ${slot.time}`}
+                    sx={{ color: '#388e3c' }}
+                  />
+                  <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteSlot(slot._id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItem>
+              ))}
+            </List>
+            <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
+              Будущие консультации
+            </Typography>
+            <List>
+              {futureAppointments.map((appointment, index) => (
+                <ListItem key={index}>
+                  <ListItemText
+                    primary={`${appointment.date} ${appointment.time}`}
+                    secondary={`Пациент: ${appointment.patientName || 'Нет записей'}`}
+                    sx={{ color: '#388e3c' }}
+                  />
+                </ListItem>
+              ))}
+            </List>
           </Box>
         </Paper>
         <Dialog open={open} onClose={handleClose}>
@@ -208,7 +206,4 @@ const DoctorPanel = () => {
 };
 
 export default DoctorPanel;
-
-
-
 
