@@ -200,6 +200,3 @@ const DoctorPanel = () => {
 
 export default DoctorPanel;
 
-export default DoctorPanel;
-
-
