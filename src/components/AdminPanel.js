@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import CannabisBackground from './cannabis-background.webp';
-import BackImage from './back.webp';
+import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import BackImage from './back.webp'; // Замените на путь к изображению кнопки "Назад"
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -17,20 +18,22 @@ const Background = styled('div')({
   paddingBottom: '20px',
 });
 
-const Header = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
-});
-
 const roles = [
   { value: 'user', label: 'User' },
   { value: 'doctor', label: 'Doctor' },
   { value: 'admin', label: 'Admin' },
 ];
 
+const Header = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  marginBottom: '16px',
+});
+
 const AdminPanel = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
@@ -58,7 +61,7 @@ const AdminPanel = () => {
   };
 
   const handleBackClick = () => {
-    window.history.back();
+    navigate('/profile');
   };
 
   return (
@@ -71,7 +74,7 @@ const AdminPanel = () => {
               <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
                 <img src={BackImage} alt="Back" style={{ width: '30px', height: '30px' }} />
               </IconButton>
-              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
+              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', textAlign: 'center', flexGrow: 1 }}>
                 Admin Panel
               </Typography>
               <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
