@@ -19,9 +19,7 @@ const BackButton = styled('img')({
   width: 40,
   height: 40,
   cursor: 'pointer',
-  position: 'absolute',
-  top: 16,
-  left: 16,
+  marginRight: 10,
 });
 
 const DoctorPanel = () => {
@@ -112,7 +110,6 @@ const DoctorPanel = () => {
 
   return (
     <Background>
-      <BackButton src={BackImage} alt="Назад" onClick={handleBackClick} />
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
@@ -123,9 +120,21 @@ const DoctorPanel = () => {
               alignItems: 'center',
             }}
           >
-            <Typography component="h1" variant="h5" sx={{ color: '#388e3c', mt: 2 }}>
-              Кабинет врача
-            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                justifyContent: 'space-between',
+              }}
+            >
+              <IconButton onClick={handleBackClick}>
+                <BackButton src={BackImage} alt="Назад" />
+              </IconButton>
+              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', mt: 2, flexGrow: 1, textAlign: 'center' }}>
+                Кабинет врача
+              </Typography>
+            </Box>
             <Box sx={{ mt: 1, width: '100%' }}>
               <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
                 Добавить свободное время для приема
@@ -207,4 +216,5 @@ const DoctorPanel = () => {
 };
 
 export default DoctorPanel;
+
 
