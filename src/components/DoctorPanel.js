@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, CssBaseline, List, ListItem, ListItemText, Button, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/Delete';
-import BackImage from '../logos/back.webp';
-import CannabisBackground from '../logos/cannabis-background.webp';
+import BackImage from './back.webp';
+import CannabisBackground from './cannabis-background.webp';
 
 const Background = styled('div')({
   display: 'flex',
