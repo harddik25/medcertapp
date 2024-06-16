@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, CssBaseline, List, ListItem, ListItemText, Button, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
+import CannabisBackground from './cannabis-background.webp';
+import BackImage from './back.webp'; // Импорт изображения back.webp
 
 const Background = styled('div')({
   display: 'flex',
@@ -13,12 +16,22 @@ const Background = styled('div')({
   backgroundSize: 'cover',
 });
 
+const BackButton = styled('img')({
+  position: 'absolute',
+  top: 10,
+  left: 10,
+  width: 40,
+  height: 40,
+  cursor: 'pointer',
+});
+
 const DoctorPanel = () => {
   const [freeSlots, setFreeSlots] = useState([]);
   const [futureAppointments, setFutureAppointments] = useState([]);
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchFreeSlots();
@@ -94,8 +107,13 @@ const DoctorPanel = () => {
     }
   };
 
+  const handleBackClick = () => {
+    navigate('/profile');
+  };
+
   return (
     <Background>
+      <BackButton src={BackImage} alt="Назад" onClick={handleBackClick} />
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
@@ -190,6 +208,7 @@ const DoctorPanel = () => {
 };
 
 export default DoctorPanel;
+
 
 
 
