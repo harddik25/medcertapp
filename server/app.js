@@ -49,7 +49,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/document', documentRoutes);
+app.use('/api/documents', documentRoutes);
 
 app.use(express.static('/var/www/medlevel.me'));
 
