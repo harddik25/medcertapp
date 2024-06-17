@@ -25,15 +25,16 @@ const Background = styled('div')({
   backgroundSize: 'cover',
   paddingTop: '20px',
   paddingBottom: '20px',
+  width: '100%',
 });
 
 const FullScreenPaper = styled(Paper)({
-  maxHeight: 'calc(100vh - 40px)',
+  height: '100vh',
   overflowY: 'auto',
   padding: 16,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  margin: '0 10px', // уменьшенные размеры для мобильных устройств
-  maxWidth: '100%',
+  margin: 0,
+  width: '100%',
 });
 
 const TableHeader = styled(TableCell)({
@@ -57,7 +58,6 @@ const MainSurvey = () => {
   const handleBackClick = () => {
     navigate('/profile');
   };
-  
   return (
     <ThemeProvider theme={theme}>
       <Background>
