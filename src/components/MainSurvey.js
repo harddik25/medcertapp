@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, Table, TableCell, TableHead, TableRow, TableBody, IconButton } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
@@ -35,12 +35,6 @@ const FullScreenPaper = styled(Paper)({
   margin: '0 10px',
   maxWidth: '100%',
   overflowX: 'auto', // Добавлено для горизонтальной прокрутки
-});
-
-const TableHeader = styled(TableCell)({
-  backgroundColor: '#e0f7fa',
-  fontWeight: 'bold',
-  minWidth: '120px', // Минимальная ширина ячеек таблицы
 });
 
 const MainSurvey = () => {
@@ -143,48 +137,54 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
               </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader></TableHeader>
-                    <TableHeader>Yes very limited</TableHeader>
-                    <TableHeader>Yes a bit limited</TableHeader>
-                    <TableHeader>No, nothing limited</TableHeader>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[
-                    'Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports.',
-                    'Moderate activities, such as moving a table, pushing a vacuum, go bowling or play golf.',
-                    'Lifting weight or carrying food.',
-                    'Climb several flights of stairs.',
-                    'Up a flight of stairs.',
-                    'Bend, kneel, or stoop.',
-                    'Walking more than a kilometer.',
-                    'Walking several blocks.',
-                    'Walking one block.',
-                    'Bathing or dressing.',
-                  ].map((interference, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{interference}</TableCell>
-                      {[1,2,3].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`dayactivities{index}`}
-                              checked={surveyData[`dayactivities{index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {[
+                'Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports.',
+                'Moderate activities, such as moving a table, pushing a vacuum, go bowling or play golf.',
+                'Lifting weight or carrying food.',
+                'Climb several flights of stairs.',
+                'Up a flight of stairs.',
+                'Bend, kneel, or stoop.',
+                'Walking more than a kilometer.',
+                'Walking several blocks.',
+                'Walking one block.',
+                'Bathing or dressing.',
+              ].map((question, index) => (
+                <Box key={index} sx={{ marginTop: 2 }}>
+                  <Typography variant="body2">{question}</Typography>
+                  <FormControlLabel
+                    control={<Radio
+                      icon={<RadioButtonUncheckedIcon />}
+                      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                      value="Yes very limited"
+                      name={`dayactivities${index}`}
+                      checked={surveyData[`dayactivities${index}`] === 'Yes very limited'}
+                      onChange={handleInputChange}
+                    />}
+                    label="Yes very limited"
+                  />
+                  <FormControlLabel
+                    control={<Radio
+                      icon={<RadioButtonUncheckedIcon />}
+                      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                      value="Yes a bit limited"
+                      name={`dayactivities${index}`}
+                      checked={surveyData[`dayactivities${index}`] === 'Yes a bit limited'}
+                      onChange={handleInputChange}
+                    />}
+                    label="Yes a bit limited"
+                  />
+                  <FormControlLabel
+                    control={<Radio
+                      icon={<RadioButtonUncheckedIcon />}
+                      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                      value="No, nothing limited"
+                      name={`dayactivities${index}`}
+                      checked={surveyData[`dayactivities${index}`] === 'No, nothing limited'}
+                      onChange={handleInputChange}
+                    />}
+                    label="No, nothing limited"
+                  />
+
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
               </Typography>
