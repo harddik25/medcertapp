@@ -41,7 +41,7 @@ const TableHeader = styled(TableCell)({
 
 const MainSurvey = () => {
   const [surveyData, setSurveyData] = useState({});
-
+  const navigate = useNavigate();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSurveyData({ ...surveyData, [name]: value });
