@@ -309,7 +309,12 @@ const MainSurvey = () => {
       <FormControlLabel value="4" control={<Radio />} label="Mostly false" />
       <FormControlLabel value="5" control={<Radio />} label="Definitely false" />
     </RadioGroupRow>
-    
+    <IconButton
+  sx={{ position: 'fixed', bottom: 16, right: 16, backgroundColor: '#388e3c', color: '#fff' }}
+  onClick={handleScrollToTop}
+>
+  <ArrowUpwardIcon />
+</IconButton>
   </Box>
 ))}
 
@@ -322,12 +327,7 @@ const MainSurvey = () => {
 >
   Continue
 </Button>
-<IconButton
-  sx={{ position: 'fixed', bottom: 16, right: 16, backgroundColor: '#388e3c', color: '#fff' }}
-  onClick={handleScrollToTop}
->
-  <ArrowUpwardIcon />
-</IconButton>
+
 </Box>
 </FullScreenPaper>
 </Container>
