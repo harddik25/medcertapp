@@ -126,9 +126,9 @@ const MainSurvey = () => {
                 <thead>
                   <tr>
                     <TableHeader>Activity</TableHeader>
-                    <TableHeader>Yes, very limited (1)</TableHeader>
-                    <TableHeader>Yes, a bit limited (2)</TableHeader>
-                    <TableHeader>No, nothing limited (3)</TableHeader>
+                    <TableHeader>Yes, very limited </TableHeader>
+                    <TableHeader>Yes, a bit limited </TableHeader>
+                    <TableHeader>No, nothing limited</TableHeader>
                   </tr>
                 </thead>
                 <tbody>
@@ -169,8 +169,8 @@ const MainSurvey = () => {
                 <thead>
                   <tr>
                     <TableHeader>Problem</TableHeader>
-                    <TableHeader>Yes (1)</TableHeader>
-                    <TableHeader>No (2)</TableHeader>
+                    <TableHeader>Yes</TableHeader>
+                    <TableHeader>No</TableHeader>
                   </tr>
                 </thead>
                 <tbody>
@@ -205,8 +205,8 @@ const MainSurvey = () => {
                 <thead>
                   <tr>
                     <TableHeader>Problem</TableHeader>
-                    <TableHeader>Yes (1)</TableHeader>
-                    <TableHeader>No (2)</TableHeader>
+                    <TableHeader>Yes</TableHeader>
+                    <TableHeader>No</TableHeader>
                   </tr>
                 </thead>
                 <tbody>
@@ -248,7 +248,7 @@ const MainSurvey = () => {
                   ].map((extent, index) => (
                     <tr key={index}>
                       <TableCell>{extent}</TableCell>
-                      {[1, 2, 3, 4, 5].map((answer) => (
+                      {[1].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
                             control={<Radio />}
@@ -279,7 +279,7 @@ const MainSurvey = () => {
                   ].map((painLevel, index) => (
                     <tr key={index}>
                       <TableCell>{painLevel}</TableCell>
-                      {[1, 2, 3, 4, 5, 6].map((answer) => (
+                      {[1].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
                             control={<Radio />}
@@ -310,7 +310,7 @@ const MainSurvey = () => {
                   ].map((interference, index) => (
                     <tr key={index}>
                       <TableCell>{interference}</TableCell>
-                      {[1, 2, 3, 4, 5].map((answer) => (
+                      {[1].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
                             control={<Radio />}
@@ -386,7 +386,7 @@ const MainSurvey = () => {
                   ].map((interference, index) => (
                     <tr key={index}>
                       <TableCell>{interference}</TableCell>
-                      {[1, 2, 3, 4, 5].map((answer) => (
+                      {[1].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
                             control={<Radio />}
