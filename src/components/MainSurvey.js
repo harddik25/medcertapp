@@ -311,7 +311,12 @@ const MainSurvey = () => {
                   </RadioGroupRow>
                 </Box>
               ))}
-              
+              <IconButton
+                sx={{ position: 'fixed', bottom: 16, right: 20, backgroundColor: '#4caf50', color: '#fff' }}
+                onClick={handleScrollToTop}
+              >
+                <ArrowUpwardIcon />
+              </IconButton>
               <Button
                 fullWidth
                 variant="contained"
@@ -321,13 +326,7 @@ const MainSurvey = () => {
               >
                 Continue
               </Button>
-              <IconButton
-                sx={{ position: 'fixed', bottom: 16, right: 16, backgroundColor: '#4caf50', color: '#fff' }}
-                onClick={handleScrollToTop}
-              >
-                <ArrowUpwardIcon />
-              </IconButton>
-              </Box>
+          </Box>
       </FullScreenPaper>
     </Container>
   </Background>
