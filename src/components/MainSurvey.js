@@ -8,7 +8,12 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const theme = createTheme();
-
+const Header = styled('div')({
+display: 'flex',
+alignItems: 'center',
+justifyContent: 'space-between',
+width: '100%',
+});
 const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -62,14 +67,15 @@ const MainSurvey = () => {
                 alignItems: 'center',
               }}
             >
-              
-              <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
-                <ArrowBackIcon style={{ color: '#388e3c' }} />
-              </IconButton>
-              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
-                Health Survey
-              </Typography>
-              <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
+            <Header>
+<IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
+<ArrowBackIcon style={{ color: '#388e3c' }} />
+</IconButton>
+<Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
+Health Survey
+</Typography>
+<div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
+</Header>
             
                   <Typography variant="body1" sx={{ marginTop: 2 }}>
                 IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS
@@ -92,7 +98,7 @@ const MainSurvey = () => {
                               icon={<RadioButtonUncheckedIcon />}
                               checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
                               value={answer}
-                              name={`socialInterference${index}`}
+                              name={`GENERALHEALTH{index}`}
                               checked={surveyData[`socialInterference${index}`] === answer.toString()}
                               onChange={handleInputChange}
                             />}
@@ -123,7 +129,7 @@ const MainSurvey = () => {
                               icon={<RadioButtonUncheckedIcon />}
                               checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
                               value={answer}
-                              name={`socialInterference${index}`}
+                              name={`COMPARING{index}`}
                               checked={surveyData[`socialInterference${index}`] === answer.toString()}
                               onChange={handleInputChange}
                             />}
