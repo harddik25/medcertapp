@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, IconButton } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
@@ -34,7 +34,6 @@ const FullScreenPaper = styled(Paper)({
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
   margin: '0 10px',
   maxWidth: '100%',
-  overflowX: 'auto', // Добавлено для горизонтальной прокрутки
 });
 
 const MainSurvey = () => {
@@ -53,6 +52,7 @@ const MainSurvey = () => {
   const handleBackClick = () => {
     navigate('/profile');
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Background>
@@ -66,74 +66,60 @@ const MainSurvey = () => {
                 alignItems: 'center',
               }}
             >
-            <Header>
+              <Header>
                 <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
                   <ArrowBackIcon style={{ color: '#388e3c' }} />
                 </IconButton>
                 <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
                   Health Survey
                 </Typography>
-                <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
+                <div style={{ width: '30px', height: '30px' }}></div>
               </Header>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS
               </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableBody>
-                  {[
-                    'Excellent',
-                    'Very good',
-                    'Good',
-                    'Fair',
-                    'Poor',
-                  ].map((interference, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{interference}</TableCell>
-                      <TableCell>
-                        <FormControlLabel
-                          control={<Radio
-                            icon={<RadioButtonUncheckedIcon />}
-                            checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                            value={interference}
-                            name={`health${index}`}
-                            checked={surveyData[`health${index}`] === interference}
-                            onChange={handleInputChange}
-                          />}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {[
+                'Excellent',
+                'Very good',
+                'Good',
+                'Fair',
+                'Poor',
+              ].map((option, index) => (
+                <FormControlLabel
+                  key={index}
+                  control={<Radio
+                    icon={<RadioButtonUncheckedIcon />}
+                    checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                    value={option}
+                    name="generalHealth"
+                    checked={surveyData.generalHealth === option}
+                    onChange={handleInputChange}
+                  />}
+                  label={option}
+                />
+              ))}
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 COMPARING IT WITH THE ONE OF A YEAR AGO
               </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableBody>
-                  {[
-                    'Much better now than a year ago',
-                    'Somewhat worse now than a year ago',
-                    'Same as a year ago',
-                    'Much worse now than a year ago',
-                  ].map((interference, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{interference}</TableCell>
-                      <TableCell>
-                        <FormControlLabel
-                          control={<Radio
-                            icon={<RadioButtonUncheckedIcon />}
-                            checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                            value={interference}
-                            name={`compareYear${index}`}
-                            checked={surveyData[`compareYear${index}`] === interference}
-                            onChange={handleInputChange}
-                          />}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {[
+                'Much better now than a year ago',
+                'Somewhat worse now than a year ago',
+                'Same as a year ago',
+                'Much worse now than a year ago',
+              ].map((option, index) => (
+                <FormControlLabel
+                  key={index}
+                  control={<Radio
+                    icon={<RadioButtonUncheckedIcon />}
+                    checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                    value={option}
+                    name="healthComparison"
+                    checked={surveyData.healthComparison === option}
+                    onChange={handleInputChange}
+                  />}
+                  label={option}
+                />
+              ))}
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
               </Typography>
@@ -148,44 +134,19 @@ const MainSurvey = () => {
                 'Walking several blocks.',
                 'Walking one block.',
                 'Bathing or dressing.',
-              ].map((question, index) => (
-                <Box key={index} sx={{ marginTop: 2 }}>
-                  <Typography variant="body2">{question}</Typography>
-                  <>
-                    <FormControlLabel
-                      control={<Radio
-                        icon={<RadioButtonUncheckedIcon />}
-                        checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                        value="Yes very limited"
-                        name={`dayactivities${index}`}
-                        checked={surveyData[`dayactivities${index}`] === 'Yes very limited'}
-                        onChange={handleInputChange}
-                      />}
-                      label="Yes very limited"
-                    />
-                    <FormControlLabel
-                      control={<Radio
-                        icon={<RadioButtonUncheckedIcon />}
-                        checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                        value="Yes a bit limited"
-                        name={`dayactivities${index}`}
-                        checked={surveyData[`dayactivities${index}`] === 'Yes a bit limited'}
-                        onChange={handleInputChange}
-                      />}
-                      label="Yes a bit limited"
-                    />
-                    <FormControlLabel
-                      control={<Radio
-                        icon={<RadioButtonUncheckedIcon />}
-                        checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                        value="No, nothing limited"
-                        name={`dayactivities${index}`}
-                        checked={surveyData[`dayactivities${index}`] === 'No, nothing limited'}
-                        onChange={handleInputChange}
-                      />}
-                      label="No, nothing limited"
-                    />
-                  </>
+              ].map((activity, index) => (
+                <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                  <Typography variant="body2">{activity}</Typography>
+                  <RadioGroup
+                    row
+                    name={`dayActivity${index}`}
+                    value={surveyData[`dayActivity${index}`] || ''}
+                    onChange={handleInputChange}
+                  >
+                    <FormControlLabel value="veryLimited" control={<Radio />} label="Yes very limited" />
+                    <FormControlLabel value="bitLimited" control={<Radio />} label="Yes a bit limited" />
+                    <FormControlLabel value="notLimited" control={<Radio />} label="No, nothing limited" />
+                  </RadioGroup>
                 </Box>
               ))}
               <Typography variant="body1" sx={{ marginTop: 2 }}>
