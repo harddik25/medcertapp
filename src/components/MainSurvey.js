@@ -45,12 +45,12 @@ const RoundedTypography = styled(Typography)({
   marginBottom: '16px',
 });
 
-const RadioGroupRow = styled(RadioGroup)({
+const RadioGroupRow = styled(Box)({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'left',
-  flexWrap: 'wrap',
-  gap: '10px',
+  justifyContent: 'space-between',
+  width: '100%',
+  marginTop: '5px',
 });
 
 const MainSurvey = () => {
