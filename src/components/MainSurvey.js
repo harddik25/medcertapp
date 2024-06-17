@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, FormControlLabel, Radio } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
 
@@ -10,18 +10,18 @@ const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  minHeight: '100vh',
+  height: '100vh',
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
-  paddingTop: '20px',
-  paddingBottom: '20px',
 });
 
-const ScrollablePaper = styled(Paper)({
-  maxHeight: 'calc(100vh - 40px)',
+const FullScreenPaper = styled(Paper)({
+  height: 'calc(100vh - 40px)',
   overflowY: 'auto',
   padding: 3,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  width: '100%',
+  maxWidth: '800px',
 });
 
 const Table = styled('table')({
@@ -59,7 +59,10 @@ const MainSurvey = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSurveyData({ ...surveyData, [name]: value });
+    setSurveyData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = () => {
@@ -69,12 +72,12 @@ const MainSurvey = () => {
   return (
     <ThemeProvider theme={theme}>
       <Background>
-        <Container component="main" maxWidth="sm">
+        <Container component="main" maxWidth={false} disableGutters>
           <CssBaseline />
-          <ScrollablePaper elevation={3}>
+          <FullScreenPaper elevation={3}>
             <Box
               sx={{
-                marginTop: 8,
+                marginTop: 4,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -117,7 +120,7 @@ const MainSurvey = () => {
               </TextField>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
-                
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
               </Typography>
               <Table>
                 <thead>
@@ -150,7 +153,7 @@ const MainSurvey = () => {
                             value={limit}
                             name={`activity${index}`}
                             checked={surveyData[`activity${index}`] === limit}
-                            onChange={(e) => handleInputChange(e)}
+                            onChange={handleInputChange}
                           />
                         </TableCell>
                       ))}
@@ -160,7 +163,7 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
-                
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
               </Typography>
               <Table>
                 <thead>
@@ -186,7 +189,7 @@ const MainSurvey = () => {
                             value={answer}
                             name={`physicalProblem${index}`}
                             checked={surveyData[`physicalProblem${index}`] === answer}
-                            onChange={(e) => handleInputChange(e)}
+                            onChange={handleInputChange}
                           />
                         </TableCell>
                       ))}
@@ -196,7 +199,7 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
-                
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
               </Typography>
               <Table>
                 <thead>
@@ -221,7 +224,7 @@ const MainSurvey = () => {
                             value={answer}
                             name={`emotionalProblem${index}`}
                             checked={surveyData[`emotionalProblem${index}`] === answer}
-                            onChange={(e) => handleInputChange(e)}
+                            onChange={handleInputChange}
                           />
                         </TableCell>
                       ))}
@@ -229,7 +232,7 @@ const MainSurvey = () => {
                   ))}
                 </tbody>
               </Table>
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                            <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
                 PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
               </Typography>
@@ -261,7 +264,7 @@ const MainSurvey = () => {
                             value={answer}
                             name={`extent${index}`}
                             checked={surveyData[`extent${index}`] === answer}
-                            onChange={(e) => handleInputChange(e)}
+                            onChange={handleInputChange}
                           />
                         </TableCell>
                       ))}
@@ -303,7 +306,7 @@ const MainSurvey = () => {
                             value={answer}
                             name={`painLevel${index}`}
                             checked={surveyData[`painLevel${index}`] === answer}
-                            onChange={(e) => handleInputChange(e)}
+                            onChange={handleInputChange}
                           />
                         </TableCell>
                       ))}
@@ -343,7 +346,7 @@ const MainSurvey = () => {
                             value={answer}
                             name={`interference${index}`}
                             checked={surveyData[`interference${index}`] === answer}
-                            onChange={(e) => handleInputChange(e)}
+                            onChange={handleInputChange}
                           />
                         </TableCell>
                       ))}
@@ -388,7 +391,7 @@ const MainSurvey = () => {
                             value={answer}
                             name={`time${index}`}
                             checked={surveyData[`time${index}`] === answer}
-                            onChange={(e) => handleInputChange(e)}
+                            onChange={handleInputChange}
                           />
                         </TableCell>
                       ))}
@@ -428,7 +431,7 @@ const MainSurvey = () => {
                             value={answer}
                             name={`socialInterference${index}`}
                             checked={surveyData[`socialInterference${index}`] === answer}
-                            onChange={(e) => handleInputChange(e)}
+                            onChange={handleInputChange}
                           />
                         </TableCell>
                       ))}
@@ -467,7 +470,7 @@ const MainSurvey = () => {
                             value={answer}
                             name={`healthTime${index}`}
                             checked={surveyData[`healthTime${index}`] === answer}
-                            onChange={(e) => handleInputChange(e)}
+                            onChange={handleInputChange}
                           />
                         </TableCell>
                       ))}
@@ -484,7 +487,7 @@ const MainSurvey = () => {
                 Continue
               </Button>
             </Box>
-          </ScrollablePaper>
+          </FullScreenPaper>
         </Container>
       </Background>
     </ThemeProvider>
