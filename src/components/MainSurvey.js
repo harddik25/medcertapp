@@ -120,7 +120,7 @@ const MainSurvey = () => {
               </TextField>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
-                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+                
               </Typography>
               <Table>
                 <thead>
@@ -163,7 +163,7 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
-                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+                
               </Typography>
               <Table>
                 <thead>
@@ -199,7 +199,7 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
-                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+                
               </Typography>
               <Table>
                 <thead>
@@ -234,19 +234,10 @@ const MainSurvey = () => {
               </Table>
                             <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
-                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+                
               </Typography>
               <Table>
-                <thead>
-                  <tr>
-                    <TableHeader>Extent</TableHeader>
-                    <TableHeader>1</TableHeader>
-                    <TableHeader>2</TableHeader>
-                    <TableHeader>3</TableHeader>
-                    <TableHeader>4</TableHeader>
-                    <TableHeader>5</TableHeader>
-                  </tr>
-                </thead>
+                
                 <tbody>
                   {[
                     'No way.',
@@ -274,20 +265,9 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 How much body pain have you had in the last 4 weeks?
-                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+                
               </Typography>
               <Table>
-                <thead>
-                  <tr>
-                    <TableHeader>Pain Level</TableHeader>
-                    <TableHeader>1</TableHeader>
-                    <TableHeader>2</TableHeader>
-                    <TableHeader>3</TableHeader>
-                    <TableHeader>4</TableHeader>
-                    <TableHeader>5</TableHeader>
-                    <TableHeader>6</TableHeader>
-                  </tr>
-                </thead>
                 <tbody>
                   {[
                     'Nothing.',
@@ -316,19 +296,10 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
-                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+    
               </Typography>
               <Table>
-                <thead>
-                  <tr>
-                    <TableHeader>Interference</TableHeader>
-                    <TableHeader>1</TableHeader>
-                    <TableHeader>2</TableHeader>
-                    <TableHeader>3</TableHeader>
-                    <TableHeader>4</TableHeader>
-                    <TableHeader>5</TableHeader>
-                  </tr>
-                </thead>
+                
                 <tbody>
                   {[
                     'No way.',
@@ -401,19 +372,10 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
-                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+        
               </Typography>
               <Table>
-                <thead>
-                  <tr>
-                    <TableHeader>Interference</TableHeader>
-                    <TableHeader>1</TableHeader>
-                    <TableHeader>2</TableHeader>
-                    <TableHeader>3</TableHeader>
-                    <TableHeader>4</TableHeader>
-                    <TableHeader>5</TableHeader>
-                  </tr>
-                </thead>
+                
                 <tbody>
                   {[
                     'All the time.',
