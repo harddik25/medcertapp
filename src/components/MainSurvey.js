@@ -298,7 +298,7 @@ const MainSurvey = () => {
                 'I hope my health gets worse.',
                 'My health is excellent.',
               ].map((question, index) => (
-                <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2,width: '100%', }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`healthTime${index}`}
@@ -310,7 +310,7 @@ const MainSurvey = () => {
                     <FormControlLabel value="2" control={<Radio />} label="Mostly true" />
                     <FormControlLabel value="3" control={<Radio />} label="Don't know" />
                     <FormControlLabel value="4" control={<Radio />} label="Mostly false" />
-                    
+                    <FormControlLabel value="5" control={<Radio />} label="Definitely false" />
                   </RadioGroupRow>
                 </Box>
               ))}
