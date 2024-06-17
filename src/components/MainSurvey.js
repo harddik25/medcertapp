@@ -37,6 +37,7 @@ const RoundedTypography = styled(Typography)({
   padding: '10px 15px',
   borderRadius: '25px',
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  color: '#fff',
   backgroundColor: '#388e3c',
   fontWeight: 'bold',
   textAlign: 'left',
@@ -219,7 +220,7 @@ const MainSurvey = () => {
   'Quite.',
   'Extremely.',
 ].map((question, index) => (
-  <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+  <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', marginTop: 2 }}>
     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
     <RadioGroupRow
       name={`paininterfere${index}`}
