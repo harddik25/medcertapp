@@ -68,16 +68,15 @@ const MainSurvey = () => {
               }}
             >
             <Header>
-<IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
-<ArrowBackIcon style={{ color: '#388e3c' }} />
-</IconButton>
-<Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
-Health Survey
-</Typography>
-<div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
-</Header>
-            
-                  <Typography variant="body1" sx={{ marginTop: 2 }}>
+                <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
+                  <ArrowBackIcon style={{ color: '#388e3c' }} />
+                </IconButton>
+                <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
+                  Health Survey
+                </Typography>
+                <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
+              </Header>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
                 IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS
               </Typography>
               <Table>
@@ -91,20 +90,18 @@ Health Survey
                   ].map((interference, index) => (
                     <TableRow key={index}>
                       <TableCell>{interference}</TableCell>
-                      {[1].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`GENERALHEALTH{index}`}
-                              checked={surveyData[`socialInterference${index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
+                      <TableCell>
+                        <FormControlLabel
+                          control={<Radio
+                            icon={<RadioButtonUncheckedIcon />}
+                            checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            value={interference}
+                            name={`health${index}`}
+                            checked={surveyData[`health${index}`] === interference}
+                            onChange={handleInputChange}
+                          />}
+                        />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -122,20 +119,18 @@ Health Survey
                   ].map((interference, index) => (
                     <TableRow key={index}>
                       <TableCell>{interference}</TableCell>
-                      {[1].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`COMPARING{index}`}
-                              checked={surveyData[`socialInterference${index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
+                      <TableCell>
+                        <FormControlLabel
+                          control={<Radio
+                            icon={<RadioButtonUncheckedIcon />}
+                            checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            value={interference}
+                            name={`compareYear${index}`}
+                            checked={surveyData[`compareYear${index}`] === interference}
+                            onChange={handleInputChange}
+                          />}
+                        />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
