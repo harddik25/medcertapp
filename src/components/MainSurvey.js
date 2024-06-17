@@ -29,8 +29,9 @@ const FullScreenPaper = styled(Paper)({
   overflowY: 'auto',
   padding: 16,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  margin: '0 20px', // Добавлено для уменьшения размеров
-  maxWidth: '1200px', // Ограничение ширины
+  margin: '0 20px', 
+  maxWidth: '1200px',
+  position: 'relative', // Ensure button stays inside the block
 });
 
 const RoundedTypography = styled(Typography)({
@@ -71,7 +72,7 @@ const MainSurvey = () => {
   };
 
   const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('survey-top').scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -79,7 +80,7 @@ const MainSurvey = () => {
       <Background>
         <Container component="main" maxWidth="md">
           <CssBaseline />
-          <FullScreenPaper elevation={3}>
+          <FullScreenPaper elevation={3} id="survey-top">
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Header>
                 <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
@@ -88,7 +89,7 @@ const MainSurvey = () => {
                 <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
                   Health Survey
                 </Typography>
-                <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
+                <div style={{ width: '30px', height: '30px' }}></div>
               </Header>
 
               <RoundedTypography sx={{ marginTop: 2 }}>
@@ -316,7 +317,7 @@ const MainSurvey = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleSubmit}
-                disabled={Object.keys(surveyData).length < 33} // Ensure all questions are answered
+                disabled={Object.keys(surveyData).length < 33}
               >
                 Continue
               </Button>
@@ -326,14 +327,13 @@ const MainSurvey = () => {
               >
                 <ArrowUpwardIcon />
               </IconButton>
-            </Box>
-          </FullScreenPaper>
-        </Container>
-      </Background>
-    </ThemeProvider>
+              </Box>
+      </FullScreenPaper>
+    </Container>
+  </Background>
+</ThemeProvider>
 );
 };
 
 export default MainSurvey;
-
 
