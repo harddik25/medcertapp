@@ -31,7 +31,7 @@ const FullScreenPaper = styled(Paper)({
   padding: 16,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
   margin: '0 20px', // Добавлено для уменьшения размеров
-  maxWidth: '800px', // Ограничение ширины
+  maxWidth: '100%', // Ограничение ширины
 });
 
 const TableHeader = styled(TableCell)({
