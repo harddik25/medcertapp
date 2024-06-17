@@ -37,7 +37,7 @@ const RoundedTypography = styled(Typography)({
   padding: '10px 15px',
   borderRadius: '25px',
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  backgroundColor: '#e0f7fa',
+  backgroundColor: '#388e3c',
   fontWeight: 'bold',
   textAlign: 'left',
   width: '100%',
@@ -47,7 +47,7 @@ const RoundedTypography = styled(Typography)({
 const RadioGroupRow = styled(RadioGroup)({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'center',
+  justifyContent: 'left',
   flexWrap: 'wrap',
   gap: '10px',
 });
@@ -308,6 +308,7 @@ const MainSurvey = () => {
       <FormControlLabel value="4" control={<Radio />} label="Mostly false" />
       <FormControlLabel value="5" control={<Radio />} label="Definitely false" />
     </RadioGroupRow>
+    
   </Box>
 ))}
 
@@ -321,7 +322,7 @@ const MainSurvey = () => {
   Continue
 </Button>
 <IconButton
-  sx={{ position: 'fixed', bottom: 16, right: 16, backgroundColor: '#4caf50', color: '#fff' }}
+  sx={{ position: 'fixed', bottom: 16, right: 16, backgroundColor: '#388e3c', color: '#fff' }}
   onClick={handleScrollToTop}
 >
   <ArrowUpwardIcon />
