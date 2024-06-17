@@ -304,13 +304,13 @@ const MainSurvey = () => {
                     name={`healthTime${index}`}
                     value={surveyData[`healthTime${index}`] || ''}
                     onChange={handleInputChange}
-                    sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}
+                    
                   >
                     <FormControlLabel value="1" control={<Radio />} label="Definitely right" />
                     <FormControlLabel value="2" control={<Radio />} label="Mostly true" />
                     <FormControlLabel value="3" control={<Radio />} label="Don't know" />
                     <FormControlLabel value="4" control={<Radio />} label="Mostly false" />
-                    <FormControlLabel value="5" control={<Radio />} label="Definitely false" />
+                    
                   </RadioGroupRow>
                 </Box>
               ))}
