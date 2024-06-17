@@ -8,12 +8,7 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const theme = createTheme();
-const Header = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
-});
+
 const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -67,7 +62,7 @@ const MainSurvey = () => {
                 alignItems: 'center',
               }}
             >
-              <Header>
+              
               <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
                 <ArrowBackIcon style={{ color: '#388e3c' }} />
               </IconButton>
@@ -75,7 +70,7 @@ const MainSurvey = () => {
                 Health Survey
               </Typography>
               <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
-            </Header>
+            
                   <Typography variant="body1" sx={{ marginTop: 2 }}>
                 IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS
               </Typography>
