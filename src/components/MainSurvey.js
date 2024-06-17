@@ -312,7 +312,7 @@ const MainSurvey = () => {
                 </Box>
               ))}
               <IconButton
-                sx={{ position: 'fixed', bottom: 16, right: 20, backgroundColor: '#4caf50', color: '#fff' }}
+                sx={{ position: 'fixed', bottom: 10%, right: 10%, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleScrollToTop}
               >
                 <ArrowUpwardIcon />
