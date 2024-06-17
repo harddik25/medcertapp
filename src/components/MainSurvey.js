@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
@@ -57,7 +57,7 @@ const RadioGroupRow = styled(RadioGroup)({
 const MainSurvey = () => {
   const [surveyData, setSurveyData] = useState({});
   const navigate = useNavigate();
-
+  const paperRef = useRef(null);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSurveyData({ ...surveyData, [name]: value });
@@ -72,7 +72,9 @@ const MainSurvey = () => {
   };
 
   const handleScrollToTop = () => {
-    document.getElementById('survey-top').scrollIntoView({ behavior: 'smooth' });
+    if (paperRef.current) {
+      paperRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -312,7 +314,7 @@ const MainSurvey = () => {
                 </Box>
               ))}
               <IconButton
-                sx={{ position: 'fixed', bottom: 20, right: 50, backgroundColor: '#4caf50', color: '#fff' }}
+                sx={{ position: 'fixed', bottom: 30, right: 40, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleScrollToTop}
               >
                 <ArrowUpwardIcon />
