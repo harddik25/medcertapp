@@ -152,310 +152,209 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
               </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader></TableHeader>
-                    <TableHeader>Yes</TableHeader>
-                    <TableHeader>No</TableHeader>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[
-                    'I have reduced the time I spend at work or other activities',
-                    'I have accomplished less than I would like',
-                    'I had some limitation in work or other activities',
-                    'I had difficulty and required an extra effort',
-                  ].map((interference, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{interference}</TableCell>
-                      {[1, 2].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`physicalhealth${index}`}
-                              checked={surveyData[`physicalhealth${index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {[
+                'I have reduced the time I spend at work or other activities',
+                'I have accomplished less than I would like',
+                'I had some limitation in work or other activities',
+                'I had difficulty and required an extra effort',
+              ].map((problem, index) => (
+                <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                  <Typography variant="body2">{problem}</Typography>
+                  <RadioGroup
+                    row
+                    name={`physicalHealthProblem${index}`}
+                    value={surveyData[`physicalHealthProblem${index}`] || ''}
+                    onChange={handleInputChange}
+                  >
+                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                  </RadioGroup>
+                </Box>
+              ))}
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems at work or with other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
               </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader></TableHeader>
-                    <TableHeader>Yes</TableHeader>
-                    <TableHeader>No</TableHeader>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[
-                    'I have reduced the amount of time I spend at work or doing other activities',
-                    'I have accomplished less than I would like',
-                    'I did not do work or other activities as carefully as usual',
-                  ].map((interference, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{interference}</TableCell>
-                      {[1.2].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`emotionalproblem{index}`}
-                              checked={surveyData[`emotionalproblem{index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {[
+                'I have reduced the amount of time I spend at work or doing other activities',
+                'I have accomplished less than I would like',
+                'I did not do work or other activities as carefully as usual',
+              ].map((problem, index) => (
+                <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                  <Typography variant="body2">{problem}</Typography>
+                  <RadioGroup
+                    row
+                    name={`emotionalProblem${index}`}
+                    value={surveyData[`emotionalProblem${index}`] || ''}
+                    onChange={handleInputChange}
+                  >
+                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                  </RadioGroup>
+                </Box>
+              ))}
               <Typography variant="body1" sx={{ marginTop: 2 }}>
-               During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
+                During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
               </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableBody>
-                  {[
-                    'No way.',
-                    'Slightly.',
-                    'Moderately.',
-                    'Quite.',
-                    'Extremely.',
-                  ].map((interference, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{interference}</TableCell>
-                      {[1].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`socialactivitiesgroups{index}`}
-                              checked={surveyData[`socialactivitiesgroups{index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {[
+                'No way.',
+                'Slightly.',
+                'Moderately.',
+                'Quite.',
+                'Extremely.',
+              ].map((extent, index) => (
+                <FormControlLabel
+                  key={index}
+                  control={<Radio
+                    icon={<RadioButtonUncheckedIcon />}
+                    checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                    value={extent}
+                    name="socialInterference"
+                    checked={surveyData.socialInterference === extent}
+                    onChange={handleInputChange}
+                  />}
+                  label={extent}
+                />
+              ))}
               <Typography variant="body1" sx={{ marginTop: 2 }}>
-               How much body pain have you had in the last 4 weeks?
-              </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableBody>
-                  {[
-                    'Nothing',
-                    'Very soft.',
-                    'Soft.',
-                    'Moderate.',
-                    'Severe.',
-                    'Very severe',
-                  ].map((interference, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{interference}</TableCell>
-                      {[1].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`bodypain{index}`}
-                              checked={surveyData[`bodypain{index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
-               During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
-              </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableBody>
-                  {[
-                    'No way.',
-                    'Slightly.',
-                    'Moderately.',
-                    'Quite.',
-                    'Extremely.',
-                  ].map((interference, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{interference}</TableCell>
-                      {[1].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`paininterfere{index}`}
-                              checked={surveyData[`paininterfere{index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
-                These questions are about how you are feeling and how things have been going for you in the last 4 weeks. For each question, please give the answer that is closest to how you felt.
-              </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader></TableHeader>
-                    <TableHeader>All the time</TableHeader>
-                    <TableHeader>Most of the time</TableHeader>
-                    <TableHeader>Good part of the time</TableHeader>
-                    <TableHeader>Part of the time</TableHeader>
-                    <TableHeader>A small part of the time</TableHeader>
-                    <TableHeader>No time</TableHeader>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[
-                    'Did you feel full of energy?',
-                    'Were you very nervous?',
-                    'Have you felt so low that nothing could cheer you up?',
-                    'Have you felt calm and at peace?',
-                    'Did you have a lot of energy?',
-                    'Have you felt downhearted and blue?',
-                    'Did you feel exhausted?',
-                    'Have you been a happy person?',
-                    'Did you feel tired?',
-                  ].map((time, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{time}</TableCell>
-                      {[1, 2, 3, 4, 5, 6].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`time${index}`}
-                              checked={surveyData[`time${index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
-                During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
-              </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableBody>
-                  {[
-                    'All the time.',
-                    'Most of the time.',
-                    'Part of the time.',
-                    'A little of the time.',
-                    'None of the time.',
-                  ].map((interference, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{interference}</TableCell>
-                      {[1].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`socialInterference${index}`}
-                              checked={surveyData[`socialInterference${index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
-                How much of the time during the last 4 weeks?
-              </Typography>
-              <Table sx={{ minWidth: '100%' }}>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader></TableHeader>
-                    <TableHeader>Definitely right</TableHeader>
-                    <TableHeader>Mostly true</TableHeader>
-                    <TableHeader>Don't know</TableHeader>
-                    <TableHeader>Mostly false</TableHeader>
-                    <TableHeader>Definitely false</TableHeader>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[
-                    'I seem to get sick a little more than other people.',
-                    'I am as healthy as anyone you know.',
-                    'I hope my health gets worse.',
-                    'My health is excellent.',
-                  ].map((time, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{time}</TableCell>
-                      {[1, 2, 3, 4, 5].map((answer) => (
-                        <TableCell key={answer}>
-                          <FormControlLabel
-                            control={<Radio
-                              icon={<RadioButtonUncheckedIcon />}
-                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                              value={answer}
-                              name={`healthTime${index}`}
-                              checked={surveyData[`healthTime${index}`] === answer.toString()}
-                              onChange={handleInputChange}
-                            />}
-                          />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                onClick={handleSubmit}
-              >
-                Continue
-              </Button>
-            </Box>
-          </FullScreenPaper>
-        </Container>
-      </Background>
-    </ThemeProvider>
-  );
+  How much body pain have you had in the last 4 weeks?
+</Typography>
+{[
+  'Nothing',
+  'Very soft.',
+  'Soft.',
+  'Moderate.',
+  'Severe.',
+  'Very severe',
+].map((pain, index) => (
+  <FormControlLabel
+    key={index}
+    control={<Radio
+      icon={<RadioButtonUncheckedIcon />}
+      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+      value={pain}
+      name="bodyPain"
+      checked={surveyData.bodyPain === pain}
+      onChange={handleInputChange}
+    />}
+    label={pain}
+  />
+))}
+<Typography variant="body1" sx={{ marginTop: 2 }}>
+  During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
+</Typography>
+{[
+  'No way.',
+  'Slightly.',
+  'Moderately.',
+  'Quite.',
+  'Extremely.',
+].map((interference, index) => (
+  <FormControlLabel
+    key={index}
+    control={<Radio
+      icon={<RadioButtonUncheckedIcon />}
+      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+      value={interference}
+      name="painInterference"
+      checked={surveyData.painInterference === interference}
+      onChange={handleInputChange}
+    />}
+    label={interference}
+  />
+))}
+<Typography variant="body1" sx={{ marginTop: 2 }}>
+  These questions are about how you are feeling and how things have been going for you in the last 4 weeks. For each question, please give the answer that is closest to how you felt.
+</Typography>
+{[
+  'Did you feel full of energy?',
+  'Were you very nervous?',
+  'Have you felt so low that nothing could cheer you up?',
+  'Have you felt calm and at peace?',
+  'Did you have a lot of energy?',
+  'Have you felt downhearted and blue?',
+  'Did you feel exhausted?',
+  'Have you been a happy person?',
+  'Did you feel tired?',
+].map((question, index) => (
+  <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+    <Typography variant="body2">{question}</Typography>
+    <RadioGroup
+      row
+      name={`feeling${index}`}
+      value={surveyData[`feeling${index}`] || ''}
+      onChange={handleInputChange}
+    >
+      <FormControlLabel value="allTheTime" control={<Radio />} label="All the time" />
+      <FormControlLabel value="mostOfTheTime" control={<Radio />} label="Most of the time" />
+      <FormControlLabel value="goodPartOfTheTime" control={<Radio />} label="Good part of the time" />
+      <FormControlLabel value="partOfTheTime" control={<Radio />} label="Part of the time" />
+      <FormControlLabel value="smallPartOfTheTime" control={<Radio />} label="A small part of the time" />
+      <FormControlLabel value="noTime" control={<Radio />} label="No time" />
+    </RadioGroup>
+  </Box>
+))}
+<Typography variant="body1" sx={{ marginTop: 2 }}>
+  During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
+</Typography>
+{[
+  'All the time.',
+  'Most of the time.',
+  'Part of the time.',
+  'A little of the time.',
+  'None of the time.',
+].map((interference, index) => (
+  <FormControlLabel
+    key={index}
+    control={<Radio
+      icon={<RadioButtonUncheckedIcon />}
+      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+      value={interference}
+      name="socialInterferenceTime"
+      checked={surveyData.socialInterferenceTime === interference}
+      onChange={handleInputChange}
+    />}
+    label={interference}
+  />
+))}
+<Typography variant="body1" sx={{ marginTop: 2 }}>
+  How much of the time during the last 4 weeks?
+</Typography>
+{[
+  'I seem to get sick a little more than other people.',
+  'I am as healthy as anyone you know.',
+  'I hope my health gets worse.',
+  'My health is excellent.',
+].map((statement, index) => (
+  <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+    <Typography variant="body2">{statement}</Typography>
+    <RadioGroup
+      row
+      name={`healthStatement${index}`}
+      value={surveyData[`healthStatement${index}`] || ''}
+      onChange={handleInputChange}
+    >
+      <FormControlLabel value="definitelyRight" control={<Radio />} label="Definitely right" />
+      <FormControlLabel value="mostlyTrue" control={<Radio />} label="Mostly true" />
+      <FormControlLabel value="dontKnow" control={<Radio />} label="Don't know" />
+      <FormControlLabel value="mostlyFalse" control={<Radio />} label="Mostly false" />
+      <FormControlLabel value="definitelyFalse" control={<Radio />} label="Definitely false" />
+    </RadioGroup>
+  </Box>
+))}
+<Button
+  fullWidth
+  variant="contained"
+  sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+  onClick={handleSubmit}
+>
+  Continue
+</Button>
+</Box>
+</FullScreenPaper>
+</Container>
+</Background>
+</ThemeProvider>
+);
 };
 
 export default MainSurvey;
-
