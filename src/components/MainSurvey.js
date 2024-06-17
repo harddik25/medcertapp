@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, Table, TableCell, TableHead, TableRow, TableBody,IconButton  } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, Table, TableCell, TableHead, TableRow, TableBody, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
@@ -8,12 +8,14 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const theme = createTheme();
+
 const Header = styled('div')({
-display: 'flex',
-alignItems: 'center',
-justifyContent: 'space-between',
-width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
 });
+
 const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -30,8 +32,8 @@ const FullScreenPaper = styled(Paper)({
   overflowY: 'auto',
   padding: 16,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  margin: '0 20px', // Добавлено для уменьшения размеров
-  maxWidth: '1200px', // Ограничение ширины
+  margin: '0 10px', // уменьшенные размеры для мобильных устройств
+  maxWidth: '100%',
 });
 
 const TableHeader = styled(TableCell)({
@@ -42,6 +44,7 @@ const TableHeader = styled(TableCell)({
 const MainSurvey = () => {
   const [surveyData, setSurveyData] = useState({});
   const navigate = useNavigate();
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSurveyData({ ...surveyData, [name]: value });
@@ -50,6 +53,7 @@ const MainSurvey = () => {
   const handleSubmit = () => {
     navigate('/consultation');
   };
+
   const handleBackClick = () => {
     navigate('/profile');
   };
