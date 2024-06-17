@@ -149,40 +149,44 @@ const MainSurvey = () => {
                 'Walking one block.',
                 'Bathing or dressing.',
               ].map((question, index) => (
+                <Box key={index} sx={{ marginTop: 2 }}>
                   <Typography variant="body2">{question}</Typography>
-                  <FormControlLabel
-                    control={<Radio
-                      icon={<RadioButtonUncheckedIcon />}
-                      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                      value="Yes very limited"
-                      name={`dayactivities${index}`}
-                      checked={surveyData[`dayactivities${index}`] === 'Yes very limited'}
-                      onChange={handleInputChange}
-                    />}
-                    label="Yes very limited"
-                  />
-                  <FormControlLabel
-                    control={<Radio
-                      icon={<RadioButtonUncheckedIcon />}
-                      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                      value="Yes a bit limited"
-                      name={`dayactivities${index}`}
-                      checked={surveyData[`dayactivities${index}`] === 'Yes a bit limited'}
-                      onChange={handleInputChange}
-                    />}
-                    label="Yes a bit limited"
-                  />
-                  <FormControlLabel
-                    control={<Radio
-                      icon={<RadioButtonUncheckedIcon />}
-                      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                      value="No, nothing limited"
-                      name={`dayactivities${index}`}
-                      checked={surveyData[`dayactivities${index}`] === 'No, nothing limited'}
-                      onChange={handleInputChange}
-                    />}
-                    label="No, nothing limited"
-                  />       
+                  <>
+                    <FormControlLabel
+                      control={<Radio
+                        icon={<RadioButtonUncheckedIcon />}
+                        checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                        value="Yes very limited"
+                        name={`dayactivities${index}`}
+                        checked={surveyData[`dayactivities${index}`] === 'Yes very limited'}
+                        onChange={handleInputChange}
+                      />}
+                      label="Yes very limited"
+                    />
+                    <FormControlLabel
+                      control={<Radio
+                        icon={<RadioButtonUncheckedIcon />}
+                        checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                        value="Yes a bit limited"
+                        name={`dayactivities${index}`}
+                        checked={surveyData[`dayactivities${index}`] === 'Yes a bit limited'}
+                        onChange={handleInputChange}
+                      />}
+                      label="Yes a bit limited"
+                    />
+                    <FormControlLabel
+                      control={<Radio
+                        icon={<RadioButtonUncheckedIcon />}
+                        checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                        value="No, nothing limited"
+                        name={`dayactivities${index}`}
+                        checked={surveyData[`dayactivities${index}`] === 'No, nothing limited'}
+                        onChange={handleInputChange}
+                      />}
+                      label="No, nothing limited"
+                    />
+                  </>
+                </Box>
               ))}
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
