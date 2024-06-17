@@ -149,7 +149,7 @@ const MainSurvey = () => {
                 'Walking one block.',
                 'Bathing or dressing.',
               ].map((question, index) => (
-                <Box key={index} sx={{ marginTop: 2 }}>
+    
                   <Typography variant="body2">{question}</Typography>
                   <FormControlLabel
                     control={<Radio
@@ -184,7 +184,7 @@ const MainSurvey = () => {
                     />}
                     label="No, nothing limited"
                   />
-              </Box>
+              
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
               </Typography>
