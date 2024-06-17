@@ -169,15 +169,15 @@ const MainSurvey = () => {
                   ].map((interference, index) => (
                     <TableRow key={index}>
                       <TableCell>{interference}</TableCell>
-                      {[1.2].map((answer) => (
+                      {[1, 2].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
                             control={<Radio
                               icon={<RadioButtonUncheckedIcon />}
                               checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
                               value={answer}
-                              name={`physicalhealth{index}`}
-                              checked={surveyData[`physicalhealth{index}`] === answer.toString()}
+                              name={`physicalhealth${index}`}
+                              checked={surveyData[`physicalhealth${index}`] === answer.toString()}
                               onChange={handleInputChange}
                             />}
                           />
