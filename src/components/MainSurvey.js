@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, FormControlLabel, Radio } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
 
@@ -20,8 +20,27 @@ const Background = styled('div')({
 const ScrollablePaper = styled(Paper)({
   maxHeight: 'calc(100vh - 40px)',
   overflowY: 'auto',
-  padding: 16,
+  padding: 3,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
+});
+
+const Table = styled('table')({
+  width: '100%',
+  borderCollapse: 'collapse',
+  marginTop: '20px',
+});
+
+const TableHeader = styled('th')({
+  border: '1px solid #ddd',
+  padding: '8px',
+  textAlign: 'center',
+  backgroundColor: '#f2f2f2',
+});
+
+const TableCell = styled('td')({
+  border: '1px solid #ddd',
+  padding: '8px',
+  textAlign: 'center',
 });
 
 const MainSurvey = () => {
@@ -29,18 +48,7 @@ const MainSurvey = () => {
   const [surveyData, setSurveyData] = useState({
     generalHealth: '',
     healthComparison: '',
-    physicalActivities: {
-      vigorous: '',
-      moderate: '',
-      lifting: '',
-      stairsSeveral: '',
-      stairsOne: '',
-      bending: '',
-      walkingKilometer: '',
-      walkingSeveral: '',
-      walkingOne: '',
-      bathing: ''
-    },
+    physicalActivities: {},
     emotionalProblems: '',
     socialActivities: '',
     bodyPain: '',
@@ -52,11 +60,6 @@ const MainSurvey = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSurveyData({ ...surveyData, [name]: value });
-  };
-
-  const handlePhysicalActivityChange = (e) => {
-    const { name, value } = e.target;
-    setSurveyData({ ...surveyData, physicalActivities: { ...surveyData.physicalActivities, [name]: value } });
   };
 
   const handleSubmit = () => {
@@ -112,41 +115,366 @@ const MainSurvey = () => {
                 <MenuItem value="somewhatWorseNow">Somewhat worse now than one year ago</MenuItem>
                 <MenuItem value="muchWorseNow">Much worse now than one year ago</MenuItem>
               </TextField>
-              <Typography variant="h6" sx={{ mt: 2, textAlign: 'center' }}>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
                 The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
+                
               </Typography>
-              <Typography sx={{ mt: 1, mb: 2, textAlign: 'center' }}>
-                PLEASE SELECT THE OPTION THAT BEST DESCRIBES YOUR ANSWER.
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Activity</TableHeader>
+                    <TableHeader>Yes, very limited (1)</TableHeader>
+                    <TableHeader>Yes, a bit limited (2)</TableHeader>
+                    <TableHeader>No, nothing limited (3)</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports.',
+                    'Moderate activities, such as moving a table, pushing a vacuum, go bowling or play golf.',
+                    'Lifting or carrying groceries.',
+                    'Climbing several flights of stairs.',
+                    'Climbing one flight of stairs.',
+                    'Bending, kneeling, or stooping.',
+                    'Walking more than a mile.',
+                    'Walking several blocks.',
+                    'Walking one block.',
+                    'Bathing or dressing yourself.',
+                  ].map((activity, index) => (
+                    <tr key={index}>
+                      <TableCell>{activity}</TableCell>
+                      {[1, 2, 3].map((limit) => (
+                        <TableCell key={limit}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            value={limit}
+                            name={`activity${index}`}
+                            checked={surveyData[`activity${index}`] === limit}
+                            onChange={(e) => handleInputChange(e)}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
+                
               </Typography>
-              <FormControl component="fieldset">
-                {[
-                  { name: 'vigorous', label: 'Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports' },
-                  { name: 'moderate', label: 'Moderate activities, such as moving a table, pushing a vacuum, go bowling or play golf' },
-                  { name: 'lifting', label: 'Lifting weight or carrying food' },
-                  { name: 'stairsSeveral', label: 'Climb several flights of stairs' },
-                  { name: 'stairsOne', label: 'Up a flight of stairs' },
-                  { name: 'bending', label: 'Bend, kneel, or stoop' },
-                  { name: 'walkingKilometer', label: 'Walking more than a kilometer' },
-                  { name: 'walkingSeveral', label: 'Walking several blocks' },
-                  { name: 'walkingOne', label: 'Walking one block' },
-                  { name: 'bathing', label: 'Bathing or dressing' }
-                ].map((activity) => (
-                  <Box key={activity.name} sx={{ mb: 2 }}>
-                    <Typography>{activity.label}</Typography>
-                    <RadioGroup
-                      row
-                      aria-label={activity.name}
-                      name={activity.name}
-                      value={surveyData.physicalActivities[activity.name]}
-                      onChange={handlePhysicalActivityChange}
-                    >
-                      <FormControlLabel value="veryLimited" control={<Radio />} label="Yes, very limited" />
-                      <FormControlLabel value="bitLimited" control={<Radio />} label="Yes, a bit limited" />
-                      <FormControlLabel value="notLimited" control={<Radio />} label="No, nothing limited" />
-                    </RadioGroup>
-                  </Box>
-                ))}
-              </FormControl>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Problem</TableHeader>
+                    <TableHeader>Yes (1)</TableHeader>
+                    <TableHeader>No (2)</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'I have reduced the time I spend at work or other activities.',
+                    'I have accomplished less than I would like.',
+                    'I was limited in the kind of work or other activities.',
+                    'I had difficulty performing the work or other activities (for example, it took extra effort).',
+                  ].map((problem, index) => (
+                    <tr key={index}>
+                      <TableCell>{problem}</TableCell>
+                      {[1, 2].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            value={answer}
+                            name={`physicalProblem${index}`}
+                            checked={surveyData[`physicalProblem${index}`] === answer}
+                            onChange={(e) => handleInputChange(e)}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                During the last 4 weeks, have you had any of the following problems with your work or other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
+                
+              </Typography>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Problem</TableHeader>
+                    <TableHeader>Yes (1)</TableHeader>
+                    <TableHeader>No (2)</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'I have reduced the amount of time I spend at work or other activities.',
+                    'I have accomplished less than I would like.',
+                    'I did not do work or other activities as carefully as usual.',
+                  ].map((problem, index) => (
+                    <tr key={index}>
+                      <TableCell>{problem}</TableCell>
+                      {[1, 2].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            value={answer}
+                            name={`emotionalProblem${index}`}
+                            checked={surveyData[`emotionalProblem${index}`] === answer}
+                            onChange={(e) => handleInputChange(e)}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+              </Typography>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Extent</TableHeader>
+                    <TableHeader>1</TableHeader>
+                    <TableHeader>2</TableHeader>
+                    <TableHeader>3</TableHeader>
+                    <TableHeader>4</TableHeader>
+                    <TableHeader>5</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'No way.',
+                    'Slightly.',
+                    'Moderately.',
+                    'Quite.',
+                    'Extremely.',
+                  ].map((extent, index) => (
+                    <tr key={index}>
+                      <TableCell>{extent}</TableCell>
+                      {[1, 2, 3, 4, 5].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            value={answer}
+                            name={`extent${index}`}
+                            checked={surveyData[`extent${index}`] === answer}
+                            onChange={(e) => handleInputChange(e)}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                How much body pain have you had in the last 4 weeks?
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+              </Typography>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Pain Level</TableHeader>
+                    <TableHeader>1</TableHeader>
+                    <TableHeader>2</TableHeader>
+                    <TableHeader>3</TableHeader>
+                    <TableHeader>4</TableHeader>
+                    <TableHeader>5</TableHeader>
+                    <TableHeader>6</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'Nothing.',
+                    'Very soft.',
+                    'Soft.',
+                    'Moderate.',
+                    'Severe.',
+                    'Very severe.',
+                  ].map((painLevel, index) => (
+                    <tr key={index}>
+                      <TableCell>{painLevel}</TableCell>
+                      {[1, 2, 3, 4, 5, 6].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            value={answer}
+                            name={`painLevel${index}`}
+                            checked={surveyData[`painLevel${index}`] === answer}
+                            onChange={(e) => handleInputChange(e)}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+              </Typography>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Interference</TableHeader>
+                    <TableHeader>1</TableHeader>
+                    <TableHeader>2</TableHeader>
+                    <TableHeader>3</TableHeader>
+                    <TableHeader>4</TableHeader>
+                    <TableHeader>5</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'No way.',
+                    'Slightly.',
+                    'Moderately.',
+                    'Quite.',
+                    'Extremely.',
+                  ].map((interference, index) => (
+                    <tr key={index}>
+                      <TableCell>{interference}</TableCell>
+                      {[1, 2, 3, 4, 5].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            value={answer}
+                            name={`interference${index}`}
+                            checked={surveyData[`interference${index}`] === answer}
+                            onChange={(e) => handleInputChange(e)}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                How much of the time during the last 4 weeks?
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+              </Typography>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Time</TableHeader>
+                    <TableHeader>All the time</TableHeader>
+                    <TableHeader>Most of the time</TableHeader>
+                    <TableHeader>Good part of the time</TableHeader>
+                    <TableHeader>Part of the time</TableHeader>
+                    <TableHeader>A small part of the time</TableHeader>
+                    <TableHeader>No time</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'Did you feel full of energy?',
+                    'Were you very nervous?',
+                    'Have you felt so low that nothing could cheer you up?',
+                    'Have you felt calm and at peace?',
+                    'Did you have a lot of energy?',
+                    'Have you felt downhearted and blue?',
+                    'Did you feel exhausted?',
+                    'Have you been a happy person?',
+                    'Did you feel tired?',
+                  ].map((time, index) => (
+                    <tr key={index}>
+                      <TableCell>{time}</TableCell>
+                      {[1, 2, 3, 4, 5, 6].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            value={answer}
+                            name={`time${index}`}
+                            checked={surveyData[`time${index}`] === answer}
+                            onChange={(e) => handleInputChange(e)}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+              </Typography>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Interference</TableHeader>
+                    <TableHeader>1</TableHeader>
+                    <TableHeader>2</TableHeader>
+                    <TableHeader>3</TableHeader>
+                    <TableHeader>4</TableHeader>
+                    <TableHeader>5</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'All the time.',
+                    'Most of the time.',
+                    'Part of the time.',
+                    'A little of the time.',
+                    'Nothing of time.',
+                  ].map((interference, index) => (
+                    <tr key={index}>
+                      <TableCell>{interference}</TableCell>
+                      {[1, 2, 3, 4, 5].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            value={answer}
+                            name={`socialInterference${index}`}
+                            checked={surveyData[`socialInterference${index}`] === answer}
+                            onChange={(e) => handleInputChange(e)}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                How much of the time during the last 4 weeks?
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+              </Typography>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Time</TableHeader>
+                    <TableHeader>Definitely right</TableHeader>
+                    <TableHeader>Mostly true</TableHeader>
+                    <TableHeader>Don't know</TableHeader>
+                    <TableHeader>Mostly false</TableHeader>
+                    <TableHeader>Definitely false</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'I seem to get sick a little more than other people.',
+                    'I am as healthy as anyone you know.',
+                    'I hope my health gets worse.',
+                    'My health is excellent.',
+                  ].map((time, index) => (
+                    <tr key={index}>
+                      <TableCell>{time}</TableCell>
+                      {[1, 2, 3, 4, 5].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            value={answer}
+                            name={`healthTime${index}`}
+                            checked={surveyData[`healthTime${index}`] === answer}
+                            onChange={(e) => handleInputChange(e)}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
               <Button
                 fullWidth
                 variant="contained"
