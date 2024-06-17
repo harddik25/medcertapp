@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
 const theme = createTheme();
 
@@ -120,15 +122,14 @@ const MainSurvey = () => {
               </TextField>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
-                
               </Typography>
               <Table>
                 <thead>
                   <tr>
                     <TableHeader>Activity</TableHeader>
-                    <TableHeader>Yes, very limited </TableHeader>
-                    <TableHeader>Yes, a bit limited </TableHeader>
-                    <TableHeader>No, nothing limited</TableHeader>
+                    <TableHeader>Yes, very limited (1)</TableHeader>
+                    <TableHeader>Yes, a bit limited (2)</TableHeader>
+                    <TableHeader>No, nothing limited (3)</TableHeader>
                   </tr>
                 </thead>
                 <tbody>
@@ -149,7 +150,10 @@ const MainSurvey = () => {
                       {[1, 2, 3].map((limit) => (
                         <TableCell key={limit}>
                           <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
                             value={limit}
                             name={`activity${index}`}
                             checked={surveyData[`activity${index}`] === limit}
@@ -163,7 +167,6 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
-                
               </Typography>
               <Table>
                 <thead>
@@ -185,7 +188,10 @@ const MainSurvey = () => {
                       {[1, 2].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
                             value={answer}
                             name={`physicalProblem${index}`}
                             checked={surveyData[`physicalProblem${index}`] === answer}
@@ -199,7 +205,7 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
-                
+
               </Typography>
               <Table>
                 <thead>
@@ -220,7 +226,10 @@ const MainSurvey = () => {
                       {[1, 2].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
                             value={answer}
                             name={`emotionalProblem${index}`}
                             checked={surveyData[`emotionalProblem${index}`] === answer}
@@ -232,12 +241,10 @@ const MainSurvey = () => {
                   ))}
                 </tbody>
               </Table>
-                            <Typography variant="body1" sx={{ marginTop: 2 }}>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
-                
               </Typography>
               <Table>
-                
                 <tbody>
                   {[
                     'No way.',
@@ -251,7 +258,10 @@ const MainSurvey = () => {
                       {[1].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
                             value={answer}
                             name={`extent${index}`}
                             checked={surveyData[`extent${index}`] === answer}
@@ -265,7 +275,6 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 How much body pain have you had in the last 4 weeks?
-                
               </Typography>
               <Table>
                 <tbody>
@@ -282,7 +291,10 @@ const MainSurvey = () => {
                       {[1].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
                             value={answer}
                             name={`painLevel${index}`}
                             checked={surveyData[`painLevel${index}`] === answer}
@@ -296,10 +308,8 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
-    
               </Typography>
               <Table>
-                
                 <tbody>
                   {[
                     'No way.',
@@ -313,10 +323,103 @@ const MainSurvey = () => {
                       {[1].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
                             value={answer}
                             name={`interference${index}`}
                             checked={surveyData[`interference${index}`] === answer}
+                            onChange={handleInputChange}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                How much of the time during the last 4 weeks?
+              </Typography>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Time</TableHeader>
+                    <TableHeader>All the time</TableHeader>
+                    <TableHeader>Most of the time</TableHeader>
+                    <TableHeader>Good part of the time</TableHeader>
+                    <TableHeader>Part of the time</TableHeader>
+                    <TableHeader>A small part of the time</TableHeader>
+                    <TableHeader>No time</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'Did you feel full of energy?',
+                    'Were you very nervous?',
+                    'Have you felt so low that nothing could cheer you up?',
+                    'Have you felt calm and at peace?',
+                    'Did you have a lot of energy?',
+                    'Have you felt downhearted and blue?',
+                    'Did you feel exhausted?',
+                    'Have you been a happy person?',
+                    'Did you feel tired?',
+                  ].map((time, index) => (
+                    <tr key={index}>
+                      <TableCell>{time}</TableCell>
+                      {[1, 2, 3, 4, 5, 6].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
+                            value={answer}
+                            name={`time${index}`}
+                            checked={surveyData[`time${index}`] === answer}
+                            onChange={handleInputChange}
+                          />
+                        </TableCell>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+                            <Typography variant="body1" sx={{ marginTop: 2 }}>
+                During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
+                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+              </Typography>
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>Interference</TableHeader>
+                    <TableHeader>1</TableHeader>
+                    <TableHeader>2</TableHeader>
+                    <TableHeader>3</TableHeader>
+                    <TableHeader>4</TableHeader>
+                    <TableHeader>5</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    'All the time.',
+                    'Most of the time.',
+                    'Part of the time.',
+                    'A little of the time.',
+                    'None of the time.',
+                  ].map((interference, index) => (
+                    <tr key={index}>
+                      <TableCell>{interference}</TableCell>
+                      {[1, 2, 3, 4, 5].map((answer) => (
+                        <TableCell key={answer}>
+                          <FormControlLabel
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
+                            value={answer}
+                            name={`socialInterference${index}`}
+                            checked={surveyData[`socialInterference${index}`] === answer}
                             onChange={handleInputChange}
                           />
                         </TableCell>
@@ -358,7 +461,10 @@ const MainSurvey = () => {
                       {[1, 2, 3, 4, 5, 6].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
                             value={answer}
                             name={`time${index}`}
                             checked={surveyData[`time${index}`] === answer}
@@ -372,24 +478,25 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
-        
               </Typography>
               <Table>
-                
                 <tbody>
                   {[
                     'All the time.',
                     'Most of the time.',
                     'Part of the time.',
                     'A little of the time.',
-                    'Nothing of time.',
+                    'None of the time.',
                   ].map((interference, index) => (
                     <tr key={index}>
                       <TableCell>{interference}</TableCell>
                       {[1].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
                             value={answer}
                             name={`socialInterference${index}`}
                             checked={surveyData[`socialInterference${index}`] === answer}
@@ -403,7 +510,6 @@ const MainSurvey = () => {
               </Table>
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 How much of the time during the last 4 weeks?
-                PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
               </Typography>
               <Table>
                 <thead>
@@ -428,7 +534,10 @@ const MainSurvey = () => {
                       {[1, 2, 3, 4, 5].map((answer) => (
                         <TableCell key={answer}>
                           <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio
+                              icon={<RadioButtonUncheckedIcon />}
+                              checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
+                            />}
                             value={answer}
                             name={`healthTime${index}`}
                             checked={surveyData[`healthTime${index}`] === answer}
@@ -457,3 +566,4 @@ const MainSurvey = () => {
 };
 
 export default MainSurvey;
+
