@@ -25,21 +25,22 @@ const Background = styled('div')({
   backgroundSize: 'cover',
   paddingTop: '20px',
   paddingBottom: '20px',
-  width: '100%',
 });
 
 const FullScreenPaper = styled(Paper)({
-  height: '100vh',
+  maxHeight: 'calc(100vh - 40px)',
   overflowY: 'auto',
   padding: 16,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  margin: 0,
-  width: '100%',
+  margin: '0 10px',
+  maxWidth: '100%',
+  overflowX: 'auto', // Добавлено для горизонтальной прокрутки
 });
 
 const TableHeader = styled(TableCell)({
   backgroundColor: '#e0f7fa',
   fontWeight: 'bold',
+  minWidth: '120px', // Минимальная ширина ячеек таблицы
 });
 
 const MainSurvey = () => {
@@ -83,7 +84,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableBody>
                   {[
                     'Excellent',
@@ -113,7 +114,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 COMPARING IT WITH THE ONE OF A YEAR AGO
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableBody>
                   {[
                     'Much better now than a year ago',
@@ -142,7 +143,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableHead>
                   <TableRow>
                     <TableHeader></TableHeader>
@@ -187,7 +188,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableHead>
                   <TableRow>
                     <TableHeader></TableHeader>
@@ -225,7 +226,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems at work or with other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableHead>
                   <TableRow>
                     <TableHeader></TableHeader>
@@ -262,7 +263,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableBody>
                   {[
                     'No way.',
@@ -294,7 +295,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                How much body pain have you had in the last 4 weeks?
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableBody>
                   {[
                     'Nothing',
@@ -327,7 +328,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableBody>
                   {[
                     'No way.',
@@ -359,7 +360,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 These questions are about how you are feeling and how things have been going for you in the last 4 weeks. For each question, please give the answer that is closest to how you felt.
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableHead>
                   <TableRow>
                     <TableHeader></TableHeader>
@@ -406,7 +407,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableBody>
                   {[
                     'All the time.',
@@ -438,7 +439,7 @@ const MainSurvey = () => {
               <Typography variant="body1" sx={{ marginTop: 2 }}>
                 How much of the time during the last 4 weeks?
               </Typography>
-              <Table>
+              <Table sx={{ minWidth: '100%' }}>
                 <TableHead>
                   <TableRow>
                     <TableHeader></TableHeader>
