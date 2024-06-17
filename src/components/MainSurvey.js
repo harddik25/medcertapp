@@ -1,6 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton } from '@mui/material';
+import {
+  Container,
+  Box,
+  Typography,
+  Button,
+  CssBaseline,
+  Paper,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  IconButton,
+} from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
@@ -8,14 +19,12 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const theme = createTheme();
-
 const Header = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   width: '100%',
 });
-
 const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -32,8 +41,8 @@ const FullScreenPaper = styled(Paper)({
   overflowY: 'auto',
   padding: 16,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  margin: '0 10px',
-  maxWidth: '100%',
+  margin: '0 20px',
+  maxWidth: '1200px',
 });
 
 const MainSurvey = () => {
@@ -46,7 +55,11 @@ const MainSurvey = () => {
   };
 
   const handleSubmit = () => {
-    navigate('/consultation');
+    if (Object.keys(surveyData).length === 54) { // Update this count based on the total number of questions
+      navigate('/consultation');
+    } else {
+      alert('Please answer all questions before continuing.');
+    }
   };
 
   const handleBackClick = () => {
@@ -75,7 +88,7 @@ const MainSurvey = () => {
                 </Typography>
                 <div style={{ width: '30px', height: '30px' }}></div>
               </Header>
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
+              <Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
                 IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS
               </Typography>
               {[
@@ -84,21 +97,22 @@ const MainSurvey = () => {
                 'Good',
                 'Fair',
                 'Poor',
-              ].map((option, index) => (
+              ].map((health, index) => (
                 <FormControlLabel
                   key={index}
                   control={<Radio
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                    value={option}
+                    value={health}
                     name="generalHealth"
-                    checked={surveyData.generalHealth === option}
+                    checked={surveyData.generalHealth === health}
                     onChange={handleInputChange}
                   />}
-                  label={option}
+                  label={health}
+                  sx={{ alignSelf: 'flex-start' }}
                 />
               ))}
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
+              <Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
                 COMPARING IT WITH THE ONE OF A YEAR AGO
               </Typography>
               {[
@@ -106,21 +120,22 @@ const MainSurvey = () => {
                 'Somewhat worse now than a year ago',
                 'Same as a year ago',
                 'Much worse now than a year ago',
-              ].map((option, index) => (
+              ].map((comparison, index) => (
                 <FormControlLabel
                   key={index}
                   control={<Radio
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                    value={option}
-                    name="healthComparison"
-                    checked={surveyData.healthComparison === option}
+                    value={comparison}
+                    name="yearComparison"
+                    checked={surveyData.yearComparison === comparison}
                     onChange={handleInputChange}
                   />}
-                  label={option}
+                  label={comparison}
+                  sx={{ alignSelf: 'flex-start' }}
                 />
               ))}
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
+              <Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
                 The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
               </Typography>
               {[
@@ -136,11 +151,11 @@ const MainSurvey = () => {
                 'Bathing or dressing.',
               ].map((activity, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2">{activity}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{activity}</Typography>
                   <RadioGroup
                     row
-                    name={`dayActivity${index}`}
-                    value={surveyData[`dayActivity${index}`] || ''}
+                    name={`activity${index}`}
+                    value={surveyData[`activity${index}`] || ''}
                     onChange={handleInputChange}
                   >
                     <FormControlLabel value="veryLimited" control={<Radio />} label="Yes very limited" />
@@ -149,7 +164,7 @@ const MainSurvey = () => {
                   </RadioGroup>
                 </Box>
               ))}
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
+              <Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
               </Typography>
               {[
@@ -159,11 +174,11 @@ const MainSurvey = () => {
                 'I had difficulty and required an extra effort',
               ].map((problem, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2">{problem}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{problem}</Typography>
                   <RadioGroup
                     row
-                    name={`physicalHealthProblem${index}`}
-                    value={surveyData[`physicalHealthProblem${index}`] || ''}
+                    name={`physicalHealth${index}`}
+                    value={surveyData[`physicalHealth${index}`] || ''}
                     onChange={handleInputChange}
                   >
                     <FormControlLabel value="yes" control={<Radio />} label="Yes" />
@@ -171,16 +186,16 @@ const MainSurvey = () => {
                   </RadioGroup>
                 </Box>
               ))}
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
+              <Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
                 During the last 4 weeks, have you had any of the following problems at work or with other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
               </Typography>
               {[
                 'I have reduced the amount of time I spend at work or doing other activities',
                 'I have accomplished less than I would like',
                 'I did not do work or other activities as carefully as usual',
-              ].map((problem, index) => (
+              ].map((emotionalProblem, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2">{problem}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{emotionalProblem}</Typography>
                   <RadioGroup
                     row
                     name={`emotionalProblem${index}`}
@@ -192,30 +207,33 @@ const MainSurvey = () => {
                   </RadioGroup>
                 </Box>
               ))}
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
-                During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
-              </Typography>
-              {[
-                'No way.',
-                'Slightly.',
-                'Moderately.',
-                'Quite.',
-                'Extremely.',
-              ].map((extent, index) => (
-                <FormControlLabel
-                  key={index}
-                  control={<Radio
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-                    value={extent}
-                    name="socialInterference"
-                    checked={surveyData.socialInterference === extent}
-                    onChange={handleInputChange}
-                  />}
-                  label={extent}
-                />
-              ))}
-              <Typography variant="body1" sx={{ marginTop: 2 }}>
+              <Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
+  During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
+</Typography>
+{[
+  'No way.',
+  'Slightly.',
+  'Moderately.',
+  'Quite.',
+  'Extremely.',
+].map((interference, index) => (
+  <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{interference}</Typography>
+    <RadioGroup
+      row
+      name={`socialActivities${index}`}
+      value={surveyData[`socialActivities${index}`] || ''}
+      onChange={handleInputChange}
+    >
+      <FormControlLabel value="noWay" control={<Radio />} label="No way" />
+      <FormControlLabel value="slightly" control={<Radio />} label="Slightly" />
+      <FormControlLabel value="moderately" control={<Radio />} label="Moderately" />
+      <FormControlLabel value="quite" control={<Radio />} label="Quite" />
+      <FormControlLabel value="extremely" control={<Radio />} label="Extremely" />
+    </RadioGroup>
+  </Box>
+))}
+<Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
   How much body pain have you had in the last 4 weeks?
 </Typography>
 {[
@@ -226,20 +244,24 @@ const MainSurvey = () => {
   'Severe.',
   'Very severe',
 ].map((pain, index) => (
-  <FormControlLabel
-    key={index}
-    control={<Radio
-      icon={<RadioButtonUncheckedIcon />}
-      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-      value={pain}
-      name="bodyPain"
-      checked={surveyData.bodyPain === pain}
+  <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{pain}</Typography>
+    <RadioGroup
+      row
+      name={`bodyPain${index}`}
+      value={surveyData[`bodyPain${index}`] || ''}
       onChange={handleInputChange}
-    />}
-    label={pain}
-  />
+    >
+      <FormControlLabel value="nothing" control={<Radio />} label="Nothing" />
+      <FormControlLabel value="verySoft" control={<Radio />} label="Very soft" />
+      <FormControlLabel value="soft" control={<Radio />} label="Soft" />
+      <FormControlLabel value="moderate" control={<Radio />} label="Moderate" />
+      <FormControlLabel value="severe" control={<Radio />} label="Severe" />
+      <FormControlLabel value="verySevere" control={<Radio />} label="Very severe" />
+    </RadioGroup>
+  </Box>
 ))}
-<Typography variant="body1" sx={{ marginTop: 2 }}>
+<Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
   During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
 </Typography>
 {[
@@ -249,20 +271,23 @@ const MainSurvey = () => {
   'Quite.',
   'Extremely.',
 ].map((interference, index) => (
-  <FormControlLabel
-    key={index}
-    control={<Radio
-      icon={<RadioButtonUncheckedIcon />}
-      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-      value={interference}
-      name="painInterference"
-      checked={surveyData.painInterference === interference}
+  <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{interference}</Typography>
+    <RadioGroup
+      row
+      name={`painInterfere${index}`}
+      value={surveyData[`painInterfere${index}`] || ''}
       onChange={handleInputChange}
-    />}
-    label={interference}
-  />
+    >
+      <FormControlLabel value="noWay" control={<Radio />} label="No way" />
+      <FormControlLabel value="slightly" control={<Radio />} label="Slightly" />
+      <FormControlLabel value="moderately" control={<Radio />} label="Moderately" />
+      <FormControlLabel value="quite" control={<Radio />} label="Quite" />
+      <FormControlLabel value="extremely" control={<Radio />} label="Extremely" />
+    </RadioGroup>
+  </Box>
 ))}
-<Typography variant="body1" sx={{ marginTop: 2 }}>
+<Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
   These questions are about how you are feeling and how things have been going for you in the last 4 weeks. For each question, please give the answer that is closest to how you felt.
 </Typography>
 {[
@@ -275,9 +300,9 @@ const MainSurvey = () => {
   'Did you feel exhausted?',
   'Have you been a happy person?',
   'Did you feel tired?',
-].map((question, index) => (
+].map((feeling, index) => (
   <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-    <Typography variant="body2">{question}</Typography>
+    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{feeling}</Typography>
     <RadioGroup
       row
       name={`feeling${index}`}
@@ -293,7 +318,7 @@ const MainSurvey = () => {
     </RadioGroup>
   </Box>
 ))}
-<Typography variant="body1" sx={{ marginTop: 2 }}>
+<Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
   During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
 </Typography>
 {[
@@ -303,20 +328,23 @@ const MainSurvey = () => {
   'A little of the time.',
   'None of the time.',
 ].map((interference, index) => (
-  <FormControlLabel
-    key={index}
-    control={<Radio
-      icon={<RadioButtonUncheckedIcon />}
-      checkedIcon={<RadioButtonCheckedIcon style={{ color: '#4caf50' }} />}
-      value={interference}
-      name="socialInterferenceTime"
-      checked={surveyData.socialInterferenceTime === interference}
+  <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{interference}</Typography>
+    <RadioGroup
+      row
+      name={`socialInterference${index}`}
+      value={surveyData[`socialInterference${index}`] || ''}
       onChange={handleInputChange}
-    />}
-    label={interference}
-  />
+    >
+      <FormControlLabel value="allTheTime" control={<Radio />} label="All the time" />
+      <FormControlLabel value="mostOfTheTime" control={<Radio />} label="Most of the time" />
+      <FormControlLabel value="partOfTheTime" control={<Radio />} label="Part of the time" />
+      <FormControlLabel value="aLittleOfTheTime" control={<Radio />} label="A little of the time" />
+      <FormControlLabel value="noneOfTheTime" control={<Radio />} label="None of the time" />
+    </RadioGroup>
+  </Box>
 ))}
-<Typography variant="body1" sx={{ marginTop: 2 }}>
+<Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold', textAlign: 'left', width: '100%' }}>
   How much of the time during the last 4 weeks?
 </Typography>
 {[
@@ -324,13 +352,13 @@ const MainSurvey = () => {
   'I am as healthy as anyone you know.',
   'I hope my health gets worse.',
   'My health is excellent.',
-].map((statement, index) => (
+].map((time, index) => (
   <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-    <Typography variant="body2">{statement}</Typography>
+    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{time}</Typography>
     <RadioGroup
       row
-      name={`healthStatement${index}`}
-      value={surveyData[`healthStatement${index}`] || ''}
+      name={`healthTime${index}`}
+      value={surveyData[`healthTime${index}`] || ''}
       onChange={handleInputChange}
     >
       <FormControlLabel value="definitelyRight" control={<Radio />} label="Definitely right" />
@@ -346,6 +374,7 @@ const MainSurvey = () => {
   variant="contained"
   sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
   onClick={handleSubmit}
+  disabled={Object.keys(surveyData).length < 54} // Update this count based on the total number of questions
 >
   Continue
 </Button>
@@ -358,3 +387,5 @@ const MainSurvey = () => {
 };
 
 export default MainSurvey;
+
+
