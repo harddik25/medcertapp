@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, IconButton, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CannabisBackground from './cannabis-background.webp';
 
 const theme = createTheme();
@@ -21,15 +20,8 @@ const Background = styled('div')({
 const ScrollablePaper = styled(Paper)({
   maxHeight: 'calc(100vh - 40px)',
   overflowY: 'auto',
-  padding: 3,
+  padding: 16,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
-});
-
-const Header = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
 });
 
 const MainSurvey = () => {
@@ -37,7 +29,18 @@ const MainSurvey = () => {
   const [surveyData, setSurveyData] = useState({
     generalHealth: '',
     healthComparison: '',
-    physicalActivities: {},
+    physicalActivities: {
+      vigorous: '',
+      moderate: '',
+      lifting: '',
+      stairsSeveral: '',
+      stairsOne: '',
+      bending: '',
+      walkingKilometer: '',
+      walkingSeveral: '',
+      walkingOne: '',
+      bathing: ''
+    },
     emotionalProblems: '',
     socialActivities: '',
     bodyPain: '',
@@ -53,22 +56,11 @@ const MainSurvey = () => {
 
   const handlePhysicalActivityChange = (e) => {
     const { name, value } = e.target;
-    setSurveyData({
-      ...surveyData,
-      physicalActivities: {
-        ...surveyData.physicalActivities,
-        [name]: value,
-      },
-    });
+    setSurveyData({ ...surveyData, physicalActivities: { ...surveyData.physicalActivities, [name]: value } });
   };
 
   const handleSubmit = () => {
-    // Обработка данных опросника и переход к оплате и выбору консультации
     navigate('/consultation');
-  };
-
-  const handleBackClick = () => {
-    navigate('/profile');
   };
 
   return (
@@ -77,23 +69,17 @@ const MainSurvey = () => {
         <Container component="main" maxWidth="sm">
           <CssBaseline />
           <ScrollablePaper elevation={3}>
-            <Header>
-              <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
-                <ArrowBackIcon style={{ color: '#388e3c' }} />
-              </IconButton>
-              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
-                Health Survey
-              </Typography>
-              <div style={{ width: '30px', height: '30px' }}></div>
-            </Header>
             <Box
               sx={{
-                marginTop: 2,
+                marginTop: 8,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
               }}
             >
+              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
+                Health Survey
+              </Typography>
               <TextField
                 select
                 label="In general, would you say that your health is:"
@@ -126,36 +112,41 @@ const MainSurvey = () => {
                 <MenuItem value="somewhatWorseNow">Somewhat worse now than one year ago</MenuItem>
                 <MenuItem value="muchWorseNow">Much worse now than one year ago</MenuItem>
               </TextField>
-              <Typography variant="body1" sx={{ marginTop: 2, textAlign: 'left', width: '100%' }}>
-                The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much? PLEASE CIRCLE THE NUMBER THAT BEST DESCRIBES YOUR ANSWER.
+              <Typography variant="h6" sx={{ mt: 2, textAlign: 'center' }}>
+                The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
               </Typography>
-              <Box sx={{ width: '100%', marginTop: 2 }}>
-                <FormControl component="fieldset" sx={{ width: '100%' }}>
-                  <FormLabel component="legend">Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports.</FormLabel>
-                  <RadioGroup
-                    row
-                    name="vigorousActivities"
-                    value={surveyData.physicalActivities.vigorousActivities}
-                    onChange={handlePhysicalActivityChange}
-                  >
-                    <FormControlLabel value="veryLimited" control={<Radio />} label="1 (Very limited)" />
-                    <FormControlLabel value="somewhatLimited" control={<Radio />} label="2 (Somewhat limited)" />
-                    <FormControlLabel value="notLimited" control={<Radio />} label="3 (Not limited)" />
-                  </RadioGroup>
-                  <FormLabel component="legend">Moderate activities, such as moving a table, pushing a vacuum, going bowling or playing golf.</FormLabel>
-                  <RadioGroup
-                    row
-                    name="moderateActivities"
-                    value={surveyData.physicalActivities.moderateActivities}
-                    onChange={handlePhysicalActivityChange}
-                  >
-                    <FormControlLabel value="veryLimited" control={<Radio />} label="1 (Very limited)" />
-                    <FormControlLabel value="somewhatLimited" control={<Radio />} label="2 (Somewhat limited)" />
-                    <FormControlLabel value="notLimited" control={<Radio />} label="3 (Not limited)" />
-                  </RadioGroup>
-                  {/* Add other physical activities in similar way */}
-                </FormControl>
-              </Box>
+              <Typography sx={{ mt: 1, mb: 2, textAlign: 'center' }}>
+                PLEASE SELECT THE OPTION THAT BEST DESCRIBES YOUR ANSWER.
+              </Typography>
+              <FormControl component="fieldset">
+                {[
+                  { name: 'vigorous', label: 'Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports' },
+                  { name: 'moderate', label: 'Moderate activities, such as moving a table, pushing a vacuum, go bowling or play golf' },
+                  { name: 'lifting', label: 'Lifting weight or carrying food' },
+                  { name: 'stairsSeveral', label: 'Climb several flights of stairs' },
+                  { name: 'stairsOne', label: 'Up a flight of stairs' },
+                  { name: 'bending', label: 'Bend, kneel, or stoop' },
+                  { name: 'walkingKilometer', label: 'Walking more than a kilometer' },
+                  { name: 'walkingSeveral', label: 'Walking several blocks' },
+                  { name: 'walkingOne', label: 'Walking one block' },
+                  { name: 'bathing', label: 'Bathing or dressing' }
+                ].map((activity) => (
+                  <Box key={activity.name} sx={{ mb: 2 }}>
+                    <Typography>{activity.label}</Typography>
+                    <RadioGroup
+                      row
+                      aria-label={activity.name}
+                      name={activity.name}
+                      value={surveyData.physicalActivities[activity.name]}
+                      onChange={handlePhysicalActivityChange}
+                    >
+                      <FormControlLabel value="veryLimited" control={<Radio />} label="Yes, very limited" />
+                      <FormControlLabel value="bitLimited" control={<Radio />} label="Yes, a bit limited" />
+                      <FormControlLabel value="notLimited" control={<Radio />} label="No, nothing limited" />
+                    </RadioGroup>
+                  </Box>
+                ))}
+              </FormControl>
               <Button
                 fullWidth
                 variant="contained"
@@ -173,6 +164,3 @@ const MainSurvey = () => {
 };
 
 export default MainSurvey;
-
-
-
