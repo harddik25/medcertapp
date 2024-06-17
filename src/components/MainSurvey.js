@@ -82,7 +82,7 @@ const MainSurvey = () => {
       <Background>
         <Container component="main" maxWidth="md">
           <CssBaseline />
-          <FullScreenPaper elevation={3} id="survey-top">
+          <FullScreenPaper elevation={3} ref={paperRef}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Header>
                 <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
