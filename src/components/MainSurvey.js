@@ -48,7 +48,7 @@ const RoundedTypography = styled(Typography)({
 const RadioGroupRow = styled(Box)({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between',
+  justifyContent: 'left',
   width: '100%',
   marginTop: '5px',
 });
