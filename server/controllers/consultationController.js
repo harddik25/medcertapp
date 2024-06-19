@@ -41,14 +41,14 @@ exports.scheduleAppointment = async (req, res) => {
 
 exports.getAppointments = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    console.log('Fetching appointment for user ID:', userId); // Логируем userId
-    const appointment = await Consultation.findOne({ userId: userId });
+    const patientName = req.params.patientName;
+    console.log('Fetching appointment for patient:', patientName);
+    const appointment = await Consultation.findOne({ patientName: patientName });
     if (appointment) {
-      console.log('Found appointment:', appointment); // Логируем найденную консультацию
+      console.log('Found appointment:', appointment);
       res.status(200).json({ appointment });
     } else {
-      console.log('No appointment found for user ID:', userId); // Логируем отсутствие консультации
+      console.log('No appointment found for patient:', patientName);
       res.status(404).json({ message: 'Консультация не найдена' });
     }
   } catch (error) {
@@ -56,7 +56,6 @@ exports.getAppointments = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
-
 
 exports.addFreeSlot = async (req, res) => {
   try {
