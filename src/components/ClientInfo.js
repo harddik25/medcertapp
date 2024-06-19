@@ -36,22 +36,6 @@ const ClientInfo = () => {
     navigate(-1);
   };
 
-  const handleDownloadDocument = async (documentType) => {
-    try {
-      const response = await fetch(`https://medlevel.me/api/documents/download/${patientId}/${documentType}`);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${patientId}_${documentType}`; // Имя файла при загрузке
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } catch (error) {
-      console.error('Ошибка при загрузке документа', error);
-    }
-  };
-
   return (
     <Background>
       <Container component="main" maxWidth="md">
@@ -79,24 +63,11 @@ const ClientInfo = () => {
                   {clientInfo.surveys.map((survey, index) => (
                     <ListItem key={index}>
                       <ListItemText primary={survey.question} secondary={survey.answer} sx={{ color: '#388e3c' }} />
-                    </ListItem>
-                  ))}
-                </List>
-                <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
-                  Документы
-                </Typography>
-                <List>
-                  {clientInfo.documents.map((documentType, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={documentType} sx={{ color: '#388e3c' }} />
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        sx={{ ml: 2 }}
-                        onClick={() => handleDownloadDocument(documentType)}
-                      >
-                        Скачать
-                      </Button>
+                      {survey.documentPath && (
+                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${survey.documentPath}`} target="_blank">
+                          Скачать документ
+                        </Button>
+                      )}
                     </ListItem>
                   ))}
                 </List>
