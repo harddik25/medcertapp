@@ -55,10 +55,11 @@ const RadioGroupRow = styled(RadioGroup)({
   gap: '10px',
 });
 
-const MainSurvey = () => {
+const MainSurvey = ({ telegramId }) => { // Предполагаем, что telegramId передается как пропс
   const [surveyData, setSurveyData] = useState({});
   const navigate = useNavigate();
   const paperRef = useRef(null);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSurveyData({ ...surveyData, [name]: value });
@@ -66,7 +67,7 @@ const MainSurvey = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post('/api/survey/save', surveyData);
+      await axios.post('/api/survey/save', { telegramId, ...surveyData });
       navigate('/consultation');
     } catch (error) {
       console.error('Error saving survey data:', error);
