@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, MenuItem } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, MenuItem, Alert } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios';
 import CannabisBackground from './cannabis-background.webp';
@@ -13,13 +13,38 @@ const Background = styled('div')({
   backgroundSize: 'cover',
 });
 
-const DocumentUpload = () => {
+const StyledButton = styled(Button)({
+  backgroundColor: '#4caf50',
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: '#45a049',
+  },
+  marginBottom: '16px',
+});
+
+const DocumentUpload = ({ userId }) => {
   const [documentType, setDocumentType] = useState('');
   const [frontDocument, setFrontDocument] = useState(null);
   const [backDocument, setBackDocument] = useState(null);
-  const [userId, setUserId] = useState(''); // Example userId, you should replace it with the actual userId
-  const [surveyId, setSurveyId] = useState(''); // Example surveyId, you should replace it with the actual surveyId
+  const [surveyId, setSurveyId] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
+
+  useEffect(() => {
+    const fetchSurveyId = async () => {
+      if (userId) {
+        try {
+          const response = await axios.get(`https://medlevel.me/api/surveys/latest/${userId}`);
+          if (response.data.success && response.data.surveyId) {
+            setSurveyId(response.data.surveyId);
+          }
+        } catch (error) {
+          console.error('Ошибка при получении surveyId:', error);
+        }
+      }
+    };
+
+    fetchSurveyId();
+  }, [userId]);
 
   const handleFileChange = (e, side) => {
     if (side === 'front') {
@@ -87,19 +112,18 @@ const DocumentUpload = () => {
             {(documentType === 'NIE' || documentType === 'DNI') && (
               <input type="file" onChange={(e) => handleFileChange(e, 'back')} />
             )}
-            <Button
+            <StyledButton
               type="button"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
               onClick={handleUpload}
             >
               Загрузить
-            </Button>
+            </StyledButton>
             {uploadStatus && (
-              <Typography variant="body2" color="error">
+              <Alert severity={uploadStatus.includes('успешно') ? 'success' : 'error'}>
                 {uploadStatus}
-              </Typography>
+              </Alert>
             )}
           </Box>
         </Paper>
