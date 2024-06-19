@@ -94,12 +94,12 @@ const MainSurvey = ({ telegramId }) => {
     const requiredKeys = [
       ...Array.from({ length: 10 }, (_, i) => `dayactivities${i}`),
       ...Array.from({ length: 4 }, (_, i) => `physicalhealth${i}`),
-      ...Array.from({ length: 3 }, (_, i) => `emotionalproblem${i}`),
-      ...Array.from({ length: 5 }, (_, i) => `socialactivitiesgroups${i}`),
-      ...Array.from({ length: 6 }, (_, i) => `bodypain${i}`),
-      ...Array.from({ length: 5 }, (_, i) => `paininterfere${i}`),
+      ...Array.from({ length: 1 }, (_, i) => `emotionalproblem${i}`),
+      ...Array.from({ length: 1 }, (_, i) => `socialactivitiesgroups${i}`),
+      ...Array.from({ length: 1 }, (_, i) => `bodypain${i}`),
+      ...Array.from({ length: 1 }, (_, i) => `paininterfere${i}`),
       ...Array.from({ length: 9 }, (_, i) => `feelings${i}`),
-      ...Array.from({ length: 5 }, (_, i) => `socialInterference${i}`),
+      ...Array.from({ length: 1 }, (_, i) => `socialInterference${i}`),
       ...Array.from({ length: 4 }, (_, i) => `healthTime${i}`)
     ];
     return requiredKeys.every(key => surveyData[key]);
@@ -174,79 +174,57 @@ const MainSurvey = ({ telegramId }) => {
               ))}
 
               <RoundedTypography sx={{ marginTop: 2 }}>
-                During the last 4 weeks, have you had any of the following problems at work or with other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
-              </RoundedTypography>
-              {[
-                'I have reduced the amount of time I spend at work or doing other activities',
-                'I have accomplished less than I would like',
-                'I did not do work or other activities as carefully as usual',
-              ].map((question, index) => (
-                <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
-                  <RadioGroupRow
-                    name={`emotionalproblem${index}`}
-                    value={surveyData[`emotionalproblem${index}`] || ''}
-                    onChange={handleInputChange}
-                  >
-                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="no" control={<Radio />} label="No" />
-                  </RadioGroupRow>
-                </Box>
-              ))}
-
-              <RoundedTypography sx={{ marginTop: 2 }}>
-            During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
+                During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
                   name="socialactivitiesgroups"
-                  value={surveyData["socialactivitiesgroups"] || ''}
+                  value={surveyData['socialactivitiesgroups'] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="No way." control={<Radio />} label="No way." />
-                  <FormControlLabel value="Slightly." control={<Radio />} label="Slightly." />
-                  <FormControlLabel value="Moderately." control={<Radio />} label="Moderately." />
-                  <FormControlLabel value="Quite." control={<Radio />} label="Quite." />
-                  <FormControlLabel value="Extremely." control={<Radio />} label="Extremely." />
+                  <FormControlLabel value="noWay" control={<Radio />} label="No way." />
+                  <FormControlLabel value="slightly" control={<Radio />} label="Slightly." />
+                  <FormControlLabel value="moderately" control={<Radio />} label="Moderately." />
+                  <FormControlLabel value="quite" control={<Radio />} label="Quite." />
+                  <FormControlLabel value="extremely" control={<Radio />} label="Extremely." />
                 </RadioGroupRow>
               </Box>
-    
+
               <RoundedTypography sx={{ marginTop: 2 }}>
                 How much body pain have you had in the last 4 weeks?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
                   name="bodypain"
-                  value={surveyData["bodypain"] || ''}
+                  value={surveyData['bodypain'] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="Nothing" control={<Radio />} label="Nothing" />
-                  <FormControlLabel value="Very soft." control={<Radio />} label="Very soft." />
-                  <FormControlLabel value="Soft." control={<Radio />} label="Soft." />
-                  <FormControlLabel value="Moderate." control={<Radio />} label="Moderate." />
-                  <FormControlLabel value="Severe." control={<Radio />} label="Severe." />
-                  <FormControlLabel value="Very severe." control={<Radio />} label="Very severe." />
+                  <FormControlLabel value="nothing" control={<Radio />} label="Nothing" />
+                  <FormControlLabel value="verySoft" control={<Radio />} label="Very soft." />
+                  <FormControlLabel value="soft" control={<Radio />} label="Soft." />
+                  <FormControlLabel value="moderate" control={<Radio />} label="Moderate." />
+                  <FormControlLabel value="severe" control={<Radio />} label="Severe." />
+                  <FormControlLabel value="verySevere" control={<Radio />} label="Very severe." />
                 </RadioGroupRow>
               </Box>
-    
+              
               <RoundedTypography sx={{ marginTop: 2 }}>
                 During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
                   name="paininterfere"
-                  value={surveyData["paininterfere"] || ''}
+                  value={surveyData['paininterfere'] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="No way." control={<Radio />} label="No way." />
-                  <FormControlLabel value="Slightly." control={<Radio />} label="Slightly." />
-                  <FormControlLabel value="Moderately." control={<Radio />} label="Moderately." />
-                  <FormControlLabel value="Quite." control={<Radio />} label="Quite." />
-                  <FormControlLabel value="Extremely." control={<Radio />} label="Extremely." />
+                  <FormControlLabel value="noWay" control={<Radio />} label="No way." />
+                  <FormControlLabel value="slightly" control={<Radio />} label="Slightly." />
+                  <FormControlLabel value="moderately" control={<Radio />} label="Moderately." />
+                  <FormControlLabel value="quite" control={<Radio />} label="Quite." />
+                  <FormControlLabel value="extremely" control={<Radio />} label="Extremely." />
                 </RadioGroupRow>
               </Box>
-              ))}
-              
+                    
               <RoundedTypography sx={{ marginTop: 2 }}>
                 These questions are about how you are feeling and how things have been going for you in the last 4 weeks. For each question, please give the answer that is closest to how you felt.
               </RoundedTypography>
@@ -277,60 +255,24 @@ const MainSurvey = ({ telegramId }) => {
                   </RadioGroupRow>
                 </Box>
               ))}
-              
+                
               <RoundedTypography sx={{ marginTop: 2 }}>
-            During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
-          </RoundedTypography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-            <RadioGroupRow
-              name="socialactivitiesgroups"
-              value={surveyData["socialactivitiesgroups"] || ''}
-              onChange={handleInputChange}
-            >
-              <FormControlLabel value="No way." control={<Radio />} label="No way." />
-              <FormControlLabel value="Slightly." control={<Radio />} label="Slightly." />
-              <FormControlLabel value="Moderately." control={<Radio />} label="Moderately." />
-              <FormControlLabel value="Quite." control={<Radio />} label="Quite." />
-              <FormControlLabel value="Extremely." control={<Radio />} label="Extremely." />
-            </RadioGroupRow>
-          </Box>
-
-          <RoundedTypography sx={{ marginTop: 2 }}>
-            How much body pain have you had in the last 4 weeks?
-          </RoundedTypography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-            <RadioGroupRow
-              name="bodypain"
-              value={surveyData["bodypain"] || ''}
-              onChange={handleInputChange}
-            >
-              <FormControlLabel value="Nothing" control={<Radio />} label="Nothing" />
-              <FormControlLabel value="Very soft." control={<Radio />} label="Very soft." />
-              <FormControlLabel value="Soft." control={<Radio />} label="Soft." />
-              <FormControlLabel value="Moderate." control={<Radio />} label="Moderate." />
-              <FormControlLabel value="Severe." control={<Radio />} label="Severe." />
-              <FormControlLabel value="Very severe." control={<Radio />} label="Very severe." />
-            </RadioGroupRow>
-          </Box>
-
-                <RoundedTypography sx={{ marginTop: 2 }}>
-                  During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
-                </RoundedTypography>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <RadioGroupRow
-                    name="socialInterference"
-                    value={surveyData["socialInterference"] || ''}
-                    onChange={handleInputChange}
-                  >
-                    <FormControlLabel value="All the time." control={<Radio />} label="All the time." />
-                    <FormControlLabel value="Most of the time." control={<Radio />} label="Most of the time." />
-                    <FormControlLabel value="Part of the time." control={<Radio />} label="Part of the time." />
-                    <FormControlLabel value="A little of the time." control={<Radio />} label="A little of the time." />
-                    <FormControlLabel value="Nothing of time." control={<Radio />} label="Nothing of time." />
-                  </RadioGroupRow>
-                </Box>
-              ))}
-              
+                During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
+              </RoundedTypography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                <RadioGroupRow
+                  name="socialInterference"
+                  value={surveyData['socialInterference'] || ''}
+                  onChange={handleInputChange}
+                >
+                  <FormControlLabel value="allTheTime" control={<Radio />} label="All the time." />
+                  <FormControlLabel value="mostOfTheTime" control={<Radio />} label="Most of the time." />
+                  <FormControlLabel value="partOfTheTime" control={<Radio />} label="Part of the time." />
+                  <FormControlLabel value="aLittleOfTheTime" control={<Radio />} label="A little of the time." />
+                  <FormControlLabel value="noneOfTheTime" control={<Radio />} label="None of the time." />
+                </RadioGroupRow>
+              </Box>
+                    
               <RoundedTypography sx={{ marginTop: 2 }}>
                 How much of the time during the last 4 weeks?
               </RoundedTypography>
@@ -356,6 +298,7 @@ const MainSurvey = ({ telegramId }) => {
                   </RadioGroupRow>
                 </Box>
               ))}
+                
               <IconButton
                 sx={{ position: 'fixed', bottom: 30, right: 40, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleScrollToTop}
