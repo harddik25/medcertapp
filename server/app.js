@@ -13,8 +13,8 @@ const adminRoutes = require('./routes/adminRoutes');
 const surveyRoutes = require('./routes/surveyRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const userRoutes = require('./routes/userRoutes');
+const clientRoutes = require('./routes/clientRoutes');
 const documentRoutes = require('./routes/documentRoutes');
-
 const app = express();
 
 
@@ -50,6 +50,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/clients', clientRoutes);
 app.use('/api/documents', documentRoutes);
 
 app.use(express.static('/var/www/medlevel.me'));
