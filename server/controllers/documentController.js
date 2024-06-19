@@ -63,7 +63,7 @@ exports.uploadDocument = async (req, res) => {
     const frontDocument = req.files['frontDocument'][0];
     const backDocument = req.files['backDocument'] ? req.files['backDocument'][0] : null;
 
-    if (!documentType || !frontDocument || !userId || !surveyId || (documentType !== 'Passport' && !backDocument)) {
+    if (!documentType || !frontDocument || !userId || (documentType !== 'Passport' && !backDocument)) {
       return res.status(400).json({ success: false, message: 'Все поля обязательны для заполнения' });
     }
 
@@ -94,13 +94,15 @@ exports.uploadDocument = async (req, res) => {
       await uploadToFTP(localBackPath, remoteBackPath);
     }
 
-    // Сохранение пути к документу в опросе
-    const documentPaths = { front: remoteFrontPath };
-    if (backDocument) {
-      documentPaths.back = remoteBackPath;
-    }
+    // Сохранение пути к документу в опросе, если surveyId присутствует
+    if (surveyId) {
+      const documentPaths = { front: remoteFrontPath };
+      if (backDocument) {
+        documentPaths.back = remoteBackPath;
+      }
 
-    await Survey.findByIdAndUpdate(surveyId, { $set: { documentPath: documentPaths } });
+      await Survey.findByIdAndUpdate(surveyId, { $set: { documentPath: documentPaths } });
+    }
 
     // Remove local file after upload
     fs.unlinkSync(localFrontPath);
