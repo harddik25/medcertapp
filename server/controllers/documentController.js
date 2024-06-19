@@ -87,3 +87,43 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
+exports.downloadDocument = async (req, res) => {
+  const { userId, documentType, documentName } = req.params;
+  const localPath = path.join(__dirname, '..', 'downloads', userId, documentType, documentName);
+
+  const client = new ftp.Client();
+  client.ftp.verbose = true;
+  client.ftp.timeout = 0;
+
+  try {
+    await client.access({
+      host: process.env.FTP_HOST,
+      user: process.env.FTP_USER,
+      password: process.env.FTP_PASSWORD,
+      secure: false,
+    });
+
+    const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${documentName}`;
+    
+    // Ensure local directory exists
+    const downloadPath = path.dirname(localPath);
+    if (!fs.existsSync(downloadPath)) {
+      fs.mkdirSync(downloadPath, { recursive: true });
+    }
+
+    await client.downloadTo(localPath, remotePath);
+
+    res.download(localPath, (err) => {
+      if (err) {
+        console.error('Error downloading document:', err);
+        res.status(500).json({ success: false, message: 'Server error.' });
+      }
+      fs.unlinkSync(localPath); // Удалить временный файл после загрузки
+    });
+  } catch (error) {
+    console.error('Error downloading document:', error);
+    res.status(500).json({ success: false, message: 'Server error.' });
+  } finally {
+    client.close();
+  }
+};
