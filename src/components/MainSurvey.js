@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Импорт Axios
+import axios from 'axios';
 import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -57,18 +57,22 @@ const RadioGroupRow = styled(RadioGroup)({
 
 const MainSurvey = ({ telegramId }) => {
   const [surveyData, setSurveyData] = useState({});
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const paperRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSurveyData({ ...surveyData, [name]: value });
+    setErrors({ ...errors, [name]: false });
   };
 
   const handleSubmit = async () => {
-    console.log("Attempting to submit survey data:", surveyData);
-    if (!isSurveyComplete()) {
-      alert('Пожалуйста, заполните все поля опроса.');
+    const incompleteFields = getIncompleteFields();
+    if (incompleteFields.length > 0) {
+      const newErrors = incompleteFields.reduce((acc, field) => ({ ...acc, [field]: true }), {});
+      setErrors(newErrors);
+      alert('Пожалуйста, ответьте на все пункты опросника.');
       return;
     }
 
@@ -91,7 +95,7 @@ const MainSurvey = ({ telegramId }) => {
     }
   };
 
-  const isSurveyComplete = () => {
+  const getIncompleteFields = () => {
     const requiredKeys = [
       ...Array.from({ length: 10 }, (_, i) => `dayactivities${i}`),
       ...Array.from({ length: 4 }, (_, i) => `physicalhealth${i}`),
@@ -103,9 +107,7 @@ const MainSurvey = ({ telegramId }) => {
       'socialInterference',
       ...Array.from({ length: 4 }, (_, i) => `healthTime${i}`)
     ];
-    const complete = requiredKeys.every(key => surveyData[key]);
-    console.log("Survey completion check:", complete, surveyData);
-    return complete;
+    return requiredKeys.filter(key => !surveyData[key]);
   };
 
   return (
@@ -141,7 +143,7 @@ const MainSurvey = ({ telegramId }) => {
                 'Bathing or dressing.',
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors[`dayactivities${index}`] ? 'red' : 'inherit' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`dayactivities${index}`}
                     value={surveyData[`dayactivities${index}`] || ''}
@@ -164,7 +166,7 @@ const MainSurvey = ({ telegramId }) => {
                 'I had difficulty and required an extra effort',
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors[`physicalhealth${index}`] ? 'red' : 'inherit' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`physicalhealth${index}`}
                     value={surveyData[`physicalhealth${index}`] || ''}
@@ -180,6 +182,7 @@ const MainSurvey = ({ telegramId }) => {
                 During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors['socialactivitiesgroups'] ? 'red' : 'inherit' }}>To what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?</Typography>
                 <RadioGroupRow
                   name="socialactivitiesgroups"
                   value={surveyData['socialactivitiesgroups'] || ''}
@@ -197,6 +200,7 @@ const MainSurvey = ({ telegramId }) => {
                 How much body pain have you had in the last 4 weeks?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors['bodypain'] ? 'red' : 'inherit' }}>How much body pain have you had in the last 4 weeks?</Typography>
                 <RadioGroupRow
                   name="bodypain"
                   value={surveyData['bodypain'] || ''}
@@ -215,6 +219,7 @@ const MainSurvey = ({ telegramId }) => {
                 During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors['paininterfere'] ? 'red' : 'inherit' }}>How much did pain interfere with your normal work (including both work outside the home and at home)?</Typography>
                 <RadioGroupRow
                   name="paininterfere"
                   value={surveyData['paininterfere'] || ''}
@@ -243,7 +248,7 @@ const MainSurvey = ({ telegramId }) => {
                 'Did you feel tired?',
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors[`feelings${index}`] ? 'red' : 'inherit' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`feelings${index}`}
                     value={surveyData[`feelings${index}`] || ''}
@@ -263,6 +268,7 @@ const MainSurvey = ({ telegramId }) => {
                 During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors['socialInterference'] ? 'red' : 'inherit' }}>How much of the time has your physical health or emotional problems interfered with your social activities?</Typography>
                 <RadioGroupRow
                   name="socialInterference"
                   value={surveyData['socialInterference'] || ''}
@@ -286,7 +292,7 @@ const MainSurvey = ({ telegramId }) => {
                 'My health is excellent.',
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2, width: '100%', }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors[`healthTime${index}`] ? 'red' : 'inherit' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`healthTime${index}`}
                     value={surveyData[`healthTime${index}`] || ''}
@@ -313,7 +319,6 @@ const MainSurvey = ({ telegramId }) => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleSubmit}
-                disabled={!isSurveyComplete()}
               >
                 Continue
               </Button>
@@ -326,4 +331,3 @@ const MainSurvey = ({ telegramId }) => {
 };
 
 export default MainSurvey;
-
