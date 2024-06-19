@@ -86,15 +86,15 @@ const MainSurvey = ({ telegramId }) => {
 
   const isSurveyComplete = () => {
     const requiredKeys = [
-      ...Array(10).keys()].map(i => `dayactivities${i}`),
-      ...Array(4).keys()].map(i => `physicalhealth${i}`),
-      ...Array(3).keys()].map(i => `emotionalproblem${i}`),
-      ...Array(5).keys()].map(i => `socialactivitiesgroups${i}`),
-      ...Array(6).keys()].map(i => `bodypain${i}`),
-      ...Array(5).keys()].map(i => `paininterfere${i}`),
-      ...Array(9).keys()].map(i => `feelings${i}`),
-      ...Array(5).keys()].map(i => `socialInterference${i}`),
-      ...Array(4).keys()].map(i => `healthTime${i}`)
+      ...Array.from({ length: 10 }, (_, i) => `dayactivities${i}`),
+      ...Array.from({ length: 4 }, (_, i) => `physicalhealth${i}`),
+      ...Array.from({ length: 3 }, (_, i) => `emotionalproblem${i}`),
+      ...Array.from({ length: 5 }, (_, i) => `socialactivitiesgroups${i}`),
+      ...Array.from({ length: 6 }, (_, i) => `bodypain${i}`),
+      ...Array.from({ length: 5 }, (_, i) => `paininterfere${i}`),
+      ...Array.from({ length: 9 }, (_, i) => `feelings${i}`),
+      ...Array.from({ length: 5 }, (_, i) => `socialInterference${i}`),
+      ...Array.from({ length: 4 }, (_, i) => `healthTime${i}`)
     ];
     return requiredKeys.every(key => surveyData[key]);
   };
@@ -360,4 +360,3 @@ const MainSurvey = ({ telegramId }) => {
 };
 
 export default MainSurvey;
-
