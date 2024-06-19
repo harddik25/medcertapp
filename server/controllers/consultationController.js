@@ -42,10 +42,13 @@ exports.scheduleAppointment = async (req, res) => {
 exports.getAppointments = async (req, res) => {
   try {
     const userId = req.params.userId;
+    console.log('Fetching appointment for user ID:', userId); // Логируем userId
     const appointment = await Consultation.findOne({ userId: userId });
     if (appointment) {
+      console.log('Found appointment:', appointment); // Логируем найденную консультацию
       res.status(200).json({ appointment });
     } else {
+      console.log('No appointment found for user ID:', userId); // Логируем отсутствие консультации
       res.status(404).json({ message: 'Консультация не найдена' });
     }
   } catch (error) {
