@@ -36,6 +36,22 @@ const ClientInfo = () => {
     navigate(-1);
   };
 
+  const handleDownloadDocument = async (documentType, documentName) => {
+    try {
+      const response = await fetch(`https://medlevel.me/api/documents/download/${patientId}/${documentType}/${documentName}`);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = documentName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (error) {
+      console.error('Ошибка при загрузке документа', error);
+    }
+  };
+
   return (
     <Background>
       <Container component="main" maxWidth="md">
@@ -66,9 +82,17 @@ const ClientInfo = () => {
                     </ListItem>
                   ))}
                 </List>
-                <Button variant="contained" color="secondary" sx={{ mt: 2 }} href={`https://ftp.medlevel.me/documents/${clientInfo.document}`} target="_blank">
-                  Скачать документ
-                </Button>
+                {clientInfo.documents.map((document, index) => (
+                  <Button
+                    key={index}
+                    variant="contained"
+                    color="secondary"
+                    sx={{ mt: 2 }}
+                    onClick={() => handleDownloadDocument(document.documentType, document.documentName)}
+                  >
+                    Скачать {document.documentName}
+                  </Button>
+                ))}
               </Box>
             ) : (
               <Typography variant="body1" sx={{ mt: 2, color: '#f44336' }}>
