@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Container, Box, Typography, Button, CssBaseline, Paper, TextField, MenuItem } from '@mui/material';
+import { Container, Box, Typography, Button, TextField, CssBaseline, Paper } from '@mui/material';
 import { styled } from '@mui/system';
+import axios from 'axios';
 import CannabisBackground from './cannabis-background.webp';
-import { useNavigate } from 'react-router-dom';
 
 const Background = styled('div')({
   display: 'flex',
@@ -13,107 +13,80 @@ const Background = styled('div')({
   backgroundSize: 'cover',
 });
 
-const documentTypes = [
-  { value: 'NIE', label: 'NIE' },
-  { value: 'DNI', label: 'DNI' },
-  { value: 'PASSPORT', label: 'Passport' },
-];
-
 const DocumentUpload = () => {
   const [documentType, setDocumentType] = useState('');
   const [document, setDocument] = useState(null);
-  const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('telegramUser'));
+  const [userId, setUserId] = useState(''); // Example userId, you should replace it with the actual userId
+  const [surveyId, setSurveyId] = useState(''); // Example surveyId, you should replace it with the actual surveyId
+  const [uploadStatus, setUploadStatus] = useState('');
 
-  const handleDocumentChange = (event) => {
-    setDocumentType(event.target.value);
+  const handleFileChange = (e) => {
+    setDocument(e.target.files[0]);
   };
 
-  const handleFileChange = (event) => {
-    setDocument(event.target.files[0]);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!documentType || !document) {
-      alert('Please select a document type and upload a document.');
+  const handleUpload = async () => {
+    if (!documentType || !document || !userId || !surveyId) {
+      setUploadStatus('Все поля обязательны для заполнения');
       return;
     }
 
     const formData = new FormData();
     formData.append('documentType', documentType);
     formData.append('document', document);
-    formData.append('userId', user.id); // Add userId to formData
+    formData.append('userId', userId);
+    formData.append('surveyId', surveyId);
 
     try {
-      const response = await fetch('https://medlevel.me/api/documents/upload', {
-        method: 'POST',
-        body: formData,
+      const response = await axios.post('https://medlevel.me/api/documents/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
-      const data = await response.json();
-      if (data.success) {
-        navigate('/main-survey');
-      } else {
-        alert('Error uploading document,file size is too big');
-      }
+      setUploadStatus('Документ успешно загружен');
     } catch (error) {
-      console.error('Error uploading document', error);
-      alert('Error uploading document,file size is too big');
+      setUploadStatus('Ошибка при загрузке документа');
+      console.error('Ошибка при загрузке документа:', error);
     }
   };
 
   return (
     <Background>
-      <Container component="main" maxWidth="md">
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
           <Box
-            component="form"
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
-            onSubmit={handleSubmit}
           >
-            <Typography component="h1" variant="h5" sx={{ color: '#388e3c', mb: 2 }}>
-              Upload Document
+            <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
+              Загрузка документа
             </Typography>
             <TextField
-              select
-              label="Document Type"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              label="Тип документа"
               value={documentType}
-              onChange={handleDocumentChange}
-              fullWidth
-              sx={{ mb: 2 }}
-            >
-              {documentTypes.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
+              onChange={(e) => setDocumentType(e.target.value)}
+            />
+            <input type="file" onChange={handleFileChange} />
             <Button
-              variant="contained"
-              component="label"
-              fullWidth
-              sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-            >
-              Upload File
-              <input
-                type="file"
-                hidden
-                onChange={handleFileChange}
-              />
-            </Button>
-            <Button
-              type="submit"
+              type="button"
               fullWidth
               variant="contained"
-              sx={{ backgroundColor: '#4caf50', color: '#fff' }}
+              sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+              onClick={handleUpload}
             >
-              Submit
+              Загрузить
             </Button>
+            {uploadStatus && (
+              <Typography variant="body2" color="error">
+                {uploadStatus}
+              </Typography>
+            )}
           </Box>
         </Paper>
       </Container>
@@ -122,8 +95,5 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
-
-
-
 
 
