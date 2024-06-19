@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState ,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from 'axios'; // Импорт Axios
 import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -55,33 +55,21 @@ const RadioGroupRow = styled(RadioGroup)({
   gap: '10px',
 });
 
-const MainSurvey = ({ telegramId }) => {
+const MainSurvey = () => {
   const [surveyData, setSurveyData] = useState({});
-  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const paperRef = useRef(null);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSurveyData({ ...surveyData, [name]: value });
-    setErrors({ ...errors, [name]: false });
   };
 
   const handleSubmit = async () => {
-    const incompleteFields = getIncompleteFields();
-    if (incompleteFields.length > 0) {
-      const newErrors = incompleteFields.reduce((acc, field) => ({ ...acc, [field]: true }), {});
-      setErrors(newErrors);
-      alert('Пожалуйста, ответьте на все пункты опросника.');
-      return;
-    }
-
     try {
-      await axios.post('/api/survey/save', { telegramId, ...surveyData });
+      await axios.post('/api/survey/save', surveyData);
       navigate('/consultation');
     } catch (error) {
       console.error('Error saving survey data:', error);
-      alert('Ошибка при сохранении данных опроса. Попробуйте еще раз.');
     }
   };
 
@@ -93,45 +81,6 @@ const MainSurvey = ({ telegramId }) => {
     if (paperRef.current) {
       paperRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  };
-
-  const getIncompleteFields = () => {
-    const fields = [
-      { key: 'dayactivities0', question: 'Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports.' },
-      { key: 'dayactivities1', question: 'Moderate activities, such as moving a table, pushing a vacuum, go bowling or play golf.' },
-      { key: 'dayactivities2', question: 'Lifting weight or carrying food.' },
-      { key: 'dayactivities3', question: 'Climb several flights of stairs.' },
-      { key: 'dayactivities4', question: 'Up a flight of stairs.' },
-      { key: 'dayactivities5', question: 'Bend, kneel, or stoop.' },
-      { key: 'dayactivities6', question: 'Walking more than a kilometer.' },
-      { key: 'dayactivities7', question: 'Walking several blocks.' },
-      { key: 'dayactivities8', question: 'Walking one block.' },
-      { key: 'dayactivities9', question: 'Bathing or dressing.' },
-      { key: 'physicalhealth0', question: 'I have reduced the time I spend at work or other activities' },
-      { key: 'physicalhealth1', question: 'I have accomplished less than I would like' },
-      { key: 'physicalhealth2', question: 'I had some limitation in work or other activities' },
-      { key: 'physicalhealth3', question: 'I had difficulty and required an extra effort' },
-      { key: 'emotionalproblem0', question: 'To what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?' },
-      { key: 'socialactivitiesgroups', question: 'To what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?' },
-      { key: 'bodypain', question: 'How much body pain have you had in the last 4 weeks?' },
-      { key: 'paininterfere', question: 'How much did pain interfere with your normal work (including both work outside the home and at home)?' },
-      { key: 'feelings0', question: 'Did you feel full of energy?' },
-      { key: 'feelings1', question: 'Were you very nervous?' },
-      { key: 'feelings2', question: 'Have you felt so low that nothing could cheer you up?' },
-      { key: 'feelings3', question: 'Have you felt calm and at peace?' },
-      { key: 'feelings4', question: 'Did you have a lot of energy?' },
-      { key: 'feelings5', question: 'Have you felt downhearted and blue?' },
-      { key: 'feelings6', question: 'Did you feel exhausted?' },
-      { key: 'feelings7', question: 'Have you been a happy person?' },
-      { key: 'feelings8', question: 'Did you feel tired?' },
-      { key: 'socialInterference', question: 'How much of the time has your physical health or emotional problems interfered with your social activities?' },
-      { key: 'healthTime0', question: 'I seem to get sick a little more than other people.' },
-      { key: 'healthTime1', question: 'I am as healthy as anyone you know.' },
-      { key: 'healthTime2', question: 'I hope my health gets worse.' },
-      { key: 'healthTime3', question: 'My health is excellent.' }
-    ];
-
-    return fields.filter(field => !surveyData[field.key]);
   };
 
   return (
