@@ -13,9 +13,9 @@ const consultationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  meetLink: {
-    type: String,
-    required: true // Сделайте это поле обязательным
+  videoLink: {
+    type: String, // Поле для ссылки на видеоконференцию
+    required: true
   }
 });
 
