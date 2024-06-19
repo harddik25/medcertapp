@@ -1,7 +1,7 @@
-import React, { useState ,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Импорт Axios
-import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton } from '@mui/material';
+import axios from 'axios';
+import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton, Snackbar, Alert } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -56,20 +56,56 @@ const RadioGroupRow = styled(RadioGroup)({
 });
 
 const MainSurvey = () => {
-  const [surveyData, setSurveyData] = useState({});
+  const [surveyData, setSurveyData] = useState({
+    dayactivities: {},
+    physicalhealth: {},
+    emotionalproblem: {},
+    socialactivitiesgroups: {},
+    bodypain: {},
+    paininterfere: {},
+    feelings: {},
+    socialInterference: {},
+    healthTime: {},
+    telegramId: "", // Добавим поле для telegramId
+  });
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const paperRef = useRef(null);
+
+  useEffect(() => {
+    const telegramUser = JSON.parse(localStorage.getItem('telegramUser'));
+    if (telegramUser && telegramUser.id) {
+      setSurveyData(prevData => ({
+        ...prevData,
+        telegramId: telegramUser.id
+      }));
+    } else {
+      console.error('Ошибка: telegramUser не найден в localStorage');
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSurveyData({ ...surveyData, [name]: value });
+    const category = name.match(/[a-zA-Z]+/)[0]; // Извлекаем категорию из имени
+    const index = name.match(/\d+/)[0]; // Извлекаем индекс из имени
+
+    setSurveyData((prevData) => ({
+      ...prevData,
+      [category]: {
+        ...prevData[category],
+        [index]: value,
+      },
+    }));
   };
 
   const handleSubmit = async () => {
     try {
+      console.log('Submitting survey data:', surveyData); // Логирование данных перед отправкой
       await axios.post('/api/surveys/save', surveyData);
       navigate('/consultation');
     } catch (error) {
       console.error('Error saving survey data:', error);
+      setErrorMessage(error.response ? error.response.data.details : 'An unknown error occurred');
     }
   };
 
@@ -119,7 +155,7 @@ const MainSurvey = () => {
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`dayactivities${index}`}
-                    value={surveyData[`dayactivities${index}`] || ''}
+                    value={surveyData.dayactivities[index] || ''}
                     onChange={handleInputChange}
                   >
                     <FormControlLabel value="veryLimited" control={<Radio />} label="Yes very limited" />
@@ -142,7 +178,7 @@ const MainSurvey = () => {
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`physicalhealth${index}`}
-                    value={surveyData[`physicalhealth${index}`] || ''}
+                    value={surveyData.physicalhealth[index] || ''}
                     onChange={handleInputChange}
                   >
                     <FormControlLabel value="yes" control={<Radio />} label="Yes" />
@@ -157,7 +193,7 @@ const MainSurvey = () => {
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
                   name="socialactivitiesgroups"
-                  value={surveyData['socialactivitiesgroups'] || ''}
+                  value={surveyData.socialactivitiesgroups[0] || ''}
                   onChange={handleInputChange}
                 >
                   <FormControlLabel value="noWay" control={<Radio />} label="No way." />
@@ -174,7 +210,7 @@ const MainSurvey = () => {
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
                   name="bodypain"
-                  value={surveyData['bodypain'] || ''}
+                  value={surveyData.bodypain[0] || ''}
                   onChange={handleInputChange}
                 >
                   <FormControlLabel value="nothing" control={<Radio />} label="Nothing" />
@@ -192,7 +228,7 @@ const MainSurvey = () => {
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
                   name="paininterfere"
-                  value={surveyData['paininterfere'] || ''}
+                  value={surveyData.paininterfere[0] || ''}
                   onChange={handleInputChange}
                 >
                   <FormControlLabel value="noWay" control={<Radio />} label="No way." />
@@ -221,7 +257,7 @@ const MainSurvey = () => {
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`feelings${index}`}
-                    value={surveyData[`feelings${index}`] || ''}
+                    value={surveyData.feelings[index] || ''}
                     onChange={handleInputChange}
                   >
                     <FormControlLabel value="1" control={<Radio />} label="All the time" />
@@ -240,7 +276,7 @@ const MainSurvey = () => {
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
                   name="socialInterference"
-                  value={surveyData['socialInterference'] || ''}
+                  value={surveyData.socialInterference[0] || ''}
                   onChange={handleInputChange}
                 >
                   <FormControlLabel value="allTheTime" control={<Radio />} label="All the time." />
@@ -264,7 +300,7 @@ const MainSurvey = () => {
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`healthTime${index}`}
-                    value={surveyData[`healthTime${index}`] || ''}
+                    value={surveyData.healthTime[index] || ''}
                     onChange={handleInputChange}
                     
                   >
@@ -294,6 +330,13 @@ const MainSurvey = () => {
           </Box>
       </FullScreenPaper>
     </Container>
+    {errorMessage && (
+      <Snackbar open={true} autoHideDuration={6000} onClose={() => setErrorMessage('')}>
+        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+    )}
   </Background>
 </ThemeProvider>
 );
