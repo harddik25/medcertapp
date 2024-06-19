@@ -1,19 +1,52 @@
 // models/Survey.js
 const mongoose = require('mongoose');
 
-const surveySchema = new mongoose.Schema({
-  userId: {
-    type: String,
+const SurveySchema = new mongoose.Schema({
+  dayactivities: {
+    type: Map,
+    of: String,
     required: true,
   },
-  surveyData: {
-    type: Object,
+  physicalhealth: {
+    type: Map,
+    of: String,
     required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  emotionalproblem: {
+    type: Map,
+    of: String,
+    required: true,
   },
-});
+  socialactivitiesgroups: {
+    type: Map,
+    of: String,
+    required: true,
+  },
+  bodypain: {
+    type: Map,
+    of: String,
+    required: true,
+  },
+  paininterfere: {
+    type: Map,
+    of: String,
+    required: true,
+  },
+  feelings: {
+    type: Map,
+    of: String,
+    required: true,
+  },
+  socialInterference: {
+    type: Map,
+    of: String,
+    required: true,
+  },
+  healthTime: {
+    type: Map,
+    of: String,
+    required: true,
+  }
+}, { timestamps: true });
 
-module.exports = mongoose.model('Survey', surveySchema);
+module.exports = mongoose.model('Survey', SurveySchema);
