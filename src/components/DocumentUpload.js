@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Box, Typography, Button, TextField, CssBaseline, Paper } from '@mui/material';
+import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, MenuItem } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios';
 import CannabisBackground from './cannabis-background.webp';
@@ -15,24 +15,30 @@ const Background = styled('div')({
 
 const DocumentUpload = () => {
   const [documentType, setDocumentType] = useState('');
-  const [document, setDocument] = useState(null);
+  const [frontDocument, setFrontDocument] = useState(null);
+  const [backDocument, setBackDocument] = useState(null);
   const [userId, setUserId] = useState(''); // Example userId, you should replace it with the actual userId
   const [surveyId, setSurveyId] = useState(''); // Example surveyId, you should replace it with the actual surveyId
   const [uploadStatus, setUploadStatus] = useState('');
 
-  const handleFileChange = (e) => {
-    setDocument(e.target.files[0]);
+  const handleFileChange = (e, side) => {
+    if (side === 'front') {
+      setFrontDocument(e.target.files[0]);
+    } else if (side === 'back') {
+      setBackDocument(e.target.files[0]);
+    }
   };
 
   const handleUpload = async () => {
-    if (!documentType || !document || !userId || !surveyId) {
+    if (!documentType || !userId || !surveyId || (documentType !== 'Passport' && (!frontDocument || !backDocument)) || (documentType === 'Passport' && !frontDocument)) {
       setUploadStatus('Все поля обязательны для заполнения');
       return;
     }
 
     const formData = new FormData();
     formData.append('documentType', documentType);
-    formData.append('document', document);
+    formData.append('frontDocument', frontDocument);
+    if (backDocument) formData.append('backDocument', backDocument);
     formData.append('userId', userId);
     formData.append('surveyId', surveyId);
 
@@ -65,14 +71,22 @@ const DocumentUpload = () => {
               Загрузка документа
             </Typography>
             <TextField
+              select
               variant="outlined"
               margin="normal"
               fullWidth
               label="Тип документа"
               value={documentType}
               onChange={(e) => setDocumentType(e.target.value)}
-            />
-            <input type="file" onChange={handleFileChange} />
+            >
+              <MenuItem value="NIE">NIE</MenuItem>
+              <MenuItem value="DNI">DNI</MenuItem>
+              <MenuItem value="Passport">Passport</MenuItem>
+            </TextField>
+            <input type="file" onChange={(e) => handleFileChange(e, 'front')} />
+            {(documentType === 'NIE' || documentType === 'DNI') && (
+              <input type="file" onChange={(e) => handleFileChange(e, 'back')} />
+            )}
             <Button
               type="button"
               fullWidth
@@ -95,5 +109,6 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
+
 
 
