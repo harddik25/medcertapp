@@ -45,7 +45,9 @@ const UserProfile = () => {
         try {
           console.log('Fetching appointment for user:', user.id);
           const response = await fetch(`https://medlevel.me/api/consultations/appointments/${user.id}`);
-          const data = await response.json();
+          const responseText = await response.text(); // Получаем текстовый ответ для логирования
+          console.log('Response text:', responseText); // Логируем текстовый ответ
+          const data = JSON.parse(responseText); // Парсим JSON вручную для отладки
           console.log('Received appointment data:', data);
           if (data.appointment) {
             setAppointment(data.appointment);
@@ -186,5 +188,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
 
