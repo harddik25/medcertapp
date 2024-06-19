@@ -52,7 +52,6 @@ const UserProfile = () => {
       }
     };
 
-    fetchCertificate();
     fetchAppointment();
   }, [user]);
 
