@@ -1,6 +1,6 @@
 const Consultation = require('../models/Consultation');
 const FreeSlot = require('../models/FreeSlot');
-const { createGoogleMeetLink } = require('../services/googleCalendarService');
+const { createGoogleMeetLink } = require('../models/googleCalendarService');
 
 exports.deleteFreeSlot = async (req, res) => {
   try {
