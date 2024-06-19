@@ -1,5 +1,6 @@
 const Consultation = require('../models/Consultation');
 const FreeSlot = require('../models/FreeSlot');
+const { createGoogleMeetLink } = require('../services/googleCalendarService');
 
 exports.deleteFreeSlot = async (req, res) => {
   try {
@@ -89,31 +90,27 @@ exports.getFreeSlots = async (req, res) => {
 };
 
 exports.bookFreeSlot = async (req, res) => {
+  const { date, time, userId } = req.body;
+  const user = await User.findById(userId); // Предположим, что у вас есть модель User
+
+  if (!user) {
+    return res.status(404).json({ success: false, message: 'User not found' });
+  }
+
   try {
-    const { date, time, userId } = req.body;
-
-    if (!date || !time || !userId) {
-      return res.status(400).json({ message: 'Дата, время и идентификатор пользователя обязательны' });
-    }
-
-    const freeSlot = await FreeSlot.findOne({ date, time });
-    if (!freeSlot) {
-      return res.status(400).json({ message: 'Этот слот уже занят или не существует' });
-    }
-
-    const newAppointment = new Consultation({
+    const meetLink = await createGoogleMeetLink(date, time, `Consultation with ${user.firstName}`);
+    const consultation = new Consultation({
       date,
       time,
-      patientName: userId
+      patientName: userId,
+      meetLink
     });
 
-    await newAppointment.save();
-    await FreeSlot.deleteOne({ date, time });
-
-    res.status(201).json({ success: true, appointment: newAppointment });
+    await consultation.save();
+    res.status(200).json({ success: true, message: 'Consultation booked successfully', meetLink });
   } catch (error) {
-    console.error('Ошибка при бронировании времени приема', error);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+    console.error('Error booking consultation:', error);
+    res.status(500).json({ success: false, message: 'Failed to book consultation' });
   }
 };
 
