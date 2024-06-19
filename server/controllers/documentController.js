@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 async function uploadFilePart(client, localPath, remotePath, start, end, partNumber) {
-  const partPath = `${localPath}.part${partNumber}`;
+  const partPath = `${localPath}`;
   const writeStream = fs.createWriteStream(partPath);
 
   return new Promise((resolve, reject) => {
@@ -11,7 +11,7 @@ async function uploadFilePart(client, localPath, remotePath, start, end, partNum
       .pipe(writeStream)
       .on('finish', async () => {
         try {
-          await client.uploadFrom(partPath, `${remotePath}.part${partNumber}`);
+          await client.uploadFrom(partPath, `${remotePath}`);
           fs.unlinkSync(partPath); // Удалить временный файл после успешной загрузки
           resolve();
         } catch (error) {
@@ -42,9 +42,9 @@ async function uploadToFTP(localPath, remotePath) {
 
     while (start < fileSize) {
       const end = Math.min(start + partSize - 1, fileSize - 1);
-      await uploadFilePart(client, localPath, remotePath, start, end, partNumber);
+      await uploadFilePart(client, localPath, remotePath, start, end);
       start += partSize;
-      partNumber++;
+      
     }
 
     console.log('File uploaded successfully in parts');
@@ -58,10 +58,10 @@ async function uploadToFTP(localPath, remotePath) {
 
 exports.uploadDocument = async (req, res) => {
   try {
-    const { documentType, userId } = req.body;
+    const {userId } = req.body;
     const document = req.file;
 
-    if (!documentType || !document || !userId) {
+    if (!document || !userId) {
       return res.status(400).json({ success: false, message: 'Document type, user ID, and file are required.' });
     }
 
@@ -75,7 +75,7 @@ exports.uploadDocument = async (req, res) => {
     fs.writeFileSync(localPath, document.buffer);
 
     // FTP remote path with patientId as file name
-    const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${userId}`;
+    const remotePath = `/var/www/user4806313/data/${userId}/${userId}`;
     await uploadToFTP(localPath, remotePath);
 
     // Remove local file after upload
