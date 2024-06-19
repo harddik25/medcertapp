@@ -134,7 +134,9 @@ const UserProfile = () => {
                 )}
                 {appointment ? (
                   <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                    Ваша запись на консультацию: {appointment.date} {appointment.time}
+                    Ваша запись на консультацию:
+                    {appointment.date} 
+                    {appointment.time}
                   </Typography>
                 ) : (
                   <>
