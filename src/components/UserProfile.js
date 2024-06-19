@@ -137,15 +137,18 @@ const UserProfile = () => {
                     <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
                       Ваша запись на консультацию: {appointment.date} {appointment.time}
                     </Typography>
-                    <Button
-                      component="a"
-                      href={appointment.meetLink}
-                      fullWidth
-                      variant="contained"
-                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                    >
-                      Перейти к консультации
-                    </Button>
+                    {appointment.videoLink && (
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                        component="a"
+                        href={appointment.videoLink}
+                        target="_blank"
+                      >
+                        Перейти к консультации
+                      </Button>
+                    )}
                   </>
                 ) : (
                   <>
