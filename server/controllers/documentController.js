@@ -65,7 +65,7 @@ exports.uploadDocument = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Document type, user ID, and file are required.' });
     }
 
-    const localPath = path.join(__dirname, '..', 'uploads', userId, documentType, document.originalname);
+    const localPath = path.join(__dirname, '..', 'uploads', document.originalname);
 
     // Ensure local directory exists
     const uploadPath = path.dirname(localPath);
@@ -74,8 +74,8 @@ exports.uploadDocument = async (req, res) => {
     }
     fs.writeFileSync(localPath, document.buffer);
 
-    // FTP remote path
-    const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${document.originalname}`;
+    // FTP remote path with patientId as file name
+    const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${userId}`;
     await uploadToFTP(localPath, remotePath);
 
     // Remove local file after upload
@@ -87,9 +87,10 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
+
 exports.downloadDocument = async (req, res) => {
-  const { userId, documentType, documentName } = req.params;
-  const localPath = path.join(__dirname, '..', 'downloads', userId, documentType, documentName);
+  const { userId, documentType } = req.params;
+  const localPath = path.join(__dirname, '..', 'downloads', userId, documentType, userId);
 
   const client = new ftp.Client();
   client.ftp.verbose = true;
@@ -103,7 +104,7 @@ exports.downloadDocument = async (req, res) => {
       secure: false,
     });
 
-    const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${documentName}`;
+    const remotePath = `/var/www/user4806313/data/${userId}/${userId}`;
     
     // Ensure local directory exists
     const downloadPath = path.dirname(localPath);
@@ -127,3 +128,4 @@ exports.downloadDocument = async (req, res) => {
     client.close();
   }
 };
+
