@@ -45,7 +45,7 @@ const Consultation = () => {
       setOpenSnackbar(true);
       return;
     }
-
+    
     try {
       const response = await fetch('https://medlevel.me/api/consultations/book', {
         method: 'POST',
@@ -58,6 +58,7 @@ const Consultation = () => {
       if (data.success) {
         setBookingStatus('Бронирование успешно! Ваше время: ' + date + ' ' + time);
         setOpenSnackbar(true);
+        navigate('/profile');
       } else {
         setBookingStatus('Ошибка при бронировании консультации');
         setOpenSnackbar(true);
