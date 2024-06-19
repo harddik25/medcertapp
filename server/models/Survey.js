@@ -2,6 +2,10 @@
 const mongoose = require('mongoose');
 
 const SurveySchema = new mongoose.Schema({
+  telegramId: {
+    type: String,
+    required: true,
+  },
   dayactivities: {
     type: Map,
     of: String,
