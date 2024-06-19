@@ -12,6 +12,10 @@ const consultationSchema = new mongoose.Schema({
   patientName: {
     type: String,
     required: true,
+  },
+  meetLink: {
+    type: String,
+    required: true // Сделайте это поле обязательным
   }
 });
 
