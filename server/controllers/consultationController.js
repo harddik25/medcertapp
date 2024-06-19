@@ -93,30 +93,33 @@ exports.bookFreeSlot = async (req, res) => {
   try {
     const { date, time, userId } = req.body;
 
-  if (!date || !time || !userId) {
-    return res.status(400).json({ message: 'Дата, время и идентификатор пользователя обязательны' });
-  }
-
-  const freeSlot = await FreeSlot.findOne({ date, time });
-  if (!freeSlot) {
-    return res.status(400).json({ message: 'Этот слот уже занят или не существует' });
-  }
-
-  const newAppointment = new Consultation({
-    date,
-    time,
-    patientName: userId
-  });
-
-  await newAppointment.save();
-  await FreeSlot.deleteOne({ date, time });
-
-  res.status(201).json({ success: true, appointment: newAppointment });
-  } catch (error) {
-      console.error('Ошибка при бронировании времени приема', error);
-      res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+    if (!date || !time || !userId) {
+      return res.status(400).json({ message: 'Дата, время и идентификатор пользователя обязательны' });
     }
-  };
+
+    const freeSlot = await FreeSlot.findOne({ date, time });
+    if (!freeSlot) {
+      return res.status(400).json({ message: 'Этот слот уже занят или не существует' });
+    }
+
+    const videoLink = `https://meet.jit.si/${userId}-${date}-${time}`; // Генерация уникальной ссылки на видеоконференцию
+
+    const newAppointment = new Consultation({
+      date,
+      time,
+      patientName: userId,
+      videoLink // Сохранение ссылки на видеоконференцию
+    });
+
+    await newAppointment.save();
+    await FreeSlot.deleteOne({ date, time });
+
+    res.status(201).json({ success: true, appointment: newAppointment });
+  } catch (error) {
+    console.error('Ошибка при бронировании времени приема', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+  }
+};
 
 exports.getFutureAppointments = async (req, res) => {
   try {
