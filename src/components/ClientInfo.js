@@ -36,9 +36,9 @@ const ClientInfo = () => {
     navigate(-1);
   };
 
-  const handleDownloadDocument = async (documentType, documentName) => {
+  const handleDownloadDocument = async (documentName) => {
     try {
-      const response = await fetch(`https://medlevel.me/api/documents/download/${patientId}/${documentType}/${documentName}`);
+      const response = await fetch(`https://medlevel.me/api/documents/download/${patientId}/${documentName}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -82,17 +82,24 @@ const ClientInfo = () => {
                     </ListItem>
                   ))}
                 </List>
-                {clientInfo.documents.map((document, index) => (
-                  <Button
-                    key={index}
-                    variant="contained"
-                    color="secondary"
-                    sx={{ mt: 2 }}
-                    onClick={() => handleDownloadDocument(document.documentType, document.documentName)}
-                  >
-                    Скачать {document.documentName}
-                  </Button>
-                ))}
+                <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
+                  Документы
+                </Typography>
+                <List>
+                  {clientInfo.documents.map((document, index) => (
+                    <ListItem key={index}>
+                      <ListItemText primary={document} sx={{ color: '#388e3c' }} />
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        sx={{ ml: 2 }}
+                        onClick={() => handleDownloadDocument(document)}
+                      >
+                        Скачать
+                      </Button>
+                    </ListItem>
+                  ))}
+                </List>
               </Box>
             ) : (
               <Typography variant="body1" sx={{ mt: 2, color: '#f44336' }}>
@@ -107,3 +114,4 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
