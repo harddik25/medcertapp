@@ -1,5 +1,6 @@
 import React, { useState ,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Импорт Axios
 import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -31,7 +32,7 @@ const FullScreenPaper = styled(Paper)({
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
   margin: '0 20px', 
   maxWidth: '1200px',
-  position: 'relative', // Ensure button stays inside the block
+  position: 'relative',
 });
 
 const RoundedTypography = styled(Typography)({
@@ -63,8 +64,13 @@ const MainSurvey = () => {
     setSurveyData({ ...surveyData, [name]: value });
   };
 
-  const handleSubmit = () => {
-    navigate('/consultation');
+  const handleSubmit = async () => {
+    try {
+      await axios.post('/api/survey/save', surveyData);
+      navigate('/consultation');
+    } catch (error) {
+      console.error('Error saving survey data:', error);
+    }
   };
 
   const handleBackClick = () => {
@@ -338,4 +344,3 @@ const MainSurvey = () => {
 };
 
 export default MainSurvey;
-
