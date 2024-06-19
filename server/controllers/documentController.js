@@ -60,7 +60,7 @@ async function uploadToFTP(localPath, remotePath) {
 exports.uploadDocument = async (req, res) => {
   try {
     const { documentType, userId, surveyId } = req.body;
-    const frontDocument = req.files['frontDocument'][0];
+    const frontDocument = req.files['frontDocument'] ? req.files['frontDocument'][0] : null;
     const backDocument = req.files['backDocument'] ? req.files['backDocument'][0] : null;
 
     if (!documentType || !frontDocument || !userId || (documentType !== 'Passport' && !backDocument)) {
@@ -70,18 +70,11 @@ exports.uploadDocument = async (req, res) => {
     const localFrontPath = path.join(__dirname, '..', 'uploads', userId, documentType, 'front', frontDocument.originalname);
     const localBackPath = backDocument ? path.join(__dirname, '..', 'uploads', userId, documentType, 'back', backDocument.originalname) : null;
 
-    // Ensure local directory exists
-    const uploadFrontPath = path.dirname(localFrontPath);
-    if (!fs.existsSync(uploadFrontPath)) {
-      fs.mkdirSync(uploadFrontPath, { recursive: true });
-    }
+    console.log('Saving front document to', localFrontPath);
     fs.writeFileSync(localFrontPath, frontDocument.buffer);
 
     if (backDocument) {
-      const uploadBackPath = path.dirname(localBackPath);
-      if (!fs.existsSync(uploadBackPath)) {
-        fs.mkdirSync(uploadBackPath, { recursive: true });
-      }
+      console.log('Saving back document to', localBackPath);
       fs.writeFileSync(localBackPath, backDocument.buffer);
     }
 
@@ -116,3 +109,4 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Ошибка сервера' });
   }
 };
+
