@@ -65,7 +65,6 @@ const MainSurvey = ({ telegramId }) => {
     const { name, value } = e.target;
     setSurveyData({ ...surveyData, [name]: value });
     setErrors({ ...errors, [name]: false });
-    console.log("Survey data updated:", surveyData);
   };
 
   const handleSubmit = async () => {
@@ -73,7 +72,6 @@ const MainSurvey = ({ telegramId }) => {
     if (incompleteFields.length > 0) {
       const newErrors = incompleteFields.reduce((acc, field) => ({ ...acc, [field]: true }), {});
       setErrors(newErrors);
-      console.log("Incomplete fields:", incompleteFields);
       alert('Пожалуйста, ответьте на все пункты опросника.');
       return;
     }
@@ -109,7 +107,7 @@ const MainSurvey = ({ telegramId }) => {
       'socialInterference',
       ...Array.from({ length: 4 }, (_, i) => `healthTime${i}`)
     ];
-    return requiredKeys.filter(key => !surveyData[key]);
+    return requiredKeys.filter(key => !surveyData[key] || surveyData[key] === '');
   };
 
   return (
@@ -333,4 +331,3 @@ const MainSurvey = ({ telegramId }) => {
 };
 
 export default MainSurvey;
-
