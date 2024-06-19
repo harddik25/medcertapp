@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
-import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import CannabisBackground from './cannabis-background.webp';
 
 const Background = styled('div')({
   display: 'flex',
@@ -188,4 +188,5 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
