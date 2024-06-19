@@ -40,24 +40,6 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    const fetchCertificate = async () => {
-      if (user) {
-        try {
-          const response = await fetch('https://medlevel.me/api/certificates/status', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.id}` // Замените на ваш метод аутентификации
-            }
-          });
-          const data = await response.json();
-          setCertificate(data.certificate);
-        } catch (error) {
-          console.error('Ошибка при получении статуса сертификата', error);
-        }
-      }
-    };
-
     const fetchAppointment = async () => {
       if (user) {
         try {
