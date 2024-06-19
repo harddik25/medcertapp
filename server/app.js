@@ -13,7 +13,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const surveyRoutes = require('./routes/surveyRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const userRoutes = require('./routes/userRoutes');
-const clientRoutes = require('./routes/clientRoutes');
+const clientRoutes = require('./routes/сlientRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const app = express();
 
