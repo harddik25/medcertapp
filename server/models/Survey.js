@@ -51,6 +51,10 @@ const SurveySchema = new mongoose.Schema({
     of: String,
     required: true,
   }
+  documentPath: {
+    type: String, // Поле для хранения пути к документу
+    required: false
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Survey', SurveySchema);
