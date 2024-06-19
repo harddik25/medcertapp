@@ -14,6 +14,7 @@ import Agreement from './components/Agreement';
 import DocumentUpload from './components/DocumentUpload';
 import MainSurvey from './components/MainSurvey';
 import ProtectedRoute from './components/ProtectedRoute';
+import ClientInfo from './components/ClientInfo';
 
 function App() {
   const [loading, setLoading] = useState(true);
