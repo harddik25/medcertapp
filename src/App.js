@@ -44,12 +44,13 @@ function App() {
         <Route path="/document-upload" element={<DocumentUpload />} />
         <Route path="/main-survey" element={<MainSurvey />} />
         <Route path="/" element={<Login />} />
-
+      
         <Route path="/doctor" element={
           <ProtectedRoute allowedRoles={['doctor', 'admin']}>
             <DoctorPanel />
           </ProtectedRoute>
         } />
+        <Route path="/doctor/client-info/:patientId" element={<ClientInfo />} />
         <Route path="/admin" element={
           <ProtectedRoute allowedRoles={['admin']}>
             <AdminPanel />
