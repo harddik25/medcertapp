@@ -2,8 +2,8 @@ const Survey = require('../models/Survey');
 
 exports.saveSurvey = async (req, res) => {
   try {
-    const surveyData = req.body;
-    const survey = new Survey(surveyData);
+    const { telegramId, ...surveyData } = req.body;
+    const survey = new Survey({ telegramId, ...surveyData });
     await survey.save();
     res.status(201).json({ message: 'Survey saved successfully' });
   } catch (error) {
