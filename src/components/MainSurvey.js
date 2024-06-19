@@ -66,6 +66,7 @@ const MainSurvey = ({ telegramId }) => {
   };
 
   const handleSubmit = async () => {
+    console.log("Attempting to submit survey data:", surveyData);
     if (!isSurveyComplete()) {
       alert('Пожалуйста, заполните все поля опроса.');
       return;
@@ -94,15 +95,17 @@ const MainSurvey = ({ telegramId }) => {
     const requiredKeys = [
       ...Array.from({ length: 10 }, (_, i) => `dayactivities${i}`),
       ...Array.from({ length: 4 }, (_, i) => `physicalhealth${i}`),
-      ...Array.from({ length: 1 }, (_, i) => `emotionalproblem${i}`),
-      ...Array.from({ length: 1 }, (_, i) => `socialactivitiesgroups${i}`),
-      ...Array.from({ length: 1 }, (_, i) => `bodypain${i}`),
-      ...Array.from({ length: 1 }, (_, i) => `paininterfere${i}`),
+      'emotionalproblem0',
+      'socialactivitiesgroups',
+      'bodypain',
+      'paininterfere',
       ...Array.from({ length: 9 }, (_, i) => `feelings${i}`),
-      ...Array.from({ length: 1 }, (_, i) => `socialInterference${i}`),
+      'socialInterference',
       ...Array.from({ length: 4 }, (_, i) => `healthTime${i}`)
     ];
-    return requiredKeys.every(key => surveyData[key]);
+    const complete = requiredKeys.every(key => surveyData[key]);
+    console.log("Survey completion check:", complete, surveyData);
+    return complete;
   };
 
   return (
@@ -323,3 +326,4 @@ const MainSurvey = ({ telegramId }) => {
 };
 
 export default MainSurvey;
+
