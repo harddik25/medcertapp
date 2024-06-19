@@ -17,15 +17,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const handleLogin = () => {
-    window.location.href = '/auth';
-  };
-
-  return (
-    <div>
-      <button onClick={handleLogin}>Login with Google</button>
-    </div>
-  );
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
