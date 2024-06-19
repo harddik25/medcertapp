@@ -4,8 +4,6 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-const { google } = require('googleapis');
-const credentials = require('./credentials.json');
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
@@ -18,35 +16,7 @@ const userRoutes = require('./routes/userRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 
 const app = express();
-const oauth2Client = new google.auth.OAuth2(
-  credentials.web.client_id,
-  credentials.web.client_secret,
-  credentials.web.redirect_uris[0]
-);
 
-// Маршрут для начала аутентификации
-app.get('/auth', (req, res) => {
-  const authUrl = oauth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: ['https://www.googleapis.com/auth/calendar'],
-  });
-  res.redirect(authUrl);
-});
-
-// Маршрут для обработки callback
-app.get('/oauth2callback', async (req, res) => {
-  const { code } = req.query;
-  try {
-    const { tokens } = await oauth2Client.getToken(code);
-    oauth2Client.setCredentials(tokens);
-    // Сохраните refresh_token в переменных окружения или базе данных
-    console.log('Tokens acquired:', tokens);
-    res.send('Authentication successful! You can close this window.');
-  } catch (error) {
-    console.error('Error retrieving access token:', error);
-    res.status(500).send('Authentication failed');
-  }
-});
 
 app.use(cors());
 app.use(bodyParser.json());
