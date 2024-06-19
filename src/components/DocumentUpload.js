@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, MenuItem, Alert } from '@mui/material';
+import React, { useState } from 'react';
+import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, MenuItem, Snackbar } from '@mui/material';
 import { styled } from '@mui/system';
+import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import CannabisBackground from './cannabis-background.webp';
 
@@ -13,38 +14,18 @@ const Background = styled('div')({
   backgroundSize: 'cover',
 });
 
-const StyledButton = styled(Button)({
-  backgroundColor: '#4caf50',
-  color: '#fff',
-  '&:hover': {
-    backgroundColor: '#45a049',
-  },
-  marginBottom: '16px',
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const DocumentUpload = ({ userId }) => {
+const DocumentUpload = () => {
   const [documentType, setDocumentType] = useState('');
   const [frontDocument, setFrontDocument] = useState(null);
   const [backDocument, setBackDocument] = useState(null);
-  const [surveyId, setSurveyId] = useState('');
+  const [userId, setUserId] = useState(''); // Example userId, you should replace it with the actual userId
+  const [surveyId, setSurveyId] = useState(''); // Example surveyId, you should replace it with the actual surveyId or null for new users
   const [uploadStatus, setUploadStatus] = useState('');
-
-  useEffect(() => {
-    const fetchSurveyId = async () => {
-      if (userId) {
-        try {
-          const response = await axios.get(`https://medlevel.me/api/surveys/latest/${userId}`);
-          if (response.data.success && response.data.surveyId) {
-            setSurveyId(response.data.surveyId);
-          }
-        } catch (error) {
-          console.error('Ошибка при получении surveyId:', error);
-        }
-      }
-    };
-
-    fetchSurveyId();
-  }, [userId]);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleFileChange = (e, side) => {
     if (side === 'front') {
@@ -55,8 +36,9 @@ const DocumentUpload = ({ userId }) => {
   };
 
   const handleUpload = async () => {
-    if (!documentType || !userId || !surveyId || (documentType !== 'Passport' && (!frontDocument || !backDocument)) || (documentType === 'Passport' && !frontDocument)) {
+    if (!documentType || !frontDocument || !userId || (documentType !== 'Passport' && !backDocument)) {
       setUploadStatus('Все поля обязательны для заполнения');
+      setOpenSnackbar(true);
       return;
     }
 
@@ -65,7 +47,7 @@ const DocumentUpload = ({ userId }) => {
     formData.append('frontDocument', frontDocument);
     if (backDocument) formData.append('backDocument', backDocument);
     formData.append('userId', userId);
-    formData.append('surveyId', surveyId);
+    if (surveyId) formData.append('surveyId', surveyId);
 
     try {
       const response = await axios.post('https://medlevel.me/api/documents/upload', formData, {
@@ -74,10 +56,16 @@ const DocumentUpload = ({ userId }) => {
         }
       });
       setUploadStatus('Документ успешно загружен');
+      setOpenSnackbar(true);
     } catch (error) {
       setUploadStatus('Ошибка при загрузке документа');
+      setOpenSnackbar(true);
       console.error('Ошибка при загрузке документа:', error);
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
   };
 
   return (
@@ -112,19 +100,20 @@ const DocumentUpload = ({ userId }) => {
             {(documentType === 'NIE' || documentType === 'DNI') && (
               <input type="file" onChange={(e) => handleFileChange(e, 'back')} />
             )}
-            <StyledButton
+            <Button
               type="button"
               fullWidth
               variant="contained"
+              sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
               onClick={handleUpload}
             >
               Загрузить
-            </StyledButton>
-            {uploadStatus && (
-              <Alert severity={uploadStatus.includes('успешно') ? 'success' : 'error'}>
+            </Button>
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+              <Alert onClose={handleCloseSnackbar} severity={uploadStatus.includes('успешно') ? 'success' : 'error'}>
                 {uploadStatus}
               </Alert>
-            )}
+            </Snackbar>
           </Box>
         </Paper>
       </Container>
