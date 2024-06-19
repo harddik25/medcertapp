@@ -105,6 +105,10 @@ const DoctorPanel = () => {
     }
   };
 
+  const handleViewClientInfo = (patientId) => {
+    navigate(`/doctor/client-info/${patientId}`);
+  };
+
   const handleBackClick = () => {
     navigate('/profile');
   };
@@ -164,6 +168,14 @@ const DoctorPanel = () => {
                       secondary={`Пациент: ${appointment.patientName || 'Нет записей'}`}
                       sx={{ color: '#388e3c' }}
                     />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleViewClientInfo(appointment.patientName)}
+                      sx={{ ml: 2 }}
+                    >
+                      Просмотреть информацию о клиенте
+                    </Button>
                   </ListItem>
                 ))}
               </List>
@@ -211,3 +223,4 @@ const DoctorPanel = () => {
 };
 
 export default DoctorPanel;
+
