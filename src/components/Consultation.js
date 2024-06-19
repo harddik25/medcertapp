@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, Snackbar, MenuItem } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/system';
 import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
