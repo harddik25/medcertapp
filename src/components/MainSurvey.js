@@ -116,7 +116,7 @@ const MainSurvey = () => {
                 'Bathing or dressing.',
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors[`dayactivities${index}`] ? 'red' : 'inherit' }}>{question}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`dayactivities${index}`}
                     value={surveyData[`dayactivities${index}`] || ''}
@@ -139,7 +139,7 @@ const MainSurvey = () => {
                 'I had difficulty and required an extra effort',
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors[`physicalhealth${index}`] ? 'red' : 'inherit' }}>{question}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`physicalhealth${index}`}
                     value={surveyData[`physicalhealth${index}`] || ''}
@@ -155,7 +155,6 @@ const MainSurvey = () => {
                 During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors['socialactivitiesgroups'] ? 'red' : 'inherit' }}>To what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?</Typography>
                 <RadioGroupRow
                   name="socialactivitiesgroups"
                   value={surveyData['socialactivitiesgroups'] || ''}
@@ -173,7 +172,6 @@ const MainSurvey = () => {
                 How much body pain have you had in the last 4 weeks?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors['bodypain'] ? 'red' : 'inherit' }}>How much body pain have you had in the last 4 weeks?</Typography>
                 <RadioGroupRow
                   name="bodypain"
                   value={surveyData['bodypain'] || ''}
@@ -192,7 +190,6 @@ const MainSurvey = () => {
                 During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors['paininterfere'] ? 'red' : 'inherit' }}>How much did pain interfere with your normal work (including both work outside the home and at home)?</Typography>
                 <RadioGroupRow
                   name="paininterfere"
                   value={surveyData['paininterfere'] || ''}
@@ -241,7 +238,6 @@ const MainSurvey = () => {
                 During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors['socialInterference'] ? 'red' : 'inherit' }}>How much of the time has your physical health or emotional problems interfered with your social activities?</Typography>
                 <RadioGroupRow
                   name="socialInterference"
                   value={surveyData['socialInterference'] || ''}
