@@ -15,7 +15,7 @@ const appointmentRoutes = require('./routes/appointmentRoutes');
 const userRoutes = require('./routes/userRoutes');
 const clientRoutes = require('./routes/сlientRoutes');
 const documentRoutes = require('./routes/documentRoutes');
-const surveyRoutes = require('./routes/surveyRoutes');
+
 const app = express();
 
 
@@ -53,7 +53,7 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/documents', documentRoutes);
-app.use('/api/surveys', surveyRoutes);
+
 
 app.use(express.static('/var/www/medlevel.me'));
 
