@@ -39,7 +39,7 @@ exports.getClientInfo = async (req, res) => {
         secure: false,
       });
 
-      const remotePath = `/var/www/user4806313/data/${patientId}/`;
+      const remotePath = `/var/www/user4806313/data/${patientId}/${documentName}`;
       documents = await listFTPDocuments(client, remotePath);
 
     } catch (error) {
