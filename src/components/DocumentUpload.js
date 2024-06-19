@@ -54,11 +54,11 @@ const DocumentUpload = () => {
       if (data.success) {
         navigate('/main-survey');
       } else {
-        alert('Error uploading document');
+        alert('Error uploading document,file size is too big');
       }
     } catch (error) {
       console.error('Error uploading document', error);
-      alert('Error uploading document');
+      alert('Error uploading document,file size is too big');
     }
   };
 
