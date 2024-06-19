@@ -46,7 +46,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/surveys', surveyRoutes);
+app.use('/api/surveys/save', surveyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/documents', documentRoutes);
