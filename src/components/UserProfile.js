@@ -43,9 +43,15 @@ const UserProfile = () => {
     const fetchAppointment = async () => {
       if (user) {
         try {
+          console.log('Fetching appointment for user:', user.id);
           const response = await fetch(`https://medlevel.me/api/consultations/appointments/${user.id}`);
           const data = await response.json();
-          setAppointment(data.appointment);
+          console.log('Received appointment data:', data);
+          if (data.appointment) {
+            setAppointment(data.appointment);
+          } else {
+            console.log('No appointment found for user.');
+          }
         } catch (error) {
           console.error('Ошибка при получении записи на консультацию', error);
         }
