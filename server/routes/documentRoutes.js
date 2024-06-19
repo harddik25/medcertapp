@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const documentController = require('../controllers/documentController');
-const upload = require('../middleware/upload'); // Модуль для обработки загрузки файлов (например, Multer)
+const multer = require('multer');
 
 router.post('/upload', upload.single('document'), documentController.uploadDocument);
 
