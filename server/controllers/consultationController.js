@@ -38,15 +38,22 @@ exports.scheduleAppointment = async (req, res) => {
   }
 };
 
+
 exports.getAppointments = async (req, res) => {
   try {
-    const appointments = await Consultation.find();
-    res.status(200).json({ appointments });
+    const userId = req.params.userId;
+    const appointment = await Consultation.findOne({ userId: userId });
+    if (appointment) {
+      res.status(200).json({ appointment });
+    } else {
+      res.status(404).json({ message: 'Консультация не найдена' });
+    }
   } catch (error) {
-    console.error('Ошибка при получении списка консультаций', error);
+    console.error('Ошибка при получении консультации', error);
     res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
+
 
 exports.addFreeSlot = async (req, res) => {
   try {
