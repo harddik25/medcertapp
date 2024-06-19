@@ -1,8 +1,7 @@
-// routes/surveyRoutes.js
 const express = require('express');
 const router = express.Router();
-const surveyController = require('../controllers/surveyController');
+const { saveSurvey } = require('../controllers/surveyController');
 
-router.post('/save', surveyController.saveSurvey);
+router.post('/save', saveSurvey);
 
 module.exports = router;
