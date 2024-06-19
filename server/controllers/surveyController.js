@@ -1,20 +1,19 @@
+// controllers/surveyController.js
 const Survey = require('../models/Survey');
 
-exports.createSurvey = async (req, res) => {
-  const survey = new Survey(req.body);
+exports.saveSurvey = async (req, res) => {
   try {
-    await survey.save();
-    res.status(201).send(survey);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-};
+    const { userId, surveyData } = req.body;
 
-exports.getSurveys = async (req, res) => {
-  try {
-    const surveys = await Survey.find({});
-    res.send({ surveys });
+    const newSurvey = new Survey({
+      userId,
+      surveyData,
+    });
+
+    await newSurvey.save();
+    res.status(201).json({ success: true, survey: newSurvey });
   } catch (error) {
-    res.status(500).send(error);
+    console.error('Ошибка при сохранении данных опроса', error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };
