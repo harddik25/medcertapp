@@ -218,7 +218,7 @@ const MainSurvey = () => {
                 'Did you feel tired?',
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors[`feelings${index}`] ? 'red' : 'inherit' }}>{question}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`feelings${index}`}
                     value={surveyData[`feelings${index}`] || ''}
@@ -261,7 +261,7 @@ const MainSurvey = () => {
                 'My health is excellent.',
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2, width: '100%', }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: errors[`healthTime${index}`] ? 'red' : 'inherit' }}>{question}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`healthTime${index}`}
                     value={surveyData[`healthTime${index}`] || ''}
