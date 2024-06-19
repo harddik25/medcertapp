@@ -13,7 +13,7 @@ const consultationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  videoLink: {
+  telegramLink: {
     type: String, // Поле для ссылки на видеоконференцию
     required: true
   }
