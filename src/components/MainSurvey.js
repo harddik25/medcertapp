@@ -98,7 +98,35 @@ const MainSurvey = () => {
     }));
   };
 
+  const validateSurveyData = () => {
+    const requiredCategories = [
+      'dayactivities',
+      'physicalhealth',
+      'emotionalproblem',
+      'socialactivitiesgroups',
+      'bodypain',
+      'paininterfere',
+      'feelings',
+      'socialInterference',
+      'healthTime'
+    ];
+
+    for (const category of requiredCategories) {
+      const categoryData = surveyData[category];
+      for (const key in categoryData) {
+        if (!categoryData[key]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
   const handleSubmit = async () => {
+    if (!validateSurveyData()) {
+      setErrorMessage('Please answer all questions.');
+      return;
+    }
     try {
       console.log('Submitting survey data:', surveyData); // Логирование данных перед отправкой
       await axios.post('/api/surveys/save', surveyData);
@@ -192,7 +220,7 @@ const MainSurvey = () => {
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
-                  name="socialactivitiesgroups"
+                  name="socialactivitiesgroups0"
                   value={surveyData.socialactivitiesgroups[0] || ''}
                   onChange={handleInputChange}
                 >
@@ -209,7 +237,7 @@ const MainSurvey = () => {
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
-                  name="bodypain"
+                  name="bodypain0"
                   value={surveyData.bodypain[0] || ''}
                   onChange={handleInputChange}
                 >
@@ -227,7 +255,7 @@ const MainSurvey = () => {
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
-                  name="paininterfere"
+                  name="paininterfere0"
                   value={surveyData.paininterfere[0] || ''}
                   onChange={handleInputChange}
                 >
@@ -275,7 +303,7 @@ const MainSurvey = () => {
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
-                  name="socialInterference"
+                  name="socialInterference0"
                   value={surveyData.socialInterference[0] || ''}
                   onChange={handleInputChange}
                 >
