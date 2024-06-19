@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const ftp = require('basic-ftp');
-const User = require('../models/User'); // Импорт модели пользователя
+const Survey = require('../models/Survey'); // Импорт модели опроса
 
 async function uploadFilePart(client, localPath, remotePath, start, end, partNumber) {
   const partPath = `${localPath}.part${partNumber}`;
@@ -59,11 +59,11 @@ async function uploadToFTP(localPath, remotePath) {
 
 exports.uploadDocument = async (req, res) => {
   try {
-    const { documentType, userId } = req.body;
+    const { documentType, userId, surveyId } = req.body;
     const document = req.file;
 
-    if (!documentType || !document || !userId) {
-      return res.status(400).json({ success: false, message: 'Document type, user ID, and file are required.' });
+    if (!documentType || !document || !userId || !surveyId) {
+      return res.status(400).json({ success: false, message: 'Document type, user ID, survey ID, and file are required.' });
     }
 
     const localPath = path.join(__dirname, '..', 'uploads', userId, documentType, document.originalname);
@@ -79,8 +79,8 @@ exports.uploadDocument = async (req, res) => {
     const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${document.originalname}`;
     await uploadToFTP(localPath, remotePath);
 
-    // Сохранение пути к документу в базе данных
-    await User.findByIdAndUpdate(userId, { $set: { documentPath: remotePath } });
+    // Сохранение пути к документу в опросе
+    await Survey.findByIdAndUpdate(surveyId, { $set: { documentPath: remotePath } });
 
     // Remove local file after upload
     fs.unlinkSync(localPath);
@@ -91,4 +91,3 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
-
