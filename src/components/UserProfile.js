@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper, Snackbar, Alert } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
 import CannabisBackground from './cannabis-background.webp';
@@ -18,6 +18,8 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [certificate, setCertificate] = useState(null);
   const [appointment, setAppointment] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,6 +81,24 @@ const UserProfile = () => {
     navigate('/doctor');
   };
 
+  const handleJoinConsultation = () => {
+    const currentTime = new Date();
+    const appointmentDate = new Date(`${appointment.date}T${appointment.time}:00`);
+
+    const timeDifference = (appointmentDate - currentTime) / 1000 / 60; // Разница во времени в минутах
+
+    if (timeDifference <= 15) {
+      window.open(appointment.telegramLink, '_blank');
+    } else {
+      setSnackbarMessage('Вы можете перейти к консультации только за 15 минут до ее начала');
+      setOpenSnackbar(true);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   return (
     <Background>
       <Container component="main" maxWidth="md">
@@ -137,14 +157,12 @@ const UserProfile = () => {
                     <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
                       Ваша запись на консультацию: {appointment.date} {appointment.time}
                     </Typography>
-                    {appointment.videoLink && (
+                    {appointment.telegramLink && (
                       <Button
                         fullWidth
                         variant="contained"
                         sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                        component="a"
-                        href={appointment.videoLink}
-                        target="_blank"
+                        onClick={handleJoinConsultation}
                       >
                         Перейти к консультации
                       </Button>
@@ -196,12 +214,16 @@ const UserProfile = () => {
             )}
           </Box>
         </Paper>
+        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+          <Alert onClose={handleCloseSnackbar} severity="warning">
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </Container>
     </Background>
   );
 };
 
 export default UserProfile;
-
 
 
