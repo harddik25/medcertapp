@@ -60,35 +60,57 @@ async function uploadToFTP(localPath, remotePath) {
 exports.uploadDocument = async (req, res) => {
   try {
     const { documentType, userId, surveyId } = req.body;
-    const document = req.file;
+    const frontDocument = req.files['frontDocument'][0];
+    const backDocument = req.files['backDocument'] ? req.files['backDocument'][0] : null;
 
-    if (!documentType || !document || !userId || !surveyId) {
-      return res.status(400).json({ success: false, message: 'Document type, user ID, survey ID, and file are required.' });
+    if (!documentType || !frontDocument || !userId || !surveyId || (documentType !== 'Passport' && !backDocument)) {
+      return res.status(400).json({ success: false, message: 'Все поля обязательны для заполнения' });
     }
 
-    const localPath = path.join(__dirname, '..', 'uploads', userId, documentType, document.originalname);
+    const localFrontPath = path.join(__dirname, '..', 'uploads', userId, documentType, 'front', frontDocument.originalname);
+    const localBackPath = backDocument ? path.join(__dirname, '..', 'uploads', userId, documentType, 'back', backDocument.originalname) : null;
 
     // Ensure local directory exists
-    const uploadPath = path.dirname(localPath);
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
+    const uploadFrontPath = path.dirname(localFrontPath);
+    if (!fs.existsSync(uploadFrontPath)) {
+      fs.mkdirSync(uploadFrontPath, { recursive: true });
     }
-    fs.writeFileSync(localPath, document.buffer);
+    fs.writeFileSync(localFrontPath, frontDocument.buffer);
+
+    if (backDocument) {
+      const uploadBackPath = path.dirname(localBackPath);
+      if (!fs.existsSync(uploadBackPath)) {
+        fs.mkdirSync(uploadBackPath, { recursive: true });
+      }
+      fs.writeFileSync(localBackPath, backDocument.buffer);
+    }
 
     // FTP remote path
-    const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${document.originalname}`;
-    await uploadToFTP(localPath, remotePath);
+    const remoteFrontPath = `/var/www/user4806313/data/${userId}/${documentType}/front/${frontDocument.originalname}`;
+    const remoteBackPath = backDocument ? `/var/www/user4806313/data/${userId}/${documentType}/back/${backDocument.originalname}` : null;
+
+    await uploadToFTP(localFrontPath, remoteFrontPath);
+    if (backDocument) {
+      await uploadToFTP(localBackPath, remoteBackPath);
+    }
 
     // Сохранение пути к документу в опросе
-    await Survey.findByIdAndUpdate(surveyId, { $set: { documentPath: remotePath } });
+    const documentPaths = { front: remoteFrontPath };
+    if (backDocument) {
+      documentPaths.back = remoteBackPath;
+    }
+
+    await Survey.findByIdAndUpdate(surveyId, { $set: { documentPath: documentPaths } });
 
     // Remove local file after upload
-    fs.unlinkSync(localPath);
+    fs.unlinkSync(localFrontPath);
+    if (backDocument) {
+      fs.unlinkSync(localBackPath);
+    }
 
-    res.status(201).json({ success: true, message: 'Document uploaded successfully.' });
+    res.status(201).json({ success: true, message: 'Документ успешно загружен' });
   } catch (error) {
-    console.error('Error uploading document:', error);
-    res.status(500).json({ success: false, message: 'Server error.' });
+    console.error('Ошибка при загрузке документа:', error);
+    res.status(500).json({ success: false, message: 'Ошибка сервера' });
   }
 };
-
