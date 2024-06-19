@@ -66,7 +66,7 @@ const MainSurvey = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post('/api/survey/save', surveyData);
+      await axios.post('/api/surveys/save', surveyData);
       navigate('/consultation');
     } catch (error) {
       console.error('Error saving survey data:', error);
