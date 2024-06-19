@@ -1,6 +1,6 @@
 const { google } = require('googleapis');
 const { OAuth2 } = google.auth;
-const credentials = require('../credentials.json');
+const credentials = require('../credentials.json'); // Путь к файлу с учетными данными
 
 const oAuth2Client = new OAuth2(
   credentials.web.client_id,
@@ -23,7 +23,7 @@ const createGoogleMeetLink = async (date, time, summary) => {
       timeZone: 'UTC'
     },
     end: {
-      dateTime: `${date}T${parseInt(time) + 1}:00`,
+      dateTime: `${date}T${parseInt(time) + 1}:00`, // Предполагаем, что консультация длится 1 час
       timeZone: 'UTC'
     },
     conferenceData: {
