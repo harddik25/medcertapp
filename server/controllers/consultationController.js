@@ -102,7 +102,7 @@ exports.bookFreeSlot = async (req, res) => {
       return res.status(400).json({ message: 'Этот слот уже занят или не существует' });
     }
 
-    const videoLink = `https://meet.jit.si/${userId}-${date}-${time}`; // Генерация уникальной ссылки на видеоконференцию
+    const videoLink = `https://t.me/${userId}`; // Генерация уникальной ссылки на видеоконференцию
 
     const newAppointment = new Consultation({
       date,
