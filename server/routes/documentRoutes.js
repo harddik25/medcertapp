@@ -7,5 +7,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.post('/upload', upload.single('document'), documentController.uploadDocument);
+router.get('/download/:userId/:documentType/:documentName', documentController.downloadDocument);
 
 module.exports = router;
