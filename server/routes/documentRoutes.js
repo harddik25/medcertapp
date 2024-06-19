@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const documentController = require('../controllers/documentController');
-const multer = require('multer');
+const upload = require('./upload'); // Импортируем middleware для загрузки файлов
 
 router.post('/upload', upload.single('document'), documentController.uploadDocument);
 
