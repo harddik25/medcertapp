@@ -36,14 +36,14 @@ const ClientInfo = () => {
     navigate(-1);
   };
 
-  const handleDownloadDocument = async (documentName) => {
+  const handleDownloadDocument = async (documentType) => {
     try {
-      const response = await fetch(`https://medlevel.me/api/documents/download/${patientId}/${documentName}`);
+      const response = await fetch(`https://medlevel.me/api/documents/download/${patientId}/${documentType}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = documentName;
+      a.download = `${patientId}_${documentType}`; // Имя файла при загрузке
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -86,14 +86,14 @@ const ClientInfo = () => {
                   Документы
                 </Typography>
                 <List>
-                  {clientInfo.documents.map((document, index) => (
+                  {clientInfo.documents.map((documentType, index) => (
                     <ListItem key={index}>
-                      <ListItemText primary={document} sx={{ color: '#388e3c' }} />
+                      <ListItemText primary={documentType} sx={{ color: '#388e3c' }} />
                       <Button
                         variant="contained"
                         color="secondary"
                         sx={{ ml: 2 }}
-                        onClick={() => handleDownloadDocument(document)}
+                        onClick={() => handleDownloadDocument(documentType)}
                       >
                         Скачать
                       </Button>
@@ -114,4 +114,5 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
 
