@@ -18,6 +18,7 @@ const Background = styled('div')({
 });
 
 const Consultation = () => {
+  const navigate = useNavigate();
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [availableSlots, setAvailableSlots] = useState([]);
