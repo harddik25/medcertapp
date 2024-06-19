@@ -133,11 +133,20 @@ const UserProfile = () => {
                   </Button>
                 )}
                 {appointment ? (
-                  <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                    Ваша запись на консультацию:
-                    {appointment.date} 
-                    {appointment.time}
-                  </Typography>
+                  <>
+                    <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+                      Ваша запись на консультацию: {appointment.date} {appointment.time}
+                    </Typography>
+                    <Button
+                      component="a"
+                      href={appointment.meetLink}
+                      fullWidth
+                      variant="contained"
+                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                    >
+                      Перейти к консультации
+                    </Button>
+                  </>
                 ) : (
                   <>
                     <Button
@@ -190,5 +199,6 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
 
