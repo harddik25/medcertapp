@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, MenuItem, Snackbar } from '@mui/material';
 import { styled } from '@mui/system';
 import MuiAlert from '@mui/material/Alert';
@@ -22,10 +22,17 @@ const DocumentUpload = () => {
   const [documentType, setDocumentType] = useState('');
   const [frontDocument, setFrontDocument] = useState(null);
   const [backDocument, setBackDocument] = useState(null);
-  const [userId, setUserId] = useState(''); // Example userId, you should replace it with the actual userId
+  const [userId, setUserId] = useState('');
   const [surveyId, setSurveyId] = useState(''); // Example surveyId, you should replace it with the actual surveyId or null for new users
   const [uploadStatus, setUploadStatus] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  useEffect(() => {
+    const telegramUser = JSON.parse(localStorage.getItem('telegramUser'));
+    if (telegramUser) {
+      setUserId(telegramUser.id);
+    }
+  }, []);
 
   const handleFileChange = (e, side) => {
     if (side === 'front') {
@@ -96,9 +103,25 @@ const DocumentUpload = () => {
               <MenuItem value="DNI">DNI</MenuItem>
               <MenuItem value="Passport">Passport</MenuItem>
             </TextField>
-            <input type="file" onChange={(e) => handleFileChange(e, 'front')} />
+            <Button
+              variant="contained"
+              component="label"
+              fullWidth
+              sx={{ mt: 2, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+            >
+              Лицевая сторона
+              <input type="file" hidden onChange={(e) => handleFileChange(e, 'front')} />
+            </Button>
             {(documentType === 'NIE' || documentType === 'DNI') && (
-              <input type="file" onChange={(e) => handleFileChange(e, 'back')} />
+              <Button
+                variant="contained"
+                component="label"
+                fullWidth
+                sx={{ mt: 2, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+              >
+                Обратная сторона
+                <input type="file" hidden onChange={(e) => handleFileChange(e, 'back')} />
+              </Button>
             )}
             <Button
               type="button"
@@ -122,6 +145,7 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
+
 
 
 
