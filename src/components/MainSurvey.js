@@ -1,4 +1,4 @@
-import React, { useState ,useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Импорт Axios
 import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton } from '@mui/material';
@@ -55,7 +55,7 @@ const RadioGroupRow = styled(RadioGroup)({
   gap: '10px',
 });
 
-const MainSurvey = ({ telegramId }) => { // Предполагаем, что telegramId передается как пропс
+const MainSurvey = ({ telegramId }) => {
   const [surveyData, setSurveyData] = useState({});
   const navigate = useNavigate();
   const paperRef = useRef(null);
@@ -82,6 +82,21 @@ const MainSurvey = ({ telegramId }) => { // Предполагаем, что tel
     if (paperRef.current) {
       paperRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  const isSurveyComplete = () => {
+    const requiredKeys = [
+      ...Array(10).keys()].map(i => `dayactivities${i}`),
+      ...Array(4).keys()].map(i => `physicalhealth${i}`),
+      ...Array(3).keys()].map(i => `emotionalproblem${i}`),
+      ...Array(5).keys()].map(i => `socialactivitiesgroups${i}`),
+      ...Array(6).keys()].map(i => `bodypain${i}`),
+      ...Array(5).keys()].map(i => `paininterfere${i}`),
+      ...Array(9).keys()].map(i => `feelings${i}`),
+      ...Array(5).keys()].map(i => `socialInterference${i}`),
+      ...Array(4).keys()].map(i => `healthTime${i}`)
+    ];
+    return requiredKeys.every(key => surveyData[key]);
   };
 
   return (
@@ -305,7 +320,7 @@ const MainSurvey = ({ telegramId }) => { // Предполагаем, что tel
                 'I hope my health gets worse.',
                 'My health is excellent.',
               ].map((question, index) => (
-                <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2,width: '100%', }}>
+                <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2, width: '100%', }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
                     name={`healthTime${index}`}
@@ -332,7 +347,7 @@ const MainSurvey = ({ telegramId }) => { // Предполагаем, что tel
                 variant="contained"
                 sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleSubmit}
-                disabled={Object.keys(surveyData).length < 33}
+                disabled={!isSurveyComplete()}
               >
                 Continue
               </Button>
@@ -345,3 +360,4 @@ const MainSurvey = ({ telegramId }) => { // Предполагаем, что tel
 };
 
 export default MainSurvey;
+
