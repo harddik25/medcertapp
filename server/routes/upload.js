@@ -1,5 +1,4 @@
 const multer = require('multer');
-const path = require('path');
 
 // Настройка хранилища для загруженных файлов
 const storage = multer.memoryStorage();
