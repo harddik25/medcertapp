@@ -16,11 +16,6 @@ const SurveySchema = new mongoose.Schema({
     of: String,
     required: true,
   },
-  emotionalproblem: {
-    type: Map,
-    of: String,
-    required: true,
-  },
   socialactivitiesgroups: {
     type: Map,
     of: String,
@@ -50,10 +45,6 @@ const SurveySchema = new mongoose.Schema({
     type: Map,
     of: String,
     required: true,
-  },
-  documentPath: {
-    type: String, // Поле для хранения пути к документу
-    required: false
   }
 }, { timestamps: true });
 
