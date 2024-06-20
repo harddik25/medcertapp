@@ -60,21 +60,23 @@ const ClientInfo = () => {
                   Ответы на опросы
                 </Typography>
                 <List>
-                  {clientInfo.surveys.map((survey, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={survey.question} secondary={survey.answer} sx={{ color: '#388e3c' }} />
-                      {survey.documentPath && survey.documentPath.front && (
-                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${survey.documentPath.front}`} target="_blank">
-                          Скачать лицевую сторону
-                        </Button>
-                      )}
-                      {survey.documentPath && survey.documentPath.back && (
-                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${survey.documentPath.back}`} target="_blank">
-                          Скачать обратную сторону
-                        </Button>
-                      )}
-                    </ListItem>
+                  {Object.entries(clientInfo.surveys[0]).map(([key, value], index) => (
+                    key !== 'documentPath' && (
+                      <ListItem key={index}>
+                        <ListItemText primary={key} secondary={JSON.stringify(value)} sx={{ color: '#388e3c' }} />
+                      </ListItem>
+                    )
                   ))}
+                  {clientInfo.surveys[0].documentPath && clientInfo.surveys[0].documentPath.front && (
+                    <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].documentPath.front}`} target="_blank">
+                      Скачать лицевую сторону
+                    </Button>
+                  )}
+                  {clientInfo.surveys[0].documentPath && clientInfo.surveys[0].documentPath.back && (
+                    <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].documentPath.back}`} target="_blank">
+                      Скачать обратную сторону
+                    </Button>
+                  )}
                 </List>
               </Box>
             ) : (
