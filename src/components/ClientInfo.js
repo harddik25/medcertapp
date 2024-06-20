@@ -78,14 +78,6 @@ const ClientInfo = () => {
             {clientInfo ? (
               <Box sx={{ mt: 2, width: '100%' }}>
                 <Typography variant="h6" sx={{ color: '#388e3c' }}>
-                  {clientInfo.firstName} {clientInfo.lastName}
-                </Typography>
-                {clientInfo.pathology && (
-                  <Typography variant="body1" sx={{ color: '#f44336', mb: 2 }}>
-                    Патологии: {clientInfo.pathology}
-                  </Typography>
-                )}
-                <Typography variant="h6" sx={{ color: '#388e3c' }}>
                   Ответы на опросы
                 </Typography>
                 <TableContainer component={Paper}>
@@ -100,7 +92,7 @@ const ClientInfo = () => {
                       {staticQuestions.map((question, index) => (
                         <TableRow key={index}>
                           <TableCell>{question}</TableCell>
-                          <TableCell>{formatAnswer(clientInfo.surveys[0][Object.keys(clientInfo.surveys[0])[index + 3]])}</TableCell>
+                          <TableCell>{formatAnswer(clientInfo.surveys[0][Object.keys(clientInfo.surveys[0])[index]])}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -144,4 +136,5 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
 
