@@ -4,6 +4,7 @@ import { styled } from '@mui/system';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import CannabisBackground from './cannabis-background.webp';
+import { useNavigate } from 'react-router-dom';
 
 const Background = styled('div')({
   display: 'flex',
@@ -18,14 +19,27 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const StyledButton = styled(Button)(({ theme, success }) => ({
+  backgroundColor: success ? theme.palette.success.main : theme.palette.primary.main,
+  color: '#fff',
+  marginTop: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+  '&:hover': {
+    backgroundColor: success ? theme.palette.success.dark : theme.palette.primary.dark,
+  },
+}));
+
 const DocumentUpload = () => {
   const [documentType, setDocumentType] = useState('');
   const [frontDocument, setFrontDocument] = useState(null);
   const [backDocument, setBackDocument] = useState(null);
+  const [frontUploadSuccess, setFrontUploadSuccess] = useState(false);
+  const [backUploadSuccess, setBackUploadSuccess] = useState(false);
   const [userId, setUserId] = useState('');
   const [surveyId, setSurveyId] = useState(''); // Example surveyId, you should replace it with the actual surveyId or null for new users
   const [uploadStatus, setUploadStatus] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const telegramUser = JSON.parse(localStorage.getItem('telegramUser'));
@@ -37,8 +51,10 @@ const DocumentUpload = () => {
   const handleFileChange = (e, side) => {
     if (side === 'front') {
       setFrontDocument(e.target.files[0]);
+      setFrontUploadSuccess(false); // Reset success state
     } else if (side === 'back') {
       setBackDocument(e.target.files[0]);
+      setBackUploadSuccess(false); // Reset success state
     }
   };
 
@@ -64,6 +80,13 @@ const DocumentUpload = () => {
       });
       setUploadStatus('Документ успешно загружен');
       setOpenSnackbar(true);
+      setFrontUploadSuccess(true);
+      if (backDocument) {
+        setBackUploadSuccess(true);
+      }
+      setTimeout(() => {
+        navigate('/survey');
+      }, 2000);
     } catch (error) {
       setUploadStatus('Ошибка при загрузке документа');
       setOpenSnackbar(true);
@@ -103,25 +126,25 @@ const DocumentUpload = () => {
               <MenuItem value="DNI">DNI</MenuItem>
               <MenuItem value="Passport">Passport</MenuItem>
             </TextField>
-            <Button
+            <StyledButton
               variant="contained"
               component="label"
               fullWidth
-              sx={{ mt: 2, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+              success={frontUploadSuccess}
             >
-              Лицевая сторона
+              {frontUploadSuccess ? 'Успешно' : 'Лицевая сторона'}
               <input type="file" hidden onChange={(e) => handleFileChange(e, 'front')} />
-            </Button>
+            </StyledButton>
             {(documentType === 'NIE' || documentType === 'DNI') && (
-              <Button
+              <StyledButton
                 variant="contained"
                 component="label"
                 fullWidth
-                sx={{ mt: 2, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                success={backUploadSuccess}
               >
-                Обратная сторона
+                {backUploadSuccess ? 'Успешно' : 'Обратная сторона'}
                 <input type="file" hidden onChange={(e) => handleFileChange(e, 'back')} />
-              </Button>
+              </StyledButton>
             )}
             <Button
               type="button"
@@ -145,6 +168,7 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
+
 
 
 
