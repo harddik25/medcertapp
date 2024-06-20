@@ -70,14 +70,14 @@ const ClientInfo = () => {
                   ))}
                   {clientInfo.surveys[0].frontDocument && (
                     <ListItem>
-                      <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].frontDocument}`} target="_blank">
+                      <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://medlevel.me/api/documents/download/${patientId}/Passport/front/${clientInfo.surveys[0].frontDocument.split('/').pop()}`} target="_blank">
                         Скачать лицевую сторону
                       </Button>
                     </ListItem>
                   )}
                   {clientInfo.surveys[0].backDocument && (
                     <ListItem>
-                      <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].backDocument}`} target="_blank">
+                      <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://medlevel.me/api/documents/download/${patientId}/Passport/back/${clientInfo.surveys[0].backDocument.split('/').pop()}`} target="_blank">
                         Скачать обратную сторону
                       </Button>
                     </ListItem>
@@ -97,6 +97,7 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
 
 
 
