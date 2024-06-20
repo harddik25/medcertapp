@@ -10,13 +10,20 @@ exports.getClientInfo = async (req, res) => {
       return res.status(404).json({ message: 'Консультация с данным пациентом не найдена' });
     }
 
-    const surveys = await Survey.find({ userId: patientId });
+    const surveys = await Survey.find({ telegramId: patientId });
 
     const clientInfo = {
       patientName: consultation.patientName,
       surveys: surveys.map(survey => ({
-        question: survey.question,
-        answer: survey.answer,
+        dayactivities: survey.dayactivities,
+        physicalhealth: survey.physicalhealth,
+        emotionalproblem: survey.emotionalproblem,
+        socialactivitiesgroups: survey.socialactivitiesgroups,
+        bodypain: survey.bodypain,
+        paininterfere: survey.paininterfere,
+        feelings: survey.feelings,
+        socialInterference: survey.socialInterference,
+        healthTime: survey.healthTime,
         documentPath: survey.documentPath,
       })),
     };
