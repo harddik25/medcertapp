@@ -57,9 +57,6 @@ const RadioGroupRow = styled(RadioGroup)({
 
 const MainSurvey = () => {
   const [surveyData, setSurveyData] = useState({
-    firstName: '',
-    lastName: '',
-    pathology: '',
     generalhealth: {},
     comparing: {},
     dayactivities: {},
@@ -71,7 +68,10 @@ const MainSurvey = () => {
     feelings: {},
     socialInterference: {},
     healthTime: {},
-    telegramId: "", // Добавим поле для telegramId
+    firstName: "", // Добавлено поле для имени
+    lastName: "", // Добавлено поле для фамилии
+    pathology: "", // Добавлено поле для патологии
+    telegramId: "", // Добавлено поле для telegramId
   });
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
@@ -91,22 +91,21 @@ const MainSurvey = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    const category = name.match(/[a-zA-Z]+/)[0]; // Извлекаем категорию из имени
+    const index = name.match(/\d+/) ? name.match(/\d+/)[0] : null; // Извлекаем индекс из имени, если есть
 
-    if (name === 'firstName' || name === 'lastName' || name === 'pathology') {
-      setSurveyData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    } else {
-      const category = name.match(/[a-zA-Z]+/)[0]; // Извлекаем категорию из имени
-      const index = name.match(/\d+/)[0]; // Извлекаем индекс из имени
-
+    if (index !== null) {
       setSurveyData((prevData) => ({
         ...prevData,
         [category]: {
           ...prevData[category],
           [index]: value,
         },
+      }));
+    } else {
+      setSurveyData((prevData) => ({
+        ...prevData,
+        [category]: value,
       }));
     }
   };
@@ -134,17 +133,12 @@ const MainSurvey = () => {
         }
       }
     }
-
-    if (!surveyData.firstName || !surveyData.lastName) {
-      return false;
-    }
-
-    return true;
+    return surveyData.firstName && surveyData.lastName && surveyData.pathology !== "";
   };
 
   const handleSubmit = async () => {
     if (!validateSurveyData()) {
-      setErrorMessage('Please answer all questions and fill in your name.');
+      setErrorMessage('Please fill out all fields.');
       return;
     }
     try {
@@ -166,7 +160,8 @@ const MainSurvey = () => {
       paperRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-   return (
+
+  return (
     <ThemeProvider theme={theme}>
       <Background>
         <Container component="main" maxWidth="md">
@@ -182,35 +177,30 @@ const MainSurvey = () => {
                 </Typography>
                 <div style={{ width: '30px', height: '30px' }}></div>
               </Header>
-              <Box sx={{ width: '100%', marginTop: 2 }}>
-                <TextField
-                  label="First Name"
-                  name="firstName"
-                  variant="outlined"
-                  fullWidth
-                  value={surveyData.firstName}
-                  onChange={handleInputChange}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  label="Last Name"
-                  name="lastName"
-                  variant="outlined"
-                  fullWidth
-                  value={surveyData.lastName}
-                  onChange={handleInputChange}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  label="Pathology (if any)"
-                  name="pathology"
-                  variant="outlined"
-                  fullWidth
-                  value={surveyData.pathology}
-                  onChange={handleInputChange}
-                  sx={{ mb: 2 }}
-                />
-              </Box>
+              <TextField
+                name="firstName"
+                label="First Name"
+                fullWidth
+                value={surveyData.firstName}
+                onChange={handleInputChange}
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                name="lastName"
+                label="Last Name"
+                fullWidth
+                value={surveyData.lastName}
+                onChange={handleInputChange}
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                name="pathology"
+                label="Pathology"
+                fullWidth
+                value={surveyData.pathology}
+                onChange={handleInputChange}
+                sx={{ mb: 2 }}
+              />
               <RoundedTypography sx={{ marginTop: 2 }}>
                 IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS:
               </RoundedTypography>
