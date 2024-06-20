@@ -78,6 +78,14 @@ const ClientInfo = () => {
             {clientInfo ? (
               <Box sx={{ mt: 2, width: '100%' }}>
                 <Typography variant="h6" sx={{ color: '#388e3c' }}>
+                  {clientInfo.firstName} {clientInfo.lastName}
+                </Typography>
+                {clientInfo.pathology && (
+                  <Typography variant="body1" sx={{ color: '#f44336', mb: 2 }}>
+                    Патологии: {clientInfo.pathology}
+                  </Typography>
+                )}
+                <Typography variant="h6" sx={{ color: '#388e3c' }}>
                   Ответы на опросы
                 </Typography>
                 <TableContainer component={Paper}>
@@ -104,7 +112,7 @@ const ClientInfo = () => {
                       variant="contained"
                       color="secondary"
                       sx={{ ml: 2 }}
-                      href={`https://medlevel.me/api/documents/download/${patientId}/Passport/front/${clientInfo.surveys[0].frontDocument.split('/').pop()}`}
+                      href={`https://medlevel.me/api/documents/download/${patientId}/${clientInfo.documentType}/front/${clientInfo.surveys[0].frontDocument.split('/').pop()}`}
                       target="_blank"
                     >
                       Скачать лицевую сторону
@@ -115,7 +123,7 @@ const ClientInfo = () => {
                       variant="contained"
                       color="secondary"
                       sx={{ ml: 2 }}
-                      href={`https://medlevel.me/api/documents/download/${patientId}/Passport/back/${clientInfo.surveys[0].backDocument.split('/').pop()}`}
+                      href={`https://medlevel.me/api/documents/download/${patientId}/${clientInfo.documentType}/back/${clientInfo.surveys[0].backDocument.split('/').pop()}`}
                       target="_blank"
                     >
                       Скачать обратную сторону
@@ -136,5 +144,6 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
 
 
