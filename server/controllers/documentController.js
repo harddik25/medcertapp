@@ -187,11 +187,13 @@ exports.uploadDocument = async (req, res) => {
     // Обновляем запись Survey
     if (surveyId) {
       await Survey.findByIdAndUpdate(surveyId, {
+        documentType: documentType, // Обновляем тип документа
         frontDocument: remotePathFront,
         backDocument: remotePathBack
       });
     } else {
       await Survey.updateOne({ telegramId: userId }, {
+        documentType: documentType, // Обновляем тип документа
         frontDocument: remotePathFront,
         backDocument: remotePathBack
       });
