@@ -15,6 +15,9 @@ exports.getClientInfo = async (req, res) => {
     const clientInfo = {
       patientName: consultation.patientName,
       surveys: surveys.map(survey => ({
+        firstName: survey.firstName,
+        lastName: survey.lastName,
+        pathology: survey.pathology,
         generalhealth: survey.generalhealth,
         comparing: survey.comparing,
         dayactivities: survey.dayactivities,
