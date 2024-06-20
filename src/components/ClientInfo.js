@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Typography, CssBaseline, Paper, List, ListItem, ListItemText, Button } from '@mui/material';
+import { Container, Box, Typography, CssBaseline, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { styled } from '@mui/system';
 import { useParams, useNavigate } from 'react-router-dom';
 import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
@@ -59,29 +59,50 @@ const ClientInfo = () => {
                 <Typography variant="h6" sx={{ color: '#388e3c' }}>
                   Ответы на опросы
                 </Typography>
-                <List>
-                  {Object.entries(clientInfo.surveys[0]).map(([key, value], index) => (
-                    key !== 'frontDocument' && key !== 'backDocument' && (
-                      <ListItem key={index}>
-                        <ListItemText primary={key} secondary={JSON.stringify(value)} sx={{ color: '#388e3c' }} />
-                      </ListItem>
-                    )
-                  ))}
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Вопрос</TableCell>
+                        <TableCell>Ответ</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {Object.entries(clientInfo.surveys[0]).map(([key, value], index) => (
+                        key !== 'frontDocument' && key !== 'backDocument' && (
+                          <TableRow key={index}>
+                            <TableCell>{key}</TableCell>
+                            <TableCell>{typeof value === 'object' ? JSON.stringify(value) : value}</TableCell>
+                          </TableRow>
+                        )
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <Box sx={{ mt: 2 }}>
                   {clientInfo.surveys[0].frontDocument && (
-                    <ListItem>
-                      <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://medlevel.me/api/documents/download/${patientId}/Passport/front/${clientInfo.surveys[0].frontDocument.split('/').pop()}`} target="_blank">
-                        Скачать лицевую сторону
-                      </Button>
-                    </ListItem>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      sx={{ ml: 2 }}
+                      href={`https://medlevel.me/api/documents/download/${patientId}/Passport/front/${clientInfo.surveys[0].frontDocument.split('/').pop()}`}
+                      target="_blank"
+                    >
+                      Скачать лицевую сторону
+                    </Button>
                   )}
                   {clientInfo.surveys[0].backDocument && (
-                    <ListItem>
-                      <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://medlevel.me/api/documents/download/${patientId}/Passport/back/${clientInfo.surveys[0].backDocument.split('/').pop()}`} target="_blank">
-                        Скачать обратную сторону
-                      </Button>
-                    </ListItem>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      sx={{ ml: 2 }}
+                      href={`https://medlevel.me/api/documents/download/${patientId}/Passport/back/${clientInfo.surveys[0].backDocument.split('/').pop()}`}
+                      target="_blank"
+                    >
+                      Скачать обратную сторону
+                    </Button>
                   )}
-                </List>
+                </Box>
               </Box>
             ) : (
               <Typography variant="body1" sx={{ mt: 2, color: '#f44336' }}>
@@ -96,7 +117,6 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
-
 
 
 
