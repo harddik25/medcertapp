@@ -134,7 +134,7 @@ const MainSurvey = () => {
     try {
       console.log('Submitting survey data:', surveyData); // Логирование данных перед отправкой
       await axios.post('/api/surveys/save', surveyData);
-      navigate('/consultation');
+      navigate('/document-upload');
     } catch (error) {
       console.error('Error saving survey data:', error);
       setErrorMessage(error.response ? error.response.data.details : 'An unknown error occurred');
