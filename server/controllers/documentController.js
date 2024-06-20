@@ -23,6 +23,22 @@ async function uploadFilePart(client, localPath, remotePath, start, end, partNum
   });
 }
 
+async function ensureDirExists(client, remoteDir) {
+  const segments = remoteDir.split('/');
+  let currentPath = '';
+
+  for (const segment of segments) {
+    if (segment) {
+      currentPath += `/${segment}`;
+      try {
+        await client.send(`MKD ${currentPath}`);
+      } catch (error) {
+        // Directory might already exist, which will throw an error, so we catch it and do nothing
+      }
+    }
+  }
+}
+
 async function uploadToFTP(localPath, remotePath) {
   const client = new ftp.Client();
   client.ftp.verbose = true;
@@ -35,6 +51,10 @@ async function uploadToFTP(localPath, remotePath) {
       password: process.env.FTP_PASSWORD,
       secure: false,
     });
+
+    // Ensure the remote directory exists
+    const remoteDir = path.dirname(remotePath);
+    await ensureDirExists(client, remoteDir);
 
     const fileSize = fs.statSync(localPath).size;
     const partSize = 10 * 1024 * 1024; // Размер части 10 MB
@@ -80,7 +100,7 @@ exports.uploadDocument = async (req, res) => {
     const localFrontPath = path.join(__dirname, '..', 'uploads', userId, documentType, 'front', frontDocument.originalname);
     const localBackPath = backDocument ? path.join(__dirname, '..', 'uploads', userId, documentType, 'back', backDocument.originalname) : null;
 
-    // Ensure directories exist
+    // Ensure directories exist locally
     const frontDir = path.dirname(localFrontPath);
     const backDir = localBackPath ? path.dirname(localBackPath) : null;
     if (!fs.existsSync(frontDir)) {
@@ -129,4 +149,3 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Ошибка сервера' });
   }
 };
-
