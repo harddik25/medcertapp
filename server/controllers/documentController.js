@@ -59,7 +59,7 @@ async function uploadToFTP(localPath, remotePath) {
 
 exports.uploadDocument = async (req, res) => {
   try {
-    const { documentType, userId, surveyId } = req.body;
+    const { documentType, userId } = req.body;
     const frontDocument = req.files['frontDocument'][0];
     const backDocument = req.files['backDocument'] ? req.files['backDocument'][0] : null;
 
@@ -99,19 +99,20 @@ exports.uploadDocument = async (req, res) => {
     if (localPathBack) fs.unlinkSync(localPathBack);
 
     // Обновляем запись Survey
-    if (surveyId) {
-      await Survey.findByIdAndUpdate(surveyId, {
+    const survey = await Survey.findOneAndUpdate(
+      { telegramId: userId },
+      {
         frontDocument: remotePathFront,
         backDocument: remotePathBack
-      });
-    } else {
-      await Survey.updateOne({ telegramId: userId }, {
-        frontDocument: remotePathFront,
-        backDocument: remotePathBack
-      });
+      },
+      { new: true }
+    );
+
+    if (!survey) {
+      return res.status(404).json({ success: false, message: 'Survey not found for the user.' });
     }
 
-    res.status(201).json({ success: true, message: 'Document uploaded successfully.' });
+    res.status(201).json({ success: true, message: 'Document uploaded successfully.', survey });
   } catch (error) {
     console.error('Error uploading document:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
