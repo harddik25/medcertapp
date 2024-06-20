@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const ftp = require('basic-ftp');
-const Survey = require('../models/Survey'); // Импорт модели опроса
+const Survey = require('../models/Survey');
 
 async function uploadFilePart(client, localPath, remotePath, start, end, partNumber) {
   const partPath = `${localPath}.part${partNumber}`;
@@ -23,22 +23,6 @@ async function uploadFilePart(client, localPath, remotePath, start, end, partNum
   });
 }
 
-async function ensureDirExists(client, remoteDir) {
-  const segments = remoteDir.split('/');
-  let currentPath = '';
-
-  for (const segment of segments) {
-    if (segment) {
-      currentPath += `/${segment}`;
-      try {
-        await client.send(`MKD ${currentPath}`);
-      } catch (error) {
-        // Directory might already exist, which will throw an error, so we catch it and do nothing
-      }
-    }
-  }
-}
-
 async function uploadToFTP(localPath, remotePath) {
   const client = new ftp.Client();
   client.ftp.verbose = true;
@@ -51,10 +35,6 @@ async function uploadToFTP(localPath, remotePath) {
       password: process.env.FTP_PASSWORD,
       secure: false,
     });
-
-    // Ensure the remote directory exists
-    const remoteDir = path.dirname(remotePath);
-    await ensureDirExists(client, remoteDir);
 
     const fileSize = fs.statSync(localPath).size;
     const partSize = 10 * 1024 * 1024; // Размер части 10 MB
@@ -80,72 +60,61 @@ async function uploadToFTP(localPath, remotePath) {
 exports.uploadDocument = async (req, res) => {
   try {
     const { documentType, userId, surveyId } = req.body;
-    const frontDocument = req.files['frontDocument'] ? req.files['frontDocument'][0] : null;
+    const frontDocument = req.files['frontDocument'][0];
     const backDocument = req.files['backDocument'] ? req.files['backDocument'][0] : null;
 
-    if (!documentType || !frontDocument || !userId || (documentType !== 'Passport' && !backDocument)) {
-      return res.status(400).json({ success: false, message: 'Все поля обязательны для заполнения' });
+    if (!documentType || !frontDocument || !userId) {
+      return res.status(400).json({ success: false, message: 'Document type, user ID, and front document are required.' });
     }
 
-    if (!frontDocument || !frontDocument.buffer) {
-      console.error('Front document is missing or buffer is undefined');
-      return res.status(400).json({ success: false, message: 'Front document is missing or invalid' });
-    }
+    const localPathFront = path.join(__dirname, '..', 'uploads', userId, documentType, 'front', frontDocument.originalname);
+    const localPathBack = backDocument ? path.join(__dirname, '..', 'uploads', userId, documentType, 'back', backDocument.originalname) : null;
 
-    if ((documentType !== 'Passport') && (!backDocument || !backDocument.buffer)) {
-      console.error('Back document is missing or buffer is undefined');
-      return res.status(400).json({ success: false, message: 'Back document is missing or invalid' });
+    // Ensure local directory exists
+    const uploadPathFront = path.dirname(localPathFront);
+    if (!fs.existsSync(uploadPathFront)) {
+      fs.mkdirSync(uploadPathFront, { recursive: true });
     }
-
-    const localFrontPath = path.join(__dirname, '..', 'uploads', userId, documentType, 'front', frontDocument.originalname);
-    const localBackPath = backDocument ? path.join(__dirname, '..', 'uploads', userId, documentType, 'back', backDocument.originalname) : null;
-
-    // Ensure directories exist locally
-    const frontDir = path.dirname(localFrontPath);
-    const backDir = localBackPath ? path.dirname(localBackPath) : null;
-    if (!fs.existsSync(frontDir)) {
-      fs.mkdirSync(frontDir, { recursive: true });
-    }
-    if (backDir && !fs.existsSync(backDir)) {
-      fs.mkdirSync(backDir, { recursive: true });
-    }
-
-    console.log('Saving front document to', localFrontPath);
-    fs.writeFileSync(localFrontPath, frontDocument.buffer);
+    fs.writeFileSync(localPathFront, frontDocument.buffer);
 
     if (backDocument) {
-      console.log('Saving back document to', localBackPath);
-      fs.writeFileSync(localBackPath, backDocument.buffer);
+      const uploadPathBack = path.dirname(localPathBack);
+      if (!fs.existsSync(uploadPathBack)) {
+        fs.mkdirSync(uploadPathBack, { recursive: true });
+      }
+      fs.writeFileSync(localPathBack, backDocument.buffer);
     }
 
     // FTP remote path
-    const remoteFrontPath = `/var/www/user4806313/data/${userId}/${documentType}/front/${frontDocument.originalname}`;
-    const remoteBackPath = backDocument ? `/var/www/user4806313/data/${userId}/${documentType}/back/${backDocument.originalname}` : null;
+    const remotePathFront = `/var/www/user4806313/data/${userId}/${documentType}/front/${frontDocument.originalname}`;
+    const remotePathBack = backDocument ? `/var/www/user4806313/data/${userId}/${documentType}/back/${backDocument.originalname}` : null;
+    await uploadToFTP(localPathFront, remotePathFront);
 
-    await uploadToFTP(localFrontPath, remoteFrontPath);
     if (backDocument) {
-      await uploadToFTP(localBackPath, remoteBackPath);
-    }
-
-    // Сохранение пути к документу в опросе, если surveyId присутствует
-    if (surveyId) {
-      const documentPaths = { front: remoteFrontPath };
-      if (backDocument) {
-        documentPaths.back = remoteBackPath;
-      }
-
-      await Survey.findByIdAndUpdate(surveyId, { $set: { documentPath: documentPaths } });
+      await uploadToFTP(localPathBack, remotePathBack);
     }
 
     // Remove local file after upload
-    fs.unlinkSync(localFrontPath);
-    if (backDocument) {
-      fs.unlinkSync(localBackPath);
+    fs.unlinkSync(localPathFront);
+    if (localPathBack) fs.unlinkSync(localPathBack);
+
+    // Обновляем запись Survey
+    if (surveyId) {
+      await Survey.findByIdAndUpdate(surveyId, {
+        frontDocument: remotePathFront,
+        backDocument: remotePathBack
+      });
+    } else {
+      await Survey.updateOne({ telegramId: userId }, {
+        frontDocument: remotePathFront,
+        backDocument: remotePathBack
+      });
     }
 
-    res.status(201).json({ success: true, message: 'Документ успешно загружен' });
+    res.status(201).json({ success: true, message: 'Document uploaded successfully.' });
   } catch (error) {
-    console.error('Ошибка при загрузке документа:', error);
-    res.status(500).json({ success: false, message: 'Ошибка сервера' });
+    console.error('Error uploading document:', error);
+    res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
+
