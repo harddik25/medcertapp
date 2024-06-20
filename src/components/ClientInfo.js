@@ -78,6 +78,14 @@ const ClientInfo = () => {
             {clientInfo ? (
               <Box sx={{ mt: 2, width: '100%' }}>
                 <Typography variant="h6" sx={{ color: '#388e3c' }}>
+                  {clientInfo.surveys[0].firstName} {clientInfo.surveys[0].lastName}
+                </Typography>
+                {clientInfo.surveys[0].pathology && (
+                  <Typography variant="body1" sx={{ color: '#f44336', mb: 2 }}>
+                    Патологии: {clientInfo.surveys[0].pathology}
+                  </Typography>
+                )}
+                <Typography variant="h6" sx={{ color: '#388e3c' }}>
                   Ответы на опросы
                 </Typography>
                 <TableContainer component={Paper}>
@@ -136,6 +144,5 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
-
 
 
