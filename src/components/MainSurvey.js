@@ -72,6 +72,7 @@ const MainSurvey = () => {
     lastName: "", // Добавлено поле для фамилии
     pathology: "", // Добавлено поле для патологии
     telegramId: "", // Добавлено поле для telegramId
+    documentType: "Passport"
   });
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
