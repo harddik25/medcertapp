@@ -100,7 +100,7 @@ const ClientInfo = () => {
                       {staticQuestions.map((question, index) => (
                         <TableRow key={index}>
                           <TableCell>{question}</TableCell>
-                          <TableCell>{formatAnswer(clientInfo.surveys[0][Object.keys(clientInfo.surveys[0])[index + 2]])}</TableCell>
+                          <TableCell>{formatAnswer(clientInfo.surveys[0][Object.keys(clientInfo.surveys[0])[index + 3]])}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
