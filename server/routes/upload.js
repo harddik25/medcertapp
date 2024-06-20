@@ -2,15 +2,7 @@ const multer = require('multer');
 const path = require('path');
 
 // Настройка хранилища для загруженных файлов
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadPath = path.join(__dirname, '..', 'uploads');
-    cb(null, uploadPath);
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
+const storage = multer.memoryStorage();
 
 // Фильтрация файлов по типу MIME
 const fileFilter = (req, file, cb) => {
