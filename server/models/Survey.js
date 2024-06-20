@@ -6,12 +6,27 @@ const SurveySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  generalhealth: {
+    type: Map,
+    of: String,
+    required: true,
+  },
+  comparing: {
+    type: Map,
+    of: String,
+    required: true,
+  },
   dayactivities: {
     type: Map,
     of: String,
     required: true,
   },
   physicalhealth: {
+    type: Map,
+    of: String,
+    required: true,
+  },
+  depressed: {
     type: Map,
     of: String,
     required: true,
