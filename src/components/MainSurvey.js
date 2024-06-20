@@ -172,7 +172,7 @@ const MainSurvey = () => {
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
-                  name="generalhealth"
+                  name="generalhealth0"
                   value={surveyData.generalhealth[0] || ''}
                   onChange={handleInputChange}
                 >
@@ -189,7 +189,7 @@ const MainSurvey = () => {
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
-                  name="comparing"
+                  name="comparing0"
                   value={surveyData.comparing[0] || ''}
                   onChange={handleInputChange}
                 >
@@ -262,7 +262,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={`depressed{index}`}
+                    name={`depressed${index}`}
                     value={surveyData.depressed[index] || ''}
                     onChange={handleInputChange}
                   >
