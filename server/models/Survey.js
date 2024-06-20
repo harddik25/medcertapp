@@ -2,6 +2,18 @@
 const mongoose = require('mongoose');
 
 const SurveySchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  pathology: {
+    type: String,
+    required: true,
+  },
   telegramId: {
     type: String,
     required: true,
