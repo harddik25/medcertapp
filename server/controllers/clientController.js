@@ -28,6 +28,7 @@ exports.getClientInfo = async (req, res) => {
       })),
     };
 
+    console.log('Client Info:', clientInfo); // Добавим логирование для отладки
     res.status(200).json({ clientInfo });
   } catch (error) {
     console.error('Ошибка при получении информации о клиенте:', error);
