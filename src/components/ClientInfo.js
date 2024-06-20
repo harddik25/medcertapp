@@ -23,7 +23,6 @@ const ClientInfo = () => {
       try {
         const response = await fetch(`https://medlevel.me/api/clients/info/${patientId}`);
         const data = await response.json();
-        console.log('Fetched Client Info:', data.clientInfo); // Логирование для отладки
         setClientInfo(data.clientInfo);
       } catch (error) {
         console.error('Ошибка при получении информации о клиенте', error);
