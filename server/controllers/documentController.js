@@ -67,6 +67,16 @@ exports.uploadDocument = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Все поля обязательны для заполнения' });
     }
 
+    if (!frontDocument || !frontDocument.buffer) {
+      console.error('Front document is missing or buffer is undefined');
+      return res.status(400).json({ success: false, message: 'Front document is missing or invalid' });
+    }
+
+    if ((documentType !== 'Passport') && (!backDocument || !backDocument.buffer)) {
+      console.error('Back document is missing or buffer is undefined');
+      return res.status(400).json({ success: false, message: 'Back document is missing or invalid' });
+    }
+
     const localFrontPath = path.join(__dirname, '..', 'uploads', userId, documentType, 'front', frontDocument.originalname);
     const localBackPath = backDocument ? path.join(__dirname, '..', 'uploads', userId, documentType, 'back', backDocument.originalname) : null;
 
@@ -109,4 +119,5 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Ошибка сервера' });
   }
 };
+
 
