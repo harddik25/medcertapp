@@ -60,7 +60,9 @@ const SurveySchema = new mongoose.Schema({
     type: Map,
     of: String,
     required: true,
-  }
+  },
+  frontDocument: { type: String }, 
+  backDocument: { type: String },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Survey', SurveySchema);
