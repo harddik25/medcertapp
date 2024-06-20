@@ -85,7 +85,7 @@ const DocumentUpload = () => {
         setBackUploadSuccess(true);
       }
       setTimeout(() => {
-        navigate('/survey');
+        navigate('/main-survey');
       }, 2000);
     } catch (error) {
       setUploadStatus('Ошибка при загрузке документа');
