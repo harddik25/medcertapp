@@ -19,7 +19,7 @@ const Agreement = () => {
   const navigate = useNavigate();
 
   const handleAccept = () => {
-    navigate('/document-upload');
+    navigate('/Main-Survey');
   };
 
   const handleDecline = () => {
