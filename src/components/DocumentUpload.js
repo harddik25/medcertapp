@@ -19,22 +19,31 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const StyledButton = styled(Button)(({ theme, success }) => ({
-  backgroundColor: success ? theme.palette.success.main : theme.palette.primary.main,
+const StyledButton = styled(Button)(({ theme, selected }) => ({
+  background: selected ? 'linear-gradient(to right, #4caf50, orange)' : '#ff9800',
   color: '#fff',
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
   '&:hover': {
-    backgroundColor: success ? theme.palette.success.dark : theme.palette.primary.dark,
+    background: selected ? 'linear-gradient(to right, #388e3c, #e65100)' : '#e65100',
   },
+  position: 'relative',
 }));
+
+const SuccessText = styled(Typography)({
+  position: 'absolute',
+  bottom: -20,
+  left: '50%',
+  transform: 'translateX(-50%)',
+  color: '#4caf50',
+});
 
 const DocumentUpload = () => {
   const [documentType, setDocumentType] = useState('');
   const [frontDocument, setFrontDocument] = useState(null);
   const [backDocument, setBackDocument] = useState(null);
-  const [frontUploadSuccess, setFrontUploadSuccess] = useState(false);
-  const [backUploadSuccess, setBackUploadSuccess] = useState(false);
+  const [frontSelected, setFrontSelected] = useState(false);
+  const [backSelected, setBackSelected] = useState(false);
   const [userId, setUserId] = useState('');
   const [surveyId, setSurveyId] = useState(''); // Example surveyId, you should replace it with the actual surveyId or null for new users
   const [uploadStatus, setUploadStatus] = useState('');
@@ -51,10 +60,10 @@ const DocumentUpload = () => {
   const handleFileChange = (e, side) => {
     if (side === 'front') {
       setFrontDocument(e.target.files[0]);
-      setFrontUploadSuccess(false); // Reset success state
+      setFrontSelected(true);
     } else if (side === 'back') {
       setBackDocument(e.target.files[0]);
-      setBackUploadSuccess(false); // Reset success state
+      setBackSelected(true);
     }
   };
 
@@ -80,12 +89,8 @@ const DocumentUpload = () => {
       });
       setUploadStatus('Документ успешно загружен');
       setOpenSnackbar(true);
-      setFrontUploadSuccess(true);
-      if (backDocument) {
-        setBackUploadSuccess(true);
-      }
       setTimeout(() => {
-        navigate('/main-survey');
+        navigate('/survey');
       }, 2000);
     } catch (error) {
       setUploadStatus('Ошибка при загрузке документа');
@@ -126,25 +131,31 @@ const DocumentUpload = () => {
               <MenuItem value="DNI">DNI</MenuItem>
               <MenuItem value="Passport">Passport</MenuItem>
             </TextField>
-            <StyledButton
-              variant="contained"
-              component="label"
-              fullWidth
-              success={frontUploadSuccess}
-            >
-              {frontUploadSuccess ? 'Успешно' : 'Лицевая сторона'}
-              <input type="file" hidden onChange={(e) => handleFileChange(e, 'front')} />
-            </StyledButton>
-            {(documentType === 'NIE' || documentType === 'DNI') && (
+            <Box sx={{ position: 'relative', width: '100%' }}>
               <StyledButton
                 variant="contained"
                 component="label"
                 fullWidth
-                success={backUploadSuccess}
+                selected={frontSelected}
               >
-                {backUploadSuccess ? 'Успешно' : 'Обратная сторона'}
-                <input type="file" hidden onChange={(e) => handleFileChange(e, 'back')} />
+                Лицевая сторона
+                <input type="file" hidden onChange={(e) => handleFileChange(e, 'front')} />
               </StyledButton>
+              {frontSelected && <SuccessText>Успешно</SuccessText>}
+            </Box>
+            {(documentType === 'NIE' || documentType === 'DNI') && (
+              <Box sx={{ position: 'relative', width: '100%' }}>
+                <StyledButton
+                  variant="contained"
+                  component="label"
+                  fullWidth
+                  selected={backSelected}
+                >
+                  Обратная сторона
+                  <input type="file" hidden onChange={(e) => handleFileChange(e, 'back')} />
+                </StyledButton>
+                {backSelected && <SuccessText>Успешно</SuccessText>}
+              </Box>
             )}
             <Button
               type="button"
@@ -168,7 +179,6 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
-
 
 
 
