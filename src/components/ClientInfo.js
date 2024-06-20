@@ -13,6 +13,20 @@ const Background = styled('div')({
   backgroundSize: 'cover',
 });
 
+const staticQuestions = [
+  'General health',
+  'Comparing health',
+  'Day activities',
+  'Physical health',
+  'Depressed',
+  'Social activities with groups',
+  'Body pain',
+  'Pain interfere with work',
+  'Feelings',
+  'Social Interference',
+  'Health time'
+];
+
 const ClientInfo = () => {
   const { patientId } = useParams();
   const [clientInfo, setClientInfo] = useState(null);
@@ -34,6 +48,13 @@ const ClientInfo = () => {
 
   const handleBackClick = () => {
     navigate(-1);
+  };
+
+  const formatAnswer = (answers) => {
+    if (typeof answers === 'object') {
+      return Object.values(answers).join('; ');
+    }
+    return answers;
   };
 
   return (
@@ -68,13 +89,11 @@ const ClientInfo = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {Object.entries(clientInfo.surveys[0]).map(([key, value], index) => (
-                        key !== 'frontDocument' && key !== 'backDocument' && (
-                          <TableRow key={index}>
-                            <TableCell>{key}</TableCell>
-                            <TableCell>{typeof value === 'object' ? JSON.stringify(value) : value}</TableCell>
-                          </TableRow>
-                        )
+                      {staticQuestions.map((question, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{question}</TableCell>
+                          <TableCell>{formatAnswer(clientInfo.surveys[0][Object.keys(clientInfo.surveys[0])[index]])}</TableCell>
+                        </TableRow>
                       ))}
                     </TableBody>
                   </Table>
@@ -117,7 +136,6 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
-
 
 
 
