@@ -23,7 +23,7 @@ const ClientInfo = () => {
       try {
         const response = await fetch(`https://medlevel.me/api/clients/info/${patientId}`);
         const data = await response.json();
-        console.log('Fetched Client Info:', data.clientInfo); // Добавим логирование для отладки
+        console.log('Fetched Client Info:', data.clientInfo); // Логирование для отладки
         setClientInfo(data.clientInfo);
       } catch (error) {
         console.error('Ошибка при получении информации о клиенте', error);
@@ -62,24 +62,24 @@ const ClientInfo = () => {
                 </Typography>
                 <List>
                   {Object.entries(clientInfo.surveys[0]).map(([key, value], index) => (
-                    key !== 'documentPath' && (
+                    key !== 'frontDocument' && key !== 'backDocument' && (
                       <ListItem key={index}>
                         <ListItemText primary={key} secondary={JSON.stringify(value)} sx={{ color: '#388e3c' }} />
                       </ListItem>
                     )
                   ))}
-                  {clientInfo.surveys[0].documentPath && (
+                  {clientInfo.surveys[0].frontDocument && (
                     <ListItem>
-                      {clientInfo.surveys[0].documentPath.front && (
-                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].documentPath.front}`} target="_blank">
-                          Скачать лицевую сторону
-                        </Button>
-                      )}
-                      {clientInfo.surveys[0].documentPath.back && (
-                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].documentPath.back}`} target="_blank">
-                          Скачать обратную сторону
-                        </Button>
-                      )}
+                      <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].frontDocument}`} target="_blank">
+                        Скачать лицевую сторону
+                      </Button>
+                    </ListItem>
+                  )}
+                  {clientInfo.surveys[0].backDocument && (
+                    <ListItem>
+                      <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].backDocument}`} target="_blank">
+                        Скачать обратную сторону
+                      </Button>
                     </ListItem>
                   )}
                 </List>
@@ -97,5 +97,6 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
 
 
