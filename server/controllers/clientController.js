@@ -17,7 +17,7 @@ exports.getClientInfo = async (req, res) => {
       surveys: surveys.map(survey => ({
         firstName: survey.firstName,
         lastName: survey.lastName,
-        pathology: surveys.pathology,
+        pathology: survey.pathology,
         generalhealth: survey.generalhealth,
         comparing: survey.comparing,
         dayactivities: survey.dayactivities,
