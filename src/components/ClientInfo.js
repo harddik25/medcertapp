@@ -78,11 +78,11 @@ const ClientInfo = () => {
             {clientInfo ? (
               <Box sx={{ mt: 2, width: '100%' }}>
                 <Typography variant="h6" sx={{ color: '#388e3c' }}>
-                  {clientInfo.surveys[0].firstName} {clientInfo.surveys[0].lastName}
+                  {clientInfo.firstName} {clientInfo.lastName}
                 </Typography>
-                {clientInfo.surveys[0].pathology && (
+                {clientInfo.pathology && (
                   <Typography variant="body1" sx={{ color: '#f44336', mb: 2 }}>
-                    Патологии: {clientInfo.surveys[0].pathology}
+                    Патологии: {clientInfo.pathology}
                   </Typography>
                 )}
                 <Typography variant="h6" sx={{ color: '#388e3c' }}>
@@ -100,7 +100,7 @@ const ClientInfo = () => {
                       {staticQuestions.map((question, index) => (
                         <TableRow key={index}>
                           <TableCell>{question}</TableCell>
-                          <TableCell>{formatAnswer(clientInfo.surveys[0][Object.keys(clientInfo.surveys[0])[index]])}</TableCell>
+                          <TableCell>{formatAnswer(clientInfo.surveys[0][Object.keys(clientInfo.surveys[0])[index + 2]])}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -144,5 +144,4 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
-
 
