@@ -90,7 +90,7 @@ const DocumentUpload = () => {
       setUploadStatus('Документ успешно загружен');
       setOpenSnackbar(true);
       setTimeout(() => {
-        navigate('/survey');
+        navigate('/main-survey');
       }, 2000);
     } catch (error) {
       setUploadStatus('Ошибка при загрузке документа');
