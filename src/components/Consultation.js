@@ -91,48 +91,56 @@ const Consultation = () => {
               Видеоконсультация
             </Typography>
             <Box sx={{ mt: 1, width: '100%' }}>
-              <TextField
-                select
-                variant="outlined"
-                fullWidth
-                label="Дата"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                sx={{ mb: 2 }}
-              >
-                {availableSlots.map((slot, index) => (
-                  <MenuItem key={index} value={slot.date}>
-                    {slot.date}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                variant="outlined"
-                fullWidth
-                label="Время"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                sx={{ mb: 2 }}
-                disabled={!date}
-              >
-                {availableSlots
-                  .filter((slot) => slot.date === date)
-                  .map((slot, index) => (
-                    <MenuItem key={index} value={slot.time}>
-                      {slot.time}
-                    </MenuItem>
-                  ))}
-              </TextField>
-              <Button
-                type="button"
-                fullWidth
-                variant="contained"
-                sx={{ backgroundColor: '#4caf50', color: '#fff' }}
-                onClick={handleBooking}
-              >
-                Забронировать
-              </Button>
+              {availableSlots.length === 0 ? (
+                <Typography variant="body1" sx={{ color: '#f44336' }}>
+                  Просим прощения, но в ближайшие даты записей нет.
+                </Typography>
+              ) : (
+                <>
+                  <TextField
+                    select
+                    variant="outlined"
+                    fullWidth
+                    label="Дата"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    sx={{ mb: 2 }}
+                  >
+                    {availableSlots.map((slot, index) => (
+                      <MenuItem key={index} value={slot.date}>
+                        {slot.date}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField
+                    select
+                    variant="outlined"
+                    fullWidth
+                    label="Время"
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    sx={{ mb: 2 }}
+                    disabled={!date}
+                  >
+                    {availableSlots
+                      .filter((slot) => slot.date === date)
+                      .map((slot, index) => (
+                        <MenuItem key={index} value={slot.time}>
+                          {slot.time}
+                        </MenuItem>
+                      ))}
+                  </TextField>
+                  <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    sx={{ backgroundColor: '#4caf50', color: '#fff' }}
+                    onClick={handleBooking}
+                  >
+                    Забронировать
+                  </Button>
+                </>
+              )}
               {bookingStatus && (
                 <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                   <Alert onClose={handleCloseSnackbar} severity={bookingStatus.includes('успешно') ? 'success' : 'error'}>
@@ -149,3 +157,4 @@ const Consultation = () => {
 };
 
 export default Consultation;
+
