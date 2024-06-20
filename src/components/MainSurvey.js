@@ -57,9 +57,11 @@ const RadioGroupRow = styled(RadioGroup)({
 
 const MainSurvey = () => {
   const [surveyData, setSurveyData] = useState({
+    generalhealth: {},
+    comparing: {},
     dayactivities: {},
     physicalhealth: {},
-    emotionalproblem: {},
+    depressed: {},
     socialactivitiesgroups: {},
     bodypain: {},
     paininterfere: {},
@@ -100,9 +102,11 @@ const MainSurvey = () => {
 
   const validateSurveyData = () => {
     const requiredCategories = [
+      'generalhealth',
+      'comparing',
       'dayactivities',
       'physicalhealth',
-      'emotionalproblem',
+      'depressed',
       'socialactivitiesgroups',
       'bodypain',
       'paininterfere',
@@ -163,7 +167,39 @@ const MainSurvey = () => {
                 </Typography>
                 <div style={{ width: '30px', height: '30px' }}></div>
               </Header>
-
+              <RoundedTypography sx={{ marginTop: 2 }}>
+                IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS:
+              </RoundedTypography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                <RadioGroupRow
+                  name="generalhealth"
+                  value={surveyData.generalhealth[0] || ''}
+                  onChange={handleInputChange}
+                >
+                  <FormControlLabel value="1" control={<Radio />} label="Excellent" />
+                  <FormControlLabel value="2" control={<Radio />} label="Very good" />
+                  <FormControlLabel value="3" control={<Radio />} label="Good." />
+                  <FormControlLabel value="4" control={<Radio />} label="Fair." />
+                  <FormControlLabel value="5" control={<Radio />} label="Poor." />
+                </RadioGroupRow>
+              </Box>
+                    
+              <RoundedTypography sx={{ marginTop: 2 }}>
+                COMPARING IT WITH THE ONE OF A YEAR AGO:
+              </RoundedTypography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                <RadioGroupRow
+                  name="comparing"
+                  value={surveyData.comparing[0] || ''}
+                  onChange={handleInputChange}
+                >
+                  <FormControlLabel value="1" control={<Radio />} label="Much better now than a year ago" />
+                  <FormControlLabel value="2" control={<Radio />} label="Somewhat worse now than a year ago " />
+                  <FormControlLabel value="3" control={<Radio />} label="Same as a year ago." />
+                  <FormControlLabel value="4" control={<Radio />} label="Much worse now than a year ago." />
+                </RadioGroupRow>
+              </Box>
+                    
               <RoundedTypography sx={{ marginTop: 2 }}>
                 The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
               </RoundedTypography>
@@ -186,13 +222,13 @@ const MainSurvey = () => {
                     value={surveyData.dayactivities[index] || ''}
                     onChange={handleInputChange}
                   >
-                    <FormControlLabel value="veryLimited" control={<Radio />} label="Yes very limited" />
-                    <FormControlLabel value="bitLimited" control={<Radio />} label="Yes a bit limited" />
-                    <FormControlLabel value="notLimited" control={<Radio />} label="No, nothing limited" />
+                    <FormControlLabel value="1" control={<Radio />} label="Yes very limited" />
+                    <FormControlLabel value="2" control={<Radio />} label="Yes a bit limited" />
+                    <FormControlLabel value="3" control={<Radio />} label="No, nothing limited" />
                   </RadioGroupRow>
                 </Box>
               ))}
-
+                
               <RoundedTypography sx={{ marginTop: 2 }}>
                 During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
               </RoundedTypography>
@@ -209,8 +245,29 @@ const MainSurvey = () => {
                     value={surveyData.physicalhealth[index] || ''}
                     onChange={handleInputChange}
                   >
-                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                    <FormControlLabel value="1" control={<Radio />} label="Yes" />
+                    <FormControlLabel value="2" control={<Radio />} label="No" />
+                  </RadioGroupRow>
+                </Box>
+              ))}
+                
+              <RoundedTypography sx={{ marginTop: 2 }}>
+                During the last 4 weeks, have you had any of the following problems at work or with other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
+              </RoundedTypography>
+              {[
+                'I have reduced the amount of time I spend at work or doing other activities.',
+                'I have accomplished less than I would like.',
+                'I did not do work or other activities as carefully as usual.'
+              ].map((question, index) => (
+                <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
+                  <RadioGroupRow
+                    name={`depressed{index}`}
+                    value={surveyData.depressed[index] || ''}
+                    onChange={handleInputChange}
+                  >
+                    <FormControlLabel value="1" control={<Radio />} label="Yes" />
+                    <FormControlLabel value="2" control={<Radio />} label="No" />
                   </RadioGroupRow>
                 </Box>
               ))}
@@ -224,11 +281,11 @@ const MainSurvey = () => {
                   value={surveyData.socialactivitiesgroups[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="noWay" control={<Radio />} label="No way." />
-                  <FormControlLabel value="slightly" control={<Radio />} label="Slightly." />
-                  <FormControlLabel value="moderately" control={<Radio />} label="Moderately." />
-                  <FormControlLabel value="quite" control={<Radio />} label="Quite." />
-                  <FormControlLabel value="extremely" control={<Radio />} label="Extremely." />
+                  <FormControlLabel value="1" control={<Radio />} label="No way." />
+                  <FormControlLabel value="2" control={<Radio />} label="Slightly." />
+                  <FormControlLabel value="3" control={<Radio />} label="Moderately." />
+                  <FormControlLabel value="4" control={<Radio />} label="Quite." />
+                  <FormControlLabel value="5" control={<Radio />} label="Extremely." />
                 </RadioGroupRow>
               </Box>
 
@@ -241,12 +298,12 @@ const MainSurvey = () => {
                   value={surveyData.bodypain[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="nothing" control={<Radio />} label="Nothing" />
-                  <FormControlLabel value="verySoft" control={<Radio />} label="Very soft." />
-                  <FormControlLabel value="soft" control={<Radio />} label="Soft." />
-                  <FormControlLabel value="moderate" control={<Radio />} label="Moderate." />
-                  <FormControlLabel value="severe" control={<Radio />} label="Severe." />
-                  <FormControlLabel value="verySevere" control={<Radio />} label="Very severe." />
+                  <FormControlLabel value="1" control={<Radio />} label="Nothing" />
+                  <FormControlLabel value="2" control={<Radio />} label="Very soft." />
+                  <FormControlLabel value="3" control={<Radio />} label="Soft." />
+                  <FormControlLabel value="4" control={<Radio />} label="Moderate." />
+                  <FormControlLabel value="5" control={<Radio />} label="Severe." />
+                  <FormControlLabel value="6" control={<Radio />} label="Very severe." />
                 </RadioGroupRow>
               </Box>
               
@@ -259,11 +316,11 @@ const MainSurvey = () => {
                   value={surveyData.paininterfere[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="noWay" control={<Radio />} label="No way." />
-                  <FormControlLabel value="slightly" control={<Radio />} label="Slightly." />
-                  <FormControlLabel value="moderately" control={<Radio />} label="Moderately." />
-                  <FormControlLabel value="quite" control={<Radio />} label="Quite." />
-                  <FormControlLabel value="extremely" control={<Radio />} label="Extremely." />
+                  <FormControlLabel value="1" control={<Radio />} label="No way." />
+                  <FormControlLabel value="2" control={<Radio />} label="Slightly." />
+                  <FormControlLabel value="3" control={<Radio />} label="Moderately." />
+                  <FormControlLabel value="4" control={<Radio />} label="Quite." />
+                  <FormControlLabel value="5" control={<Radio />} label="Extremely." />
                 </RadioGroupRow>
               </Box>
                     
@@ -307,11 +364,11 @@ const MainSurvey = () => {
                   value={surveyData.socialInterference[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="allTheTime" control={<Radio />} label="All the time." />
-                  <FormControlLabel value="mostOfTheTime" control={<Radio />} label="Most of the time." />
-                  <FormControlLabel value="partOfTheTime" control={<Radio />} label="Part of the time." />
-                  <FormControlLabel value="aLittleOfTheTime" control={<Radio />} label="A little of the time." />
-                  <FormControlLabel value="noneOfTheTime" control={<Radio />} label="None of the time." />
+                  <FormControlLabel value="1" control={<Radio />} label="All the time." />
+                  <FormControlLabel value="2" control={<Radio />} label="Most of the time." />
+                  <FormControlLabel value="3" control={<Radio />} label="Part of the time." />
+                  <FormControlLabel value="4" control={<Radio />} label="A little of the time." />
+                  <FormControlLabel value="5" control={<Radio />} label="None of the time." />
                 </RadioGroupRow>
               </Box>
                     
