@@ -96,6 +96,16 @@ async function uploadFilePart(client, localPath, remotePath, start, end, partNum
   });
 }
 
+async function ensureDir(client, remoteDir) {
+  try {
+    await client.ensureDir(remoteDir);
+    console.log(`Directory ${remoteDir} exists or created successfully.`);
+  } catch (error) {
+    console.error(`Error ensuring directory ${remoteDir}:`, error);
+    throw error;
+  }
+}
+
 async function uploadToFTP(localPath, remotePath) {
   const client = new ftp.Client();
   client.ftp.verbose = true;
@@ -108,6 +118,9 @@ async function uploadToFTP(localPath, remotePath) {
       password: process.env.FTP_PASSWORD,
       secure: false,
     });
+
+    const remoteDir = path.dirname(remotePath);
+    await ensureDir(client, remoteDir);
 
     const fileSize = fs.statSync(localPath).size;
     const partSize = 10 * 1024 * 1024; // Размер части 10 MB
@@ -133,10 +146,10 @@ async function uploadToFTP(localPath, remotePath) {
 exports.uploadDocument = async (req, res) => {
   try {
     const { documentType, userId, surveyId } = req.body;
-    const frontDocument = req.files['frontDocument'] ? req.files['frontDocument'][0] : null;
+    const frontDocument = req.files['frontDocument'][0];
     const backDocument = req.files['backDocument'] ? req.files['backDocument'][0] : null;
 
-    if (!documentType || !userId || !frontDocument) {
+    if (!documentType || !frontDocument || !userId) {
       return res.status(400).json({ success: false, message: 'Document type, user ID, and front document are required.' });
     }
 
@@ -172,18 +185,17 @@ exports.uploadDocument = async (req, res) => {
     if (localPathBack) fs.unlinkSync(localPathBack);
 
     // Обновляем запись Survey
-    const surveyUpdate = {
-      frontDocument: remotePathFront,
-    };
-    if (backDocument) {
-      surveyUpdate.backDocument = remotePathBack;
+    if (surveyId) {
+      await Survey.findByIdAndUpdate(surveyId, {
+        frontDocument: remotePathFront,
+        backDocument: remotePathBack
+      });
+    } else {
+      await Survey.updateOne({ telegramId: userId }, {
+        frontDocument: remotePathFront,
+        backDocument: remotePathBack
+      });
     }
-
-    await Survey.findOneAndUpdate(
-      { telegramId: userId },
-      surveyUpdate,
-      { new: true, upsert: true }
-    );
 
     res.status(201).json({ success: true, message: 'Document uploaded successfully.' });
   } catch (error) {
@@ -191,4 +203,3 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
-
