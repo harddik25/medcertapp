@@ -26,7 +26,8 @@ exports.getClientInfo = async (req, res) => {
         feelings: survey.feelings,
         socialInterference: survey.socialInterference,
         healthTime: survey.healthTime,
-        documentPath: survey.documentPath,
+        frontDocument: survey.frontDocument || '',
+        backDocument: survey.backDocument || '',
       })),
     };
 
