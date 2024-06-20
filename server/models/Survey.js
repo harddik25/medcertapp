@@ -2,6 +2,10 @@
 const mongoose = require('mongoose');
 
 const SurveySchema = new mongoose.Schema({
+  documentType: {
+    type: String,
+    required: true,
+  },
   firstName: {
     type: String,
     required: true,
