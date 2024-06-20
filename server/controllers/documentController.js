@@ -60,10 +60,10 @@ async function uploadToFTP(localPath, remotePath) {
 exports.uploadDocument = async (req, res) => {
   try {
     const { documentType, userId, surveyId } = req.body;
-    const frontDocument = req.files['frontDocument'][0];
+    const frontDocument = req.files['frontDocument'] ? req.files['frontDocument'][0] : null;
     const backDocument = req.files['backDocument'] ? req.files['backDocument'][0] : null;
 
-    if (!documentType || !frontDocument || !userId) {
+    if (!documentType || !userId || !frontDocument) {
       return res.status(400).json({ success: false, message: 'Document type, user ID, and front document are required.' });
     }
 
@@ -99,17 +99,18 @@ exports.uploadDocument = async (req, res) => {
     if (localPathBack) fs.unlinkSync(localPathBack);
 
     // Обновляем запись Survey
-    if (surveyId) {
-      await Survey.findByIdAndUpdate(surveyId, {
-        frontDocument: remotePathFront,
-        backDocument: remotePathBack
-      });
-    } else {
-      await Survey.updateOne({ telegramId: userId }, {
-        frontDocument: remotePathFront,
-        backDocument: remotePathBack
-      });
+    const surveyUpdate = {
+      frontDocument: remotePathFront,
+    };
+    if (backDocument) {
+      surveyUpdate.backDocument = remotePathBack;
     }
+
+    await Survey.findOneAndUpdate(
+      { telegramId: userId },
+      surveyUpdate,
+      { new: true, upsert: true }
+    );
 
     res.status(201).json({ success: true, message: 'Document uploaded successfully.' });
   } catch (error) {
