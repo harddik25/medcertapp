@@ -3,7 +3,30 @@ const fs = require('fs');
 const ftp = require('basic-ftp');
 const Survey = require('../models/Survey');
 
-async function downloadFromFTP(localPath, remotePath) {
+async function downloadFromFTP(client, remotePath, localPath) {
+  try {
+    await client.downloadTo(localPath, remotePath);
+  } catch (error) {
+    if (error.code === 550) {
+      // File not found, try the next part
+      return false;
+    }
+    throw error;
+  }
+  return true;
+}
+
+exports.downloadDocument = async (req, res) => {
+  const { userId, documentType, side, fileName } = req.params;
+  const remotePathBase = `/var/www/user4806313/data/${userId}/${documentType}/${side}/${fileName}`;
+  const localPath = path.join(__dirname, '..', 'downloads', userId, documentType, side, fileName);
+
+  // Ensure local directory exists
+  const downloadPath = path.dirname(localPath);
+  if (!fs.existsSync(downloadPath)) {
+    fs.mkdirSync(downloadPath, { recursive: true });
+  }
+
   const client = new ftp.Client();
   client.ftp.verbose = true;
   client.ftp.timeout = 0;
@@ -16,30 +39,25 @@ async function downloadFromFTP(localPath, remotePath) {
       secure: false,
     });
 
-    await client.downloadTo(localPath, remotePath);
+    let partNumber = 1;
+    let downloaded = false;
+    const writeStream = fs.createWriteStream(localPath);
 
-    console.log('File downloaded successfully');
-  } catch (error) {
-    console.error('Error downloading from FTP:', error);
-    throw error;
-  } finally {
-    client.close();
-  }
-}
+    while (true) {
+      const remotePath = `${remotePathBase}.part${partNumber}`;
+      const localPathPart = `${localPath}.part${partNumber}`;
+      downloaded = await downloadFromFTP(client, remotePath, localPathPart);
+      if (!downloaded) break;
 
-exports.downloadDocument = async (req, res) => {
-  try {
-    const { userId, documentType, side, fileName } = req.params;
-    const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${side}/${fileName}`;
-    const localPath = path.join(__dirname, '..', 'downloads', userId, documentType, side, fileName);
-
-    // Ensure local directory exists
-    const downloadPath = path.dirname(localPath);
-    if (!fs.existsSync(downloadPath)) {
-      fs.mkdirSync(downloadPath, { recursive: true });
+      const readStream = fs.createReadStream(localPathPart);
+      readStream.pipe(writeStream, { end: false });
+      await new Promise(resolve => readStream.on('end', resolve));
+      fs.unlinkSync(localPathPart); // Remove the part after it is written
+      partNumber++;
     }
 
-    await downloadFromFTP(localPath, remotePath);
+    writeStream.end();
+    await new Promise(resolve => writeStream.on('finish', resolve));
 
     res.download(localPath, (err) => {
       if (err) {
@@ -53,6 +71,8 @@ exports.downloadDocument = async (req, res) => {
   } catch (error) {
     console.error('Error downloading document:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
+  } finally {
+    client.close();
   }
 };
 
