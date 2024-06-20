@@ -23,6 +23,7 @@ const ClientInfo = () => {
       try {
         const response = await fetch(`https://medlevel.me/api/clients/info/${patientId}`);
         const data = await response.json();
+        console.log('Fetched Client Info:', data.clientInfo); // Добавим логирование для отладки
         setClientInfo(data.clientInfo);
       } catch (error) {
         console.error('Ошибка при получении информации о клиенте', error);
@@ -67,15 +68,19 @@ const ClientInfo = () => {
                       </ListItem>
                     )
                   ))}
-                  {clientInfo.surveys[0].documentPath && clientInfo.surveys[0].documentPath.front && (
-                    <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].documentPath.front}`} target="_blank">
-                      Скачать лицевую сторону
-                    </Button>
-                  )}
-                  {clientInfo.surveys[0].documentPath && clientInfo.surveys[0].documentPath.back && (
-                    <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].documentPath.back}`} target="_blank">
-                      Скачать обратную сторону
-                    </Button>
+                  {clientInfo.surveys[0].documentPath && (
+                    <ListItem>
+                      {clientInfo.surveys[0].documentPath.front && (
+                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].documentPath.front}`} target="_blank">
+                          Скачать лицевую сторону
+                        </Button>
+                      )}
+                      {clientInfo.surveys[0].documentPath.back && (
+                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${clientInfo.surveys[0].documentPath.back}`} target="_blank">
+                          Скачать обратную сторону
+                        </Button>
+                      )}
+                    </ListItem>
                   )}
                 </List>
               </Box>
@@ -92,5 +97,6 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
 
 
