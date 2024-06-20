@@ -8,7 +8,7 @@ const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: '100vh',
+  minHeight: '100vh',
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
 });
@@ -63,9 +63,14 @@ const ClientInfo = () => {
                   {clientInfo.surveys.map((survey, index) => (
                     <ListItem key={index}>
                       <ListItemText primary={survey.question} secondary={survey.answer} sx={{ color: '#388e3c' }} />
-                      {survey.documentPath && (
-                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${survey.documentPath}`} target="_blank">
-                          Скачать документ
+                      {survey.documentPath && survey.documentPath.front && (
+                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${survey.documentPath.front}`} target="_blank">
+                          Скачать лицевую сторону
+                        </Button>
+                      )}
+                      {survey.documentPath && survey.documentPath.back && (
+                        <Button variant="contained" color="secondary" sx={{ ml: 2 }} href={`https://ftp.medlevel.me${survey.documentPath.back}`} target="_blank">
+                          Скачать обратную сторону
                         </Button>
                       )}
                     </ListItem>
@@ -85,5 +90,4 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
-
 
