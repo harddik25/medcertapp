@@ -3,6 +3,59 @@ const fs = require('fs');
 const ftp = require('basic-ftp');
 const Survey = require('../models/Survey');
 
+async function downloadFromFTP(localPath, remotePath) {
+  const client = new ftp.Client();
+  client.ftp.verbose = true;
+  client.ftp.timeout = 0;
+
+  try {
+    await client.access({
+      host: process.env.FTP_HOST,
+      user: process.env.FTP_USER,
+      password: process.env.FTP_PASSWORD,
+      secure: false,
+    });
+
+    await client.downloadTo(localPath, remotePath);
+
+    console.log('File downloaded successfully');
+  } catch (error) {
+    console.error('Error downloading from FTP:', error);
+    throw error;
+  } finally {
+    client.close();
+  }
+}
+
+exports.downloadDocument = async (req, res) => {
+  try {
+    const { userId, documentType, side, fileName } = req.params;
+    const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${side}/${fileName}`;
+    const localPath = path.join(__dirname, '..', 'downloads', userId, documentType, side, fileName);
+
+    // Ensure local directory exists
+    const downloadPath = path.dirname(localPath);
+    if (!fs.existsSync(downloadPath)) {
+      fs.mkdirSync(downloadPath, { recursive: true });
+    }
+
+    await downloadFromFTP(localPath, remotePath);
+
+    res.download(localPath, (err) => {
+      if (err) {
+        console.error('Error sending file:', err);
+        res.status(500).json({ success: false, message: 'Error sending file.' });
+      }
+
+      // Remove local file after sending
+      fs.unlinkSync(localPath);
+    });
+  } catch (error) {
+    console.error('Error downloading document:', error);
+    res.status(500).json({ success: false, message: 'Server error.' });
+  }
+};
+
 async function uploadFilePart(client, localPath, remotePath, start, end, partNumber) {
   const partPath = `${localPath}.part${partNumber}`;
   const writeStream = fs.createWriteStream(partPath);
