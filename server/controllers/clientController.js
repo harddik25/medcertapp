@@ -15,9 +15,11 @@ exports.getClientInfo = async (req, res) => {
     const clientInfo = {
       patientName: consultation.patientName,
       surveys: surveys.map(survey => ({
+        generalhealth: survey.generalhealth,
+        comparing: survey.comparing,
         dayactivities: survey.dayactivities,
         physicalhealth: survey.physicalhealth,
-        emotionalproblem: survey.emotionalproblem,
+        depressed: survey.depressed,
         socialactivitiesgroups: survey.socialactivitiesgroups,
         bodypain: survey.bodypain,
         paininterfere: survey.paininterfere,
@@ -35,3 +37,4 @@ exports.getClientInfo = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера' });
   }
 };
+
