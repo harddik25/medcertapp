@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton, Snackbar, Alert } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton, Snackbar, Alert, TextField } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -57,6 +57,9 @@ const RadioGroupRow = styled(RadioGroup)({
 
 const MainSurvey = () => {
   const [surveyData, setSurveyData] = useState({
+    firstName: '',
+    lastName: '',
+    pathology: '',
     generalhealth: {},
     comparing: {},
     dayactivities: {},
@@ -88,16 +91,24 @@ const MainSurvey = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const category = name.match(/[a-zA-Z]+/)[0]; // Извлекаем категорию из имени
-    const index = name.match(/\d+/)[0]; // Извлекаем индекс из имени
 
-    setSurveyData((prevData) => ({
-      ...prevData,
-      [category]: {
-        ...prevData[category],
-        [index]: value,
-      },
-    }));
+    if (name === 'firstName' || name === 'lastName' || name === 'pathology') {
+      setSurveyData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    } else {
+      const category = name.match(/[a-zA-Z]+/)[0]; // Извлекаем категорию из имени
+      const index = name.match(/\d+/)[0]; // Извлекаем индекс из имени
+
+      setSurveyData((prevData) => ({
+        ...prevData,
+        [category]: {
+          ...prevData[category],
+          [index]: value,
+        },
+      }));
+    }
   };
 
   const validateSurveyData = () => {
@@ -123,12 +134,17 @@ const MainSurvey = () => {
         }
       }
     }
+
+    if (!surveyData.firstName || !surveyData.lastName) {
+      return false;
+    }
+
     return true;
   };
 
   const handleSubmit = async () => {
     if (!validateSurveyData()) {
-      setErrorMessage('Please answer all questions.');
+      setErrorMessage('Please answer all questions and fill in your name.');
       return;
     }
     try {
@@ -150,8 +166,7 @@ const MainSurvey = () => {
       paperRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-
-  return (
+   return (
     <ThemeProvider theme={theme}>
       <Background>
         <Container component="main" maxWidth="md">
@@ -167,6 +182,35 @@ const MainSurvey = () => {
                 </Typography>
                 <div style={{ width: '30px', height: '30px' }}></div>
               </Header>
+              <Box sx={{ width: '100%', marginTop: 2 }}>
+                <TextField
+                  label="First Name"
+                  name="firstName"
+                  variant="outlined"
+                  fullWidth
+                  value={surveyData.firstName}
+                  onChange={handleInputChange}
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  label="Last Name"
+                  name="lastName"
+                  variant="outlined"
+                  fullWidth
+                  value={surveyData.lastName}
+                  onChange={handleInputChange}
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  label="Pathology (if any)"
+                  name="pathology"
+                  variant="outlined"
+                  fullWidth
+                  value={surveyData.pathology}
+                  onChange={handleInputChange}
+                  sx={{ mb: 2 }}
+                />
+              </Box>
               <RoundedTypography sx={{ marginTop: 2 }}>
                 IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS:
               </RoundedTypography>
