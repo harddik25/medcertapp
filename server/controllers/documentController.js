@@ -80,6 +80,16 @@ exports.uploadDocument = async (req, res) => {
     const localFrontPath = path.join(__dirname, '..', 'uploads', userId, documentType, 'front', frontDocument.originalname);
     const localBackPath = backDocument ? path.join(__dirname, '..', 'uploads', userId, documentType, 'back', backDocument.originalname) : null;
 
+    // Ensure directories exist
+    const frontDir = path.dirname(localFrontPath);
+    const backDir = localBackPath ? path.dirname(localBackPath) : null;
+    if (!fs.existsSync(frontDir)) {
+      fs.mkdirSync(frontDir, { recursive: true });
+    }
+    if (backDir && !fs.existsSync(backDir)) {
+      fs.mkdirSync(backDir, { recursive: true });
+    }
+
     console.log('Saving front document to', localFrontPath);
     fs.writeFileSync(localFrontPath, frontDocument.buffer);
 
