@@ -41,6 +41,9 @@ const UserProfile = () => {
           const userWithRole = { ...telegramUser, role: data.role };
           setUser(userWithRole);
           localStorage.setItem('telegramUser', JSON.stringify(userWithRole));
+        } catch (error) {
+          console.error('Ошибка при получении данных пользователя', error);
+        }
       }
     };
 
