@@ -63,12 +63,12 @@ const StyledButton = styled(Button)({
   textTransform: 'none',
   borderRadius: 8,
   fontSize: '1.2rem',
-  color: '#000',
-  backgroundImage: `url(${CannabisBackground})`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
+  color: '#fff',
+  backgroundColor: '#C8ECC8',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
   '&:hover': {
-    backgroundColor: green[700],
+    backgroundColor: '#A9D8A9',
+    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
   },
 });
 
