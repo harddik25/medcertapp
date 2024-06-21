@@ -4,6 +4,8 @@ import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper, Snackba
 import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
 import CannabisBackground from './cannabis-background.webp';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher'; // Добавьте компонент переключателя языка
 
 const Background = styled('div')({
   display: 'flex',
@@ -15,6 +17,7 @@ const Background = styled('div')({
 });
 
 const UserProfile = () => {
+  const { t } = useTranslation();
   const [user, setUser] = useState(null);
   const [certificate, setCertificate] = useState(null);
   const [appointment, setAppointment] = useState(null);
@@ -90,7 +93,7 @@ const UserProfile = () => {
     if (timeDifference <= 15) {
       window.open(appointment.telegramLink, '_blank');
     } else {
-      setSnackbarMessage('Вы можете перейти к консультации только за 15 минут до ее начала');
+      setSnackbarMessage(t('You can join the consultation only 15 minutes before its start'));
       setOpenSnackbar(true);
     }
   };
@@ -111,16 +114,17 @@ const UserProfile = () => {
               alignItems: 'center',
             }}
           >
+            <LanguageSwitcher />
             {user && (
               <>
                 <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80, mb: 2 }}>
                   {user.first_name[0]}
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
-                  Профиль пользователя
+                  {t('User Profile')}
                 </Typography>
                 <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                  Добро пожаловать, {user.first_name}!
+                  {t('Welcome')}, {user.first_name}!
                 </Typography>
                 {user.role === 'admin' && (
                   <>
@@ -130,7 +134,7 @@ const UserProfile = () => {
                       sx={{ mb: 2, backgroundColor: '#f44336', color: '#fff' }}
                       onClick={handleAdminPanel}
                     >
-                      Admin Panel
+                      {t('Admin Panel')}
                     </Button>
                     <Button
                       fullWidth
@@ -138,7 +142,7 @@ const UserProfile = () => {
                       sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
                       onClick={handleDoctorPanel}
                     >
-                      Doctor Panel
+                      {t('Doctor Panel')}
                     </Button>
                   </>
                 )}
@@ -149,13 +153,13 @@ const UserProfile = () => {
                     sx={{ mb: 2, backgroundColor: '#1976d2', color: '#fff' }}
                     onClick={handleDoctorPanel}
                   >
-                    Doctor Panel
+                    {t('Doctor Panel')}
                   </Button>
                 )}
                 {appointment ? (
                   <>
                     <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                      Ваша запись на консультацию: {appointment.date} {appointment.time}
+                      {t('Your consultation appointment is on')} {appointment.date} {appointment.time}
                     </Typography>
                     {appointment.telegramLink && (
                       <Button
@@ -164,7 +168,7 @@ const UserProfile = () => {
                         sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                         onClick={handleJoinConsultation}
                       >
-                        Перейти к консультации
+                        {t('Join Consultation')}
                       </Button>
                     )}
                   </>
@@ -176,7 +180,7 @@ const UserProfile = () => {
                       sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                       onClick={handleCertificateInfo}
                     >
-                      О сертификате
+                      {t('About Certificate')}
                     </Button>
                     {certificate ? (
                       certificate.status === 'готов' ? (
@@ -187,7 +191,7 @@ const UserProfile = () => {
                           variant="contained"
                           sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                         >
-                          Посмотреть сертификат
+                          {t('View Certificate')}
                         </Button>
                       ) : (
                         <Button
@@ -195,7 +199,7 @@ const UserProfile = () => {
                           variant="contained"
                           sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                         >
-                          Статус: {certificate.status}
+                          {t('Status')}: {certificate.status}
                         </Button>
                       )
                     ) : (
@@ -205,7 +209,7 @@ const UserProfile = () => {
                         sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                         onClick={handleBuyCertificate}
                       >
-                        Купить сертификат
+                        {t('Buy Certificate')}
                       </Button>
                     )}
                   </>
@@ -225,5 +229,6 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
 
