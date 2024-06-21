@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import theme from './thema'; // Импорт темы
+import theme from './theme';
+
 import Login from './components/Login';
 import UserProfile from './components/UserProfile';
 import Certificate from './components/Certificate';
