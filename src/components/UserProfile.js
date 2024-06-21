@@ -6,7 +6,7 @@ import { styled } from '@mui/system';
 import CannabisBackground from './cannabis-background.webp';
 import { useTranslation } from 'react-i18next';
 import PersonIcon from '@mui/icons-material/Person';
-import LanguageSwitcher from './LanguageSwitcher'; // Добавьте компонент переключателя языка
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Background = styled('div')({
   display: 'flex',
@@ -16,6 +16,7 @@ const Background = styled('div')({
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
 });
+
 const Header = styled(Box)({
   display: 'flex',
   alignItems: 'center',
@@ -53,27 +54,27 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-  const fetchCertificate = async () => {
-    if (user) {
-      try {
-        console.log('Fetching certificate for user:', user.id); // Логирование ID пользователя
-        const response = await fetch(`https://medlevel.me/api/certificates/${user.id}`);
-        const data = await response.json();
-        console.log('Received certificate data:', data); // Логирование полученных данных сертификата
-        if (data.certificate) {
-          setCertificate(data.certificate);
-        } else {
-          console.log('No certificate found.');
+    const fetchCertificate = async () => {
+      if (user) {
+        try {
+          console.log('Fetching certificate for user:', user.id); // Логирование ID пользователя
+          const response = await fetch(`https://medlevel.me/api/certificates/${user.id}`);
+          const data = await response.json();
+          console.log('Received certificate data:', data); // Логирование полученных данных сертификата
+          if (data.filename) {
+            setCertificate(data.filename);
+          } else {
+            console.log('No certificate found.');
+          }
+        } catch (error) {
+          console.error('Ошибка при получении сертификата', error);
         }
-      } catch (error) {
-        console.error('Ошибка при получении сертификата', error);
       }
-    }
-  };
+    };
 
-  fetchCertificate();
-}, [user]);
-  
+    fetchCertificate();
+  }, [user]);
+
   useEffect(() => {
     const fetchAppointment = async () => {
       if (user) {
@@ -251,5 +252,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-
