@@ -192,7 +192,7 @@ const UserProfile = () => {
                     fullWidth
                     variant="contained"
                     sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                    href={`https://medlevel.me/api/documents/download/${user.id}/certificate/${certificate}`}
+                    href={`https://medlevel.me/api/documents/download/certificate/${user.id}/${certificate}`}
                     target="_blank"
                   >
                     {t('Download Certificate')}
