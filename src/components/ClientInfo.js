@@ -138,23 +138,23 @@ const ClientInfo = () => {
                   </Table>
                 </TableContainer>
                 <Box sx={{ mt: 2 }}>
-                  {clientInfo.surveys[0].frontDocument && (
+                  {clientInfo.surveys[0].frontDocument && clientInfo.documentType && (
                     <Button
                       variant="contained"
                       color="secondary"
                       sx={{ ml: 2 }}
-                      href={`https://medlevel.me/api/documents/download/${patientId}/${clientInfo.surveys[0].documentType}/front/${clientInfo.surveys[0].frontDocument.split('/').pop()}`}
+                      href={`https://medlevel.me/api/documents/download/${patientId}/${clientInfo.documentType}/front/${clientInfo.surveys[0].frontDocument.split('/').pop()}`}
                       target="_blank"
                     >
                       {t('Download Front')}
                     </Button>
                   )}
-                  {clientInfo.surveys[0].backDocument && (
+                  {clientInfo.surveys[0].backDocument && clientInfo.documentType && (
                     <Button
                       variant="contained"
                       color="secondary"
                       sx={{ ml: 2 }}
-                      href={`https://medlevel.me/api/documents/download/${patientId}/${clientInfo.surveys[0].documentType}/back/${clientInfo.surveys[0].backDocument.split('/').pop()}`}
+                      href={`https://medlevel.me/api/documents/download/${patientId}/${clientInfo.documentType}/back/${clientInfo.surveys[0].backDocument.split('/').pop()}`}
                       target="_blank"
                     >
                       {t('Download Back')}
