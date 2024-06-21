@@ -1,8 +1,8 @@
-const Survey = require('../models/Survey');
-const Consultation = require('../models/Consultation');
 const path = require('path');
 const fs = require('fs');
 const ftp = require('basic-ftp');
+const Survey = require('../models/Survey');
+const Consultation = require('../models/Consultation');
 
 exports.getClientInfo = async (req, res) => {
   try {
@@ -45,6 +45,7 @@ exports.getClientInfo = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера' });
   }
 };
+
 async function uploadFilePart(client, localPath, remotePath, start, end, partNumber) {
   const partPath = `${localPath}.part${partNumber}`;
   const writeStream = fs.createWriteStream(partPath);
@@ -105,7 +106,7 @@ async function uploadToFTP(localPath, remotePath) {
 exports.uploadCertificate = async (req, res) => {
   try {
     const { userId } = req.body;
-    const certificate = req.files.certificate[0];
+    const certificate = req.file;
 
     if (!certificate || !userId) {
       return res.status(400).json({ success: false, message: 'User ID and certificate are required.' });
