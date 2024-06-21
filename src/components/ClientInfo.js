@@ -85,6 +85,24 @@ const ClientInfo = () => {
     }
   };
 
+  const handleCloseAppointment = async () => {
+    try {
+      const response = await fetch(`https://medlevel.me/api/consultations/appointments/${patientId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert('Запись успешно закрыта');
+        setClientInfo({ ...clientInfo, appointment: null }); // Обновляем состояние клиента
+      } else {
+        alert('Ошибка при закрытии записи');
+      }
+    } catch (error) {
+      console.error('Ошибка при закрытии записи', error);
+      alert('Ошибка при закрытии записи');
+    }
+  };
+
   return (
     <Background>
       <Container component="main" maxWidth="md">
@@ -175,6 +193,16 @@ const ClientInfo = () => {
                     />
                   </Button>
                 </Box>
+                <Box sx={{ mt: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    sx={{ mt: 2 }}
+                    onClick={handleCloseAppointment}
+                  >
+                    {t('Close Appointment')}
+                  </Button>
+                </Box>
               </Box>
             ) : (
               <Typography variant="body1" sx={{ mt: 2, color: '#f44336' }}>
@@ -189,6 +217,7 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
 
 
 
