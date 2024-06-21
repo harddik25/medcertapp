@@ -63,7 +63,7 @@ const StyledButton = styled(Button)({
   textTransform: 'none',
   borderRadius: 8,
   fontSize: '1.2rem',
-  color: orange[500], // Оранжевый цвет текста
+  color: black[500], // Оранжевый цвет текста
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
