@@ -46,27 +46,19 @@ exports.getClientInfo = async (req, res) => {
   }
 };
 
-async function uploadToFTP(localPath, remotePath) {
-  const client = new ftp.Client();
-  client.ftp.verbose = true;
-  client.ftp.timeout = 0;
+async function uploadFile(client, localPath, remotePath) {
+  const clientAccess = await client.access({
+    host: process.env.FTP_HOST,
+    user: process.env.FTP_USER,
+    password: process.env.FTP_PASSWORD,
+    secure: false,
+  });
 
-  try {
-    await client.access({
-      host: process.env.FTP_HOST,
-      user: process.env.FTP_USER,
-      password: process.env.FTP_PASSWORD,
-      secure: false,
-    });
+  const remoteDir = path.dirname(remotePath);
+  await client.ensureDir(remoteDir);
+  await client.uploadFrom(localPath, remotePath);
 
-    await client.uploadFrom(localPath, remotePath);
-    console.log('File uploaded successfully');
-  } catch (error) {
-    console.error('Error uploading to FTP:', error);
-    throw error;
-  } finally {
-    client.close();
-  }
+  console.log('File uploaded successfully');
 }
 
 exports.uploadCertificate = async (req, res) => {
@@ -89,7 +81,15 @@ exports.uploadCertificate = async (req, res) => {
 
     // FTP remote path
     const remotePath = `/var/www/user4806313/data/${userId}/certificate/${certificate.originalname}`;
-    await uploadToFTP(localPath, remotePath);
+    const client = new ftp.Client();
+    client.ftp.verbose = true;
+    client.ftp.timeout = 0;
+
+    try {
+      await uploadFile(client, localPath, remotePath);
+    } finally {
+      client.close();
+    }
 
     // Remove local file after upload
     fs.unlinkSync(localPath);
