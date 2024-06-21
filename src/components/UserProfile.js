@@ -5,6 +5,7 @@ import { deepOrange } from '@mui/material/colors';
 import { styled } from '@mui/system';
 import CannabisBackground from './cannabis-background.webp';
 import { useTranslation } from 'react-i18next';
+import PersonIcon from '@mui/icons-material/Person';
 import LanguageSwitcher from './LanguageSwitcher'; // Добавьте компонент переключателя языка
 
 const Background = styled('div')({
