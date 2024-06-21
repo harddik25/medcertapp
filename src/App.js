@@ -15,6 +15,7 @@ import DocumentUpload from './components/DocumentUpload';
 import MainSurvey from './components/MainSurvey';
 import ProtectedRoute from './components/ProtectedRoute';
 import ClientInfo from './components/ClientInfo';
+import i18n from './i18n';
 
 function App() {
   const [loading, setLoading] = useState(true);
