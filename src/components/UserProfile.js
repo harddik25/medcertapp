@@ -63,12 +63,12 @@ const StyledButton = styled(Button)({
   textTransform: 'none',
   borderRadius: 8,
   fontSize: '1.2rem',
-  color: '#fff',
-  backgroundColor: '#C8ECC8',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+  color: '#000',
+  backgroundColor: '#96f296',
+  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
   '&:hover': {
-    backgroundColor: '#A9D8A9',
-    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
+    backgroundColor: '#82e082',
+    boxShadow: '0px 6px 8px rgba(0, 0, 0, 0.2)',
   },
 });
 
@@ -210,7 +210,6 @@ const UserProfile = () => {
                       <StyledButton
                         fullWidth
                         variant="contained"
-                        color="secondary"
                         onClick={handleAdminPanel}
                       >
                         {t('Admin Panel')}
@@ -218,7 +217,6 @@ const UserProfile = () => {
                       <StyledButton
                         fullWidth
                         variant="contained"
-                        color="primary"
                         onClick={handleDoctorPanel}
                       >
                         {t('Doctor Panel')}
@@ -229,7 +227,6 @@ const UserProfile = () => {
                     <StyledButton
                       fullWidth
                       variant="contained"
-                      color="primary"
                       onClick={handleDoctorPanel}
                     >
                       {t('Doctor Panel')}
@@ -239,7 +236,6 @@ const UserProfile = () => {
                     <StyledButton
                       fullWidth
                       variant="contained"
-                      color="primary"
                       href={`https://medlevel.me/api/documents/download/certificate/${user.id}/${certificate}`}
                       target="_blank"
                     >
@@ -256,7 +252,6 @@ const UserProfile = () => {
                             <StyledButton
                               fullWidth
                               variant="contained"
-                              color="primary"
                               onClick={handleJoinConsultation}
                             >
                               {t('Join Consultation')}
@@ -267,7 +262,6 @@ const UserProfile = () => {
                         <StyledButton
                           fullWidth
                           variant="contained"
-                          color="primary"
                           onClick={handleCertificateInfo}
                         >
                           {t('About Certificate')}
@@ -279,7 +273,6 @@ const UserProfile = () => {
                     <StyledButton
                       fullWidth
                       variant="contained"
-                      color="primary"
                       onClick={handleBuyCertificate}
                     >
                       {t('Buy Certificate')}
@@ -301,7 +294,6 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
 
 
 
