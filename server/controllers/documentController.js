@@ -108,8 +108,28 @@ exports.downloadCertificate = async (req, res) => {
   }
 };
 
+async function ensureFtpDirectory(client, remoteDir) {
+  const parts = remoteDir.split('/');
+  let currentDir = '';
+  
+  for (const part of parts) {
+    if (part) {
+      currentDir += `/${part}`;
+      try {
+        await client.send(`MKD ${currentDir}`);
+      } catch (error) {
+        if (error.code !== 550) { // 550 means the directory already exists
+          throw error;
+        }
+      }
+    }
+  }
+}
+
 async function uploadToFTP(client, localPath, remotePath) {
   try {
+    const remoteDir = path.dirname(remotePath);
+    await ensureFtpDirectory(client, remoteDir);
     await client.uploadFrom(localPath, remotePath);
     console.log('File uploaded successfully');
   } catch (error) {
