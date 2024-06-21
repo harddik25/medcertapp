@@ -102,24 +102,24 @@ const UserProfile = () => {
     setOpenSnackbar(false);
   };
 
-  return (
+   return (
     <Background>
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <LanguageSwitcher />
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Header>
+              {user && (
+                <>
+                  <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80 }}>
+                    {user.first_name[0]}
+                  </Avatar>
+                  <LanguageSwitcher />
+                </>
+              )}
+            </Header>
             {user && (
               <>
-                <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80, mb: 2 }}>
-                  {user.first_name[0]}
-                </Avatar>
                 <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
                   {t('User Profile')}
                 </Typography>
