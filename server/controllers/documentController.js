@@ -8,7 +8,7 @@ async function downloadFromFTP(client, remotePath, localPath) {
     await client.downloadTo(localPath, remotePath);
   } catch (error) {
     if (error.code === 550) {
-      // File not found, try the next part
+      // File not found
       return false;
     }
     throw error;
@@ -18,7 +18,7 @@ async function downloadFromFTP(client, remotePath, localPath) {
 
 exports.downloadDocument = async (req, res) => {
   const { userId, documentType, side, fileName } = req.params;
-  const remotePathBase = `/var/www/user4806313/data/${userId}/${documentType}/${side}/${fileName}`;
+  const remotePath = `/var/www/user4806313/data/${userId}/${documentType}/${side}/${fileName}`;
   const localPath = path.join(__dirname, '..', 'downloads', userId, documentType, side, fileName);
 
   // Ensure local directory exists
@@ -39,25 +39,11 @@ exports.downloadDocument = async (req, res) => {
       secure: false,
     });
 
-    let partNumber = 1;
-    let downloaded = false;
-    const writeStream = fs.createWriteStream(localPath);
+    const downloaded = await downloadFromFTP(client, remotePath, localPath);
 
-    while (true) {
-      const remotePath = `${remotePathBase}.part${partNumber}`;
-      const localPathPart = `${localPath}.part${partNumber}`;
-      downloaded = await downloadFromFTP(client, remotePath, localPathPart);
-      if (!downloaded) break;
-
-      const readStream = fs.createReadStream(localPathPart);
-      readStream.pipe(writeStream, { end: false });
-      await new Promise(resolve => readStream.on('end', resolve));
-      fs.unlinkSync(localPathPart); // Remove the part after it is written
-      partNumber++;
+    if (!downloaded) {
+      return res.status(404).json({ success: false, message: 'File not found.' });
     }
-
-    writeStream.end();
-    await new Promise(resolve => writeStream.on('finish', resolve));
 
     res.download(localPath, (err) => {
       if (err) {
@@ -99,7 +85,11 @@ exports.downloadCertificate = async (req, res) => {
       secure: false,
     });
 
-    await downloadFromFTP(client, remotePath, localPath);
+    const downloaded = await downloadFromFTP(client, remotePath, localPath);
+
+    if (!downloaded) {
+      return res.status(404).json({ success: false, message: 'File not found.' });
+    }
 
     res.download(localPath, (err) => {
       if (err) {
@@ -118,70 +108,13 @@ exports.downloadCertificate = async (req, res) => {
   }
 };
 
-async function uploadFilePart(client, localPath, remotePath, start, end) {
-  const partPath = `${localPath}`;
-  const writeStream = fs.createWriteStream(partPath);
-
-  return new Promise((resolve, reject) => {
-    fs.createReadStream(localPath, { start, end })
-      .pipe(writeStream)
-      .on('finish', async () => {
-        try {
-          await client.uploadFrom(partPath, `${remotePath}`);
-          fs.unlinkSync(partPath); // Удалить временный файл после успешной загрузки
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      })
-      .on('error', reject);
-  });
-}
-
-async function ensureDir(client, remoteDir) {
+async function uploadToFTP(client, localPath, remotePath) {
   try {
-    await client.ensureDir(remoteDir);
-    console.log(`Directory ${remoteDir} exists or created successfully.`);
-  } catch (error) {
-    console.error(`Error ensuring directory ${remoteDir}:`, error);
-    throw error;
-  }
-}
-
-async function uploadToFTP(localPath, remotePath) {
-  const client = new ftp.Client();
-  client.ftp.verbose = true;
-  client.ftp.timeout = 0;
-
-  try {
-    await client.access({
-      host: process.env.FTP_HOST,
-      user: process.env.FTP_USER,
-      password: process.env.FTP_PASSWORD,
-      secure: false,
-    });
-
-    const remoteDir = path.dirname(remotePath);
-    await ensureDir(client, remoteDir);
-
-    const fileSize = fs.statSync(localPath).size;
-    const partSize = 10 * 1024 * 1024; // Размер части 10 MB
-    let start = 0;
-    let partNumber = 1;
-
-    while (start < fileSize) {
-      const end = Math.min(start + partSize - 1, fileSize - 1);
-      await uploadFilePart(client, localPath, remotePath, start, end);
-      start += partSize;
-      partNumber++;
-    }
-
-    console.log('File uploaded successfully in parts');
+    await client.uploadFrom(localPath, remotePath);
+    console.log('File uploaded successfully');
   } catch (error) {
     console.error('Error uploading to FTP:', error);
     throw error;
-  } finally {
-    client.close();
   }
 }
 
@@ -213,35 +146,54 @@ exports.uploadDocument = async (req, res) => {
       fs.writeFileSync(localPathBack, backDocument.buffer);
     }
 
-    // FTP remote path
-    const remotePathFront = `/var/www/user4806313/data/${userId}/${documentType}/front/${frontDocument.originalname}`;
-    const remotePathBack = backDocument ? `/var/www/user4806313/data/${userId}/${documentType}/back/${backDocument.originalname}` : null;
-    await uploadToFTP(localPathFront, remotePathFront);
+    const client = new ftp.Client();
+    client.ftp.verbose = true;
+    client.ftp.timeout = 0;
 
-    if (backDocument) {
-      await uploadToFTP(localPathBack, remotePathBack);
-    }
-
-    // Remove local file after upload
-    fs.unlinkSync(localPathFront);
-    if (localPathBack) fs.unlinkSync(localPathBack);
-
-    // Обновляем запись Survey
-    if (surveyId) {
-      await Survey.findByIdAndUpdate(surveyId, {
-        documentType: documentType, // Обновляем тип документа
-        frontDocument: remotePathFront,
-        backDocument: remotePathBack
+    try {
+      await client.access({
+        host: process.env.FTP_HOST,
+        user: process.env.FTP_USER,
+        password: process.env.FTP_PASSWORD,
+        secure: false,
       });
-    } else {
-      await Survey.updateOne({ telegramId: userId }, {
-        documentType: documentType, // Обновляем тип документа
-        frontDocument: remotePathFront,
-        backDocument: remotePathBack
-      });
-    }
 
-    res.status(201).json({ success: true, message: 'Document uploaded successfully.' });
+      // FTP remote path
+      const remotePathFront = `/var/www/user4806313/data/${userId}/${documentType}/front/${frontDocument.originalname}`;
+      const remotePathBack = backDocument ? `/var/www/user4806313/data/${userId}/${documentType}/back/${backDocument.originalname}` : null;
+
+      await uploadToFTP(client, localPathFront, remotePathFront);
+
+      if (backDocument) {
+        await uploadToFTP(client, localPathBack, remotePathBack);
+      }
+
+      // Remove local file after upload
+      fs.unlinkSync(localPathFront);
+      if (localPathBack) fs.unlinkSync(localPathBack);
+
+      // Обновляем запись Survey
+      if (surveyId) {
+        await Survey.findByIdAndUpdate(surveyId, {
+          documentType: documentType, // Обновляем тип документа
+          frontDocument: remotePathFront,
+          backDocument: remotePathBack
+        });
+      } else {
+        await Survey.updateOne({ telegramId: userId }, {
+          documentType: documentType, // Обновляем тип документа
+          frontDocument: remotePathFront,
+          backDocument: remotePathBack
+        });
+      }
+
+      res.status(201).json({ success: true, message: 'Document uploaded successfully.' });
+    } catch (error) {
+      console.error('Error accessing FTP server:', error);
+      res.status(500).json({ success: false, message: 'Server error' });
+    } finally {
+      client.close();
+    }
   } catch (error) {
     console.error('Error uploading document:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
