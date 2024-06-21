@@ -17,9 +17,23 @@ async function downloadFromFTP(client, remotePath, localPath) {
 }
 
 exports.downloadDocument = async (req, res) => {
-  const { userId, documentType, side, fileName } = req.params;
-  const remotePathBase = `/var/www/user4806313/data/${userId}/${documentType}/${side}/${fileName}`;
-  const localPath = path.join(__dirname, '..', 'downloads', userId, documentType, side, fileName);
+  const { userId, side, fileName } = req.params;
+  const documentTypes = ['Passport', 'NIE', 'DNI'];
+  let remotePathBase;
+  let localPath;
+
+  for (const docType of documentTypes) {
+    const remotePath = `/var/www/user4806313/data/${userId}/${docType}/${side}/${fileName}`;
+    if (await checkRemotePathExists(remotePath)) {
+      remotePathBase = remotePath;
+      localPath = path.join(__dirname, '..', 'downloads', userId, docType, side, fileName);
+      break;
+    }
+  }
+
+  if (!remotePathBase) {
+    return res.status(404).json({ success: false, message: 'Document not found.' });
+  }
 
   // Ensure local directory exists
   const downloadPath = path.dirname(localPath);
@@ -75,6 +89,31 @@ exports.downloadDocument = async (req, res) => {
     client.close();
   }
 };
+
+async function checkRemotePathExists(remotePath) {
+  const client = new ftp.Client();
+  client.ftp.verbose = true;
+  client.ftp.timeout = 0;
+  
+  try {
+    await client.access({
+      host: process.env.FTP_HOST,
+      user: process.env.FTP_USER,
+      password: process.env.FTP_PASSWORD,
+      secure: false,
+    });
+
+    const exists = await client.size(remotePath);
+    return exists !== undefined;
+  } catch (error) {
+    if (error.code === 550) {
+      return false;
+    }
+    throw error;
+  } finally {
+    client.close();
+  }
+}
 
 exports.downloadCertificate = async (req, res) => {
   const { userId, fileName } = req.params;
@@ -187,16 +226,16 @@ async function uploadToFTP(localPath, remotePath) {
 
 exports.uploadDocument = async (req, res) => {
   try {
-    const { documentType, userId, surveyId } = req.body;
+    const { userId, surveyId } = req.body;
     const frontDocument = req.files['frontDocument'][0];
     const backDocument = req.files['backDocument'] ? req.files['backDocument'][0] : null;
 
-    if (!documentType || !frontDocument || !userId) {
-      return res.status(400).json({ success: false, message: 'Document type, user ID, and front document are required.' });
+    if (!frontDocument || !userId) {
+      return res.status(400).json({ success: false, message: 'User ID and front document are required.' });
     }
 
-    const localPathFront = path.join(__dirname, '..', 'uploads', userId, documentType, 'front', frontDocument.originalname);
-    const localPathBack = backDocument ? path.join(__dirname, '..', 'uploads', userId, documentType, 'back', backDocument.originalname) : null;
+    const localPathFront = path.join(__dirname, '..', 'uploads', userId, 'front', frontDocument.originalname);
+    const localPathBack = backDocument ? path.join(__dirname, '..', 'uploads', userId, 'back', backDocument.originalname) : null;
 
     // Ensure local directory exists
     const uploadPathFront = path.dirname(localPathFront);
@@ -214,8 +253,8 @@ exports.uploadDocument = async (req, res) => {
     }
 
     // FTP remote path
-    const remotePathFront = `/var/www/user4806313/data/${userId}/${documentType}/front/${frontDocument.originalname}`;
-    const remotePathBack = backDocument ? `/var/www/user4806313/data/${userId}/${documentType}/back/${backDocument.originalname}` : null;
+    const remotePathFront = `/var/www/user4806313/data/${userId}/Passport/front/${frontDocument.originalname}`;
+    const remotePathBack = backDocument ? `/var/www/user4806313/data/${userId}/Passport/back/${backDocument.originalname}` : null;
     await uploadToFTP(localPathFront, remotePathFront);
 
     if (backDocument) {
@@ -229,13 +268,11 @@ exports.uploadDocument = async (req, res) => {
     // Обновляем запись Survey
     if (surveyId) {
       await Survey.findByIdAndUpdate(surveyId, {
-        documentType: documentType, // Обновляем тип документа
         frontDocument: remotePathFront,
         backDocument: remotePathBack
       });
     } else {
       await Survey.updateOne({ telegramId: userId }, {
-        documentType: documentType, // Обновляем тип документа
         frontDocument: remotePathFront,
         backDocument: remotePathBack
       });
@@ -247,3 +284,4 @@ exports.uploadDocument = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
+
