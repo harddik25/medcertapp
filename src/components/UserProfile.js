@@ -23,6 +23,7 @@ const Header = styled(Box)({
   marginBottom: 16,
 });
 const UserProfile = () => {
+  const [avatarUrl, setAvatarUrl] = useState('');
   const { t } = useTranslation();
   const [user, setUser] = useState(null);
   const [certificate, setCertificate] = useState(null);
