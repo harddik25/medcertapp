@@ -1,18 +1,43 @@
 import React from 'react';
+import { Button, Menu, MenuItem } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@mui/material';
+import { Language } from '@mui/icons-material';
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (lang) => {
+    setAnchorEl(null);
+    if (lang) {
+      i18n.changeLanguage(lang);
+    }
   };
 
   return (
-    <div style={{ position: 'absolute', top: 10, right: 10 }}>
-      <Button onClick={() => changeLanguage('en')}>EN</Button>
-      <Button onClick={() => changeLanguage('es')}>ES</Button>
+    <div>
+      <Button
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+        startIcon={<Language />}
+      >
+        {i18n.language.toUpperCase()}
+      </Button>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={() => handleClose(null)}
+      >
+        <MenuItem onClick={() => handleClose('en')}>EN</MenuItem>
+        <MenuItem onClick={() => handleClose('es')}>ES</MenuItem>
+      </Menu>
     </div>
   );
 };
