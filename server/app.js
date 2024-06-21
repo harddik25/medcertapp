@@ -54,6 +54,28 @@ app.use('/api/users', userRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/documents', documentRoutes);
 
+app.get('/api/users/avatar/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/getUserProfilePhotos?user_id=${userId}`);
+    const data = await response.json();
+
+    if (data.ok && data.result.photos.length > 0) {
+      const photo = data.result.photos[0][0].file_id;
+      const fileResponse = await fetch(`https://api.telegram.org/bot${botToken}/getFile?file_id=${photo}`);
+      const fileData = await fileResponse.json();
+      const fileUrl = `https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path}`;
+
+      res.status(200).json({ avatarUrl: fileUrl });
+    } else {
+      res.status(404).json({ message: 'Avatar not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching avatar', error });
+  }
+});
 
 app.use(express.static('/var/www/medlevel.me'));
 
