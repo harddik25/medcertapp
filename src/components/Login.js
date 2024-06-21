@@ -4,7 +4,30 @@ import { Container, Box, Typography, CssBaseline, Paper } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
 
-const theme = createTheme();
+const theme = createTheme({
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h5: {
+      fontWeight: 600,
+      letterSpacing: '0.5px',
+    },
+    body1: {
+      fontSize: '1rem',
+      letterSpacing: '0.5px',
+    },
+  },
+  palette: {
+    primary: {
+      main: '#388e3c',
+    },
+    secondary: {
+      main: '#f44336',
+    },
+    background: {
+      default: '#f5f5f5',
+    },
+  },
+});
 
 const Background = styled('div')({
   display: 'flex',
@@ -57,10 +80,10 @@ const Login = () => {
                 alignItems: 'center',
               }}
             >
-              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
+              <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, marginBottom: 2 }}>
                 Вход через Telegram
               </Typography>
-              <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+              <Typography variant="body1" sx={{ mt: 2, mb: 4, color: theme.palette.secondary.main }}>
                 Загрузка...
               </Typography>
             </Box>
@@ -72,5 +95,6 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
