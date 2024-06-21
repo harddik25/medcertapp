@@ -118,8 +118,8 @@ exports.downloadCertificate = async (req, res) => {
   }
 };
 
-async function uploadFilePart(client, localPath, remotePath, start, end, partNumber) {
-  const partPath = `${localPath}.part${partNumber}`;
+async function uploadFilePart(client, localPath, remotePath, start, end) {
+  const partPath = `${localPath}`;
   const writeStream = fs.createWriteStream(partPath);
 
   return new Promise((resolve, reject) => {
@@ -127,7 +127,7 @@ async function uploadFilePart(client, localPath, remotePath, start, end, partNum
       .pipe(writeStream)
       .on('finish', async () => {
         try {
-          await client.uploadFrom(partPath, `${remotePath}.part${partNumber}`);
+          await client.uploadFrom(partPath, `${remotePath}`);
           fs.unlinkSync(partPath); // Удалить временный файл после успешной загрузки
           resolve();
         } catch (error) {
@@ -171,7 +171,7 @@ async function uploadToFTP(localPath, remotePath) {
 
     while (start < fileSize) {
       const end = Math.min(start + partSize - 1, fileSize - 1);
-      await uploadFilePart(client, localPath, remotePath, start, end, partNumber);
+      await uploadFilePart(client, localPath, remotePath, start, end);
       start += partSize;
       partNumber++;
     }
