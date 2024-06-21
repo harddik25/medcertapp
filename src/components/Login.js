@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, CssBaseline, Paper } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
+import { useTranslation } from 'react-i18next';
 
 const theme = createTheme({
   typography: {
@@ -39,6 +40,7 @@ const Background = styled('div')({
 });
 
 const Login = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,10 +83,10 @@ const Login = () => {
               }}
             >
               <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, marginBottom: 2 }}>
-                Вход через Telegram
+                {t('Login via Telegram')}
               </Typography>
               <Typography variant="body1" sx={{ mt: 2, mb: 4, color: theme.palette.secondary.main }}>
-                Загрузка...
+                {t('Loading...')}
               </Typography>
             </Box>
           </Paper>
@@ -95,6 +97,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 
