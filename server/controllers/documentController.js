@@ -44,8 +44,8 @@ exports.downloadDocument = async (req, res) => {
     const writeStream = fs.createWriteStream(localPath);
 
     while (true) {
-      const remotePath = ${remotePathBase}.part${partNumber};
-      const localPathPart = ${localPath}.part${partNumber};
+      const remotePath = `${remotePathBase}.part${partNumber}`;
+      const localPathPart = `${localPath}.part${partNumber}`;
       downloaded = await downloadFromFTP(client, remotePath, localPathPart);
       if (!downloaded) break;
 
@@ -119,7 +119,7 @@ exports.downloadCertificate = async (req, res) => {
 };
 
 async function uploadFilePart(client, localPath, remotePath, start, end, partNumber) {
-  const partPath = ${localPath}.part${partNumber};
+  const partPath = `${localPath}.part${partNumber}`;
   const writeStream = fs.createWriteStream(partPath);
 
   return new Promise((resolve, reject) => {
