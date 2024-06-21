@@ -5,4 +5,6 @@ const upload = require('./upload'); // Импортируем middleware для 
 
 router.post('/upload', upload.fields([{ name: 'frontDocument', maxCount: 1 }, { name: 'backDocument', maxCount: 1 }]), documentController.uploadDocument);
 router.get('/download/:userId/:documentType/:side/:fileName', documentController.downloadDocument);
+router.get('/download/certificate/:userId/:fileName', documentController.downloadCertificate);
+
 module.exports = router;
