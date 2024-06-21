@@ -39,19 +39,22 @@ exports.getCertificate = async (req, res) => {
     const { userId } = req.params;
     const certificatePath = path.join(`/var/www/user4806313/data/${userId}/certificate`);
 
+    console.log('Fetching certificate for user:', userId); // Логирование ID пользователя
     console.log('Certificate path:', certificatePath);
 
     if (!fs.existsSync(certificatePath)) {
+      console.log('Certificate path does not exist:', certificatePath); // Логирование отсутствия пути
       return res.status(404).json({ message: 'Certificate not found' });
     }
 
     const files = fs.readdirSync(certificatePath);
     if (files.length === 0) {
+      console.log('No certificate files found in path:', certificatePath); // Логирование отсутствия файлов
       return res.status(404).json({ message: 'Certificate not found' });
     }
 
     const filename = files[0]; // Assuming there's only one certificate per user
-    console.log('Found certificate:', filename); // Log the filename
+    console.log('Found certificate:', filename); // Логирование найденного файла
     res.status(200).json({ filename });
   } catch (error) {
     console.error('Error fetching certificate:', error);
