@@ -66,31 +66,38 @@ const DoctorPanel = () => {
     setOpen(false);
   };
 
-  const handleSave = async () => {
-    if (!date || !time) {
-      alert(t('Date and time are required'));
-      return;
-    }
+  const formatDate = (dateString) => {
+  const [year, month, day] = dateString.split('-');
+  return `${day}-${month}-${year}`;
+};
 
-    try {
-      const response = await fetch('https://medlevel.me/api/consultations/add-free-slot', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ date, time }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        setFreeSlots([...freeSlots, { date, time }]);
-        setOpen(false);
-      } else {
-        console.error('Ошибка при сохранении свободного времени');
-      }
-    } catch (error) {
-      console.error('Ошибка при сохранении свободного времени', error);
+const handleSave = async () => {
+  if (!date || !time) {
+    alert(t('Date and time are required'));
+    return;
+  }
+
+  const formattedDate = formatDate(date);
+
+  try {
+    const response = await fetch('https://medlevel.me/api/consultations/add-free-slot', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ date: formattedDate, time }),
+    });
+    const data = await response.json();
+    if (data.success) {
+      setFreeSlots([...freeSlots, { date: formattedDate, time }]);
+      setOpen(false);
+    } else {
+      console.error('Ошибка при сохранении свободного времени');
     }
-  };
+  } catch (error) {
+    console.error('Ошибка при сохранении свободного времени', error);
+  }
+};
 
   const handleDeleteSlot = async (slotId) => {
     try {
