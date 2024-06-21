@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper, Snackbar, Alert } from '@mui/material';
 import { green, deepOrange } from '@mui/material/colors';
-import { styled, createTheme, ThemeProvider } from '@mui/system';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
 import { useTranslation } from 'react-i18next';
 import PersonIcon from '@mui/icons-material/Person';
