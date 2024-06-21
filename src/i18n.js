@@ -177,7 +177,7 @@ const resources = {
   },
   es: {
     translation: {
-      "Login via Telegram": "Iniciar sesión a través de Telegram",
+      "Login via Telegram": "Iniciar sesión de Telegram",
       "Loading...": "Cargando...",
       "Welcome": "Bienvenido",
       "Video Consultation": "Consulta de video",
