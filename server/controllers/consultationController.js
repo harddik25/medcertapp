@@ -16,6 +16,22 @@ exports.deleteFreeSlot = async (req, res) => {
   }
 };
 
+exports.deleteAppointmentByPatientId = async (req, res) => {
+  try {
+    const { patientId } = req.params;
+    const result = await Consultation.deleteOne({ patientName: patientId });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Консультация не найдена' });
+    }
+
+    res.status(200).json({ message: 'Консультация успешно удалена' });
+  } catch (error) {
+    console.error('Ошибка при удалении консультации:', error);
+    res.status(500).json({ message: 'Ошибка сервера' });
+  }
+};
+
 exports.scheduleAppointment = async (req, res) => {
   try {
     const { date, time, patientName } = req.body;
