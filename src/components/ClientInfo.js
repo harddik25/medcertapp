@@ -68,7 +68,7 @@ const ClientInfo = () => {
       formData.append('userId', patientId);
 
       try {
-        const response = await fetch(`https://medlevel.me/api/documents/upload-certificate`, {
+        const response = await fetch(`https://medlevel.me/api/clients/upload-certificate`, {
           method: 'POST',
           body: formData,
         });
