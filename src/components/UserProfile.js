@@ -58,7 +58,7 @@ const UserProfile = () => {
       if (user) {
         try {
           console.log('Fetching certificate for user:', user.id); // Логирование ID пользователя
-          const response = await fetch(`https://medlevel.me/api/user/certificate/${user.id}`);
+          const response = await fetch(`https://medlevel.me/api/users/certificate/${user.id}`);
           const data = await response.json();
           console.log('Received certificate data:', data); // Логирование полученных данных сертификата
           if (data.filename) {
