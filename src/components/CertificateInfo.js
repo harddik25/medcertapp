@@ -4,6 +4,8 @@ import { Container, Box, Typography, Button, CssBaseline, Paper, IconButton } fr
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Используем иконку из MUI
 import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const theme = createTheme();
 
@@ -34,6 +36,7 @@ const Header = styled('div')({
 
 const CertificateInfo = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleBackClick = () => {
     navigate('/profile');
@@ -50,48 +53,47 @@ const CertificateInfo = () => {
                 <ArrowBackIcon style={{ color: '#388e3c' }} />
               </IconButton>
               <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
-                Medicinal Cannabis Certificate
+                {t('Medicinal Cannabis Certificate')}
               </Typography>
-              <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
+              <LanguageSwitcher />
             </Header>
             <Typography variant="body2" sx={{ textAlign: 'justify', color: '#000', fontSize: '0.875rem' }}>
-              This certificate allows the use of all cannabinoids (THC or CBD) legally, including carrying them in public and exempting drivers from penalties if prescribed by a doctor.
+              {t('This certificate allows the use of all cannabinoids (THC or CBD) legally, including carrying them in public and exempting drivers from penalties if prescribed by a doctor.')}
               <br /><br />
-              <b>Who is this for?</b>
+              <b>{t('Who is this for?')}</b>
               <br />
-              People with certain pathologies who want to use Marijuana or CBD for treatment, enabling legal consumption without penalties.
+              {t('People with certain pathologies who want to use Marijuana or CBD for treatment, enabling legal consumption without penalties.')}
               <br /><br />
-              <b>Validity</b>
+              <b>{t('Validity')}</b>
               <br />
-              Valid in Schengen Area countries.
+              {t('Valid in Schengen Area countries.')}
               <br /><br />
-              <b>Requirements</b>
+              <b>{t('Requirements')}</b>
               <br />
-              1. Qualifying pathology.
+              {t('1. Qualifying pathology.')}
               <br />
-              2. Valid DNI-NIE or Passport photo.
+              {t('2. Valid DNI-NIE or Passport photo.')}
               <br />
-              3. Attach all documentation when contracting the service.
+              {t('3. Attach all documentation when contracting the service.')}
               <br />
-              *If no medical history, fill out a form in our Telegram bot.
+              {t('*If no medical history, fill out a form in our Telegram bot.')}
               <br /><br />
-              <b>Pathologies</b>
+              <b>{t('Pathologies')}</b>
               <br />
-              Alzheimer's, Anorexia, Anxiety, Asthma, Dependence, Depression, Chronic pain, Inflammatory diseases, Epilepsy, Fibromyalgia, Glaucoma, ADHD, Insomnia, Nausea, Skin problems, Tourette syndrome, Mixed syndromes, Psychiatric symptoms, Immune system, Hyperkinetic disorders
+              {t('Alzheimer\'s, Anorexia, Anxiety, Asthma, Dependence, Depression, Chronic pain, Inflammatory diseases, Epilepsy, Fibromyalgia, Glaucoma, ADHD, Insomnia, Nausea, Skin problems, Tourette syndrome, Mixed syndromes, Psychiatric symptoms, Immune system, Hyperkinetic disorders')}
               <br /><br />
-              <b>Renewal</b>
+              <b>{t('Renewal')}</b>
               <br />
-              Annually, to ensure user safety.
+              {t('Annually, to ensure user safety.')}
               <br /><br />
-              <b>Management</b>
+              <b>{t('Management')}</b>
               <br />
-              Managed by the Cannabis Federation in alliance with the Therapeutic Cabinet, ensuring strict control of sensitive information in compliance with data privacy laws.
+              {t('Managed by the Cannabis Federation in alliance with the Therapeutic Cabinet, ensuring strict control of sensitive information in compliance with data privacy laws.')}
               <br /><br />
-              <b>Additional Info</b>
+              <b>{t('Additional Info')}</b>
               <br />
-              The UN Single Convention on Narcotic Drugs (1961) allows medical and scientific use of narcotics. In Spain, the therapeutic use of Cannabis has been legal since 1967, though strictly regulated.
+              {t('The UN Single Convention on Narcotic Drugs (1961) allows medical and scientific use of narcotics. In Spain, the therapeutic use of Cannabis has been legal since 1967, though strictly regulated.')}
             </Typography>
-            
           </StyledBox>
         </Container>
       </Background>
@@ -100,6 +102,7 @@ const CertificateInfo = () => {
 };
 
 export default CertificateInfo;
+
 
 
 
