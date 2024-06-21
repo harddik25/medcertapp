@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton, Snackbar, Alert, TextField } from '@mui/material';
+import { Container, Box, Typography, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton, Snackbar, Alert, TextField, Button } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -9,7 +9,31 @@ import { useTranslation } from 'react-i18next';
 import CannabisBackground from './cannabis-background.webp';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const theme = createTheme();
+const theme = createTheme({
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h5: {
+      fontWeight: 600,
+      letterSpacing: '0.5px',
+    },
+    body1: {
+      fontSize: '1rem',
+      letterSpacing: '0.5px',
+    },
+  },
+  palette: {
+    primary: {
+      main: '#96f296',
+    },
+    secondary: {
+      main: '#ff6b72',
+    },
+    background: {
+      default: '#f5f5f5',
+    },
+  },
+});
+
 const Header = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -55,6 +79,41 @@ const RadioGroupRow = styled(RadioGroup)({
   justifyContent: 'left',
   flexWrap: 'wrap',
   gap: '10px',
+});
+
+const StyledButton = styled(Button)({
+  marginBottom: 16,
+  padding: '12px 24px',
+  textTransform: 'none',
+  borderRadius: 8,
+  fontSize: '1.2rem',
+  color: '#000',
+  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+  '&:hover': {
+    boxShadow: '0px 6px 8px rgba(0, 0, 0, 0.2)',
+  },
+});
+
+const AcceptButton = styled(StyledButton)({
+  backgroundColor: '#96f296',
+  '&:hover': {
+    backgroundColor: '#82e082',
+  },
+});
+
+const DeclineButton = styled(StyledButton)({
+  backgroundColor: '#ff6b72',
+  '&:hover': {
+    backgroundColor: '#ff5b62',
+  },
+});
+
+const InfoButton = styled(StyledButton)({
+  backgroundColor: '#f5f5eb',
+  color: '#000',
+  '&:hover': {
+    backgroundColor: '#e5e5db',
+  },
 });
 
 const MainSurvey = () => {
@@ -441,14 +500,12 @@ const MainSurvey = () => {
               >
                 <ArrowUpwardIcon />
               </IconButton>
-              <Button
+              <AcceptButton
                 fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleSubmit}
               >
                 {t('Continue')}
-              </Button>
+              </AcceptButton>
           </Box>
       </FullScreenPaper>
     </Container>
