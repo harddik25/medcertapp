@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const fs = require('fs');
+const path = require('path');
 
 exports.getUserRoleByTelegramId = async (req, res) => {
   try {
@@ -29,5 +31,27 @@ exports.getUserById = async (req, res) => {
   } catch (error) {
     console.error('Error fetching user by ID:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+exports.getCertificate = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const certificatePath = `/var/www/user4806313/data/${userId}/certificate`;
+
+    if (!fs.existsSync(certificatePath)) {
+      return res.status(404).json({ message: 'Certificate not found' });
+    }
+
+    const files = fs.readdirSync(certificatePath);
+    if (files.length === 0) {
+      return res.status(404).json({ message: 'Certificate not found' });
+    }
+
+    const filename = files[0]; // Assuming there's only one certificate per user
+    res.status(200).json({ filename });
+  } catch (error) {
+    console.error('Error fetching certificate:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
