@@ -5,7 +5,9 @@ import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormCont
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { useTranslation } from 'react-i18next';
 import CannabisBackground from './cannabis-background.webp';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const theme = createTheme();
 const Header = styled('div')({
@@ -56,6 +58,7 @@ const RadioGroupRow = styled(RadioGroup)({
 });
 
 const MainSurvey = () => {
+  const { t } = useTranslation();
   const [surveyData, setSurveyData] = useState({
     generalhealth: {},
     comparing: {},
@@ -139,7 +142,7 @@ const MainSurvey = () => {
 
   const handleSubmit = async () => {
     if (!validateSurveyData()) {
-      setErrorMessage('Please fill out all fields.');
+      setErrorMessage(t('Please fill out all fields.'));
       return;
     }
     try {
@@ -174,13 +177,13 @@ const MainSurvey = () => {
                   <ArrowBackIcon style={{ color: '#388e3c' }} />
                 </IconButton>
                 <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
-                  Health Survey
+                  {t('Health Survey')}
                 </Typography>
-                <div style={{ width: '30px', height: '30px' }}></div>
+                <LanguageSwitcher />
               </Header>
               <TextField
                 name="firstName"
-                label="First Name"
+                label={t("First Name")}
                 fullWidth
                 value={surveyData.firstName}
                 onChange={handleInputChange}
@@ -188,7 +191,7 @@ const MainSurvey = () => {
               />
               <TextField
                 name="lastName"
-                label="Last Name"
+                label={t("Last Name")}
                 fullWidth
                 value={surveyData.lastName}
                 onChange={handleInputChange}
@@ -196,14 +199,14 @@ const MainSurvey = () => {
               />
               <TextField
                 name="pathology"
-                label="Pathology"
+                label={t("Pathology")}
                 fullWidth
                 value={surveyData.pathology}
                 onChange={handleInputChange}
                 sx={{ mb: 2 }}
               />
               <RoundedTypography sx={{ marginTop: 2 }}>
-                IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS:
+                {t('IN GENERAL, WOULD YOU SAY THAT YOUR HEALTH IS:')}
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
@@ -211,16 +214,16 @@ const MainSurvey = () => {
                   value={surveyData.generalhealth[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="1" control={<Radio />} label="Excellent" />
-                  <FormControlLabel value="2" control={<Radio />} label="Very good" />
-                  <FormControlLabel value="3" control={<Radio />} label="Good." />
-                  <FormControlLabel value="4" control={<Radio />} label="Fair." />
-                  <FormControlLabel value="5" control={<Radio />} label="Poor." />
+                  <FormControlLabel value="1" control={<Radio />} label={t("Excellent")} />
+                  <FormControlLabel value="2" control={<Radio />} label={t("Very good")} />
+                  <FormControlLabel value="3" control={<Radio />} label={t("Good")} />
+                  <FormControlLabel value="4" control={<Radio />} label={t("Fair")} />
+                  <FormControlLabel value="5" control={<Radio />} label={t("Poor")} />
                 </RadioGroupRow>
               </Box>
                     
               <RoundedTypography sx={{ marginTop: 2 }}>
-                COMPARING IT WITH THE ONE OF A YEAR AGO:
+                {t('COMPARING IT WITH THE ONE OF A YEAR AGO:')}
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
@@ -228,27 +231,27 @@ const MainSurvey = () => {
                   value={surveyData.comparing[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="1" control={<Radio />} label="Much better now than a year ago" />
-                  <FormControlLabel value="2" control={<Radio />} label="Somewhat worse now than a year ago " />
-                  <FormControlLabel value="3" control={<Radio />} label="Same as a year ago." />
-                  <FormControlLabel value="4" control={<Radio />} label="Much worse now than a year ago." />
+                  <FormControlLabel value="1" control={<Radio />} label={t("Much better now than a year ago")} />
+                  <FormControlLabel value="2" control={<Radio />} label={t("Somewhat worse now than a year ago ")} />
+                  <FormControlLabel value="3" control={<Radio />} label={t("Same as a year ago")} />
+                  <FormControlLabel value="4" control={<Radio />} label={t("Much worse now than a year ago")} />
                 </RadioGroupRow>
               </Box>
                     
               <RoundedTypography sx={{ marginTop: 2 }}>
-                The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?
+                {t('The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?')}
               </RoundedTypography>
               {[
-                'Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports.',
-                'Moderate activities, such as moving a table, pushing a vacuum, go bowling or play golf.',
-                'Lifting weight or carrying food.',
-                'Climb several flights of stairs.',
-                'Up a flight of stairs.',
-                'Bend, kneel, or stoop.',
-                'Walking more than a kilometer.',
-                'Walking several blocks.',
-                'Walking one block.',
-                'Bathing or dressing.',
+                t('Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports.'),
+                t('Moderate activities, such as moving a table, pushing a vacuum, go bowling or play golf.'),
+                t('Lifting weight or carrying food.'),
+                t('Climb several flights of stairs.'),
+                t('Up a flight of stairs.'),
+                t('Bend, kneel, or stoop.'),
+                t('Walking more than a kilometer.'),
+                t('Walking several blocks.'),
+                t('Walking one block.'),
+                t('Bathing or dressing.'),
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
@@ -257,21 +260,21 @@ const MainSurvey = () => {
                     value={surveyData.dayactivities[index] || ''}
                     onChange={handleInputChange}
                   >
-                    <FormControlLabel value="1" control={<Radio />} label="Yes very limited" />
-                    <FormControlLabel value="2" control={<Radio />} label="Yes a bit limited" />
-                    <FormControlLabel value="3" control={<Radio />} label="No, nothing limited" />
+                    <FormControlLabel value="1" control={<Radio />} label={t("Yes very limited")} />
+                    <FormControlLabel value="2" control={<Radio />} label={t("Yes a bit limited")} />
+                    <FormControlLabel value="3" control={<Radio />} label={t("No, nothing limited")} />
                   </RadioGroupRow>
                 </Box>
               ))}
                 
               <RoundedTypography sx={{ marginTop: 2 }}>
-                During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?
+                {t('During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?')}
               </RoundedTypography>
               {[
-                'I have reduced the time I spend at work or other activities',
-                'I have accomplished less than I would like',
-                'I had some limitation in work or other activities',
-                'I had difficulty and required an extra effort',
+                t('I have reduced the time I spend at work or other activities'),
+                t('I have accomplished less than I would like'),
+                t('I had some limitation in work or other activities'),
+                t('I had difficulty and required an extra effort'),
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
@@ -280,19 +283,19 @@ const MainSurvey = () => {
                     value={surveyData.physicalhealth[index] || ''}
                     onChange={handleInputChange}
                   >
-                    <FormControlLabel value="1" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="2" control={<Radio />} label="No" />
+                    <FormControlLabel value="1" control={<Radio />} label={t("Yes")} />
+                    <FormControlLabel value="2" control={<Radio />} label={t("No")} />
                   </RadioGroupRow>
                 </Box>
               ))}
                 
               <RoundedTypography sx={{ marginTop: 2 }}>
-                During the last 4 weeks, have you had any of the following problems at work or with other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?
+                {t('During the last 4 weeks, have you had any of the following problems at work or with other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?')}
               </RoundedTypography>
               {[
-                'I have reduced the amount of time I spend at work or doing other activities.',
-                'I have accomplished less than I would like.',
-                'I did not do work or other activities as carefully as usual.'
+                t('I have reduced the amount of time I spend at work or doing other activities.'),
+                t('I have accomplished less than I would like.'),
+                t('I did not do work or other activities as carefully as usual.')
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
@@ -301,14 +304,14 @@ const MainSurvey = () => {
                     value={surveyData.depressed[index] || ''}
                     onChange={handleInputChange}
                   >
-                    <FormControlLabel value="1" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="2" control={<Radio />} label="No" />
+                    <FormControlLabel value="1" control={<Radio />} label={t("Yes")} />
+                    <FormControlLabel value="2" control={<Radio />} label={t("No")} />
                   </RadioGroupRow>
                 </Box>
               ))}
 
               <RoundedTypography sx={{ marginTop: 2 }}>
-                During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?
+                {t('During the past 4 weeks, to what extent have your physical health or emotional problems interfered with your normal social activities with family, friends, neighbors, or groups?')}
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
@@ -316,16 +319,16 @@ const MainSurvey = () => {
                   value={surveyData.socialactivitiesgroups[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="1" control={<Radio />} label="No way." />
-                  <FormControlLabel value="2" control={<Radio />} label="Slightly." />
-                  <FormControlLabel value="3" control={<Radio />} label="Moderately." />
-                  <FormControlLabel value="4" control={<Radio />} label="Quite." />
-                  <FormControlLabel value="5" control={<Radio />} label="Extremely." />
+                  <FormControlLabel value="1" control={<Radio />} label={t("No way.")} />
+                  <FormControlLabel value="2" control={<Radio />} label={t("Slightly.")} />
+                  <FormControlLabel value="3" control={<Radio />} label={t("Moderately.")} />
+                  <FormControlLabel value="4" control={<Radio />} label={t("Quite.")} />
+                  <FormControlLabel value="5" control={<Radio />} label={t("Extremely.")} />
                 </RadioGroupRow>
               </Box>
 
               <RoundedTypography sx={{ marginTop: 2 }}>
-                How much body pain have you had in the last 4 weeks?
+                {t('How much body pain have you had in the last 4 weeks?')}
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
@@ -333,17 +336,17 @@ const MainSurvey = () => {
                   value={surveyData.bodypain[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="1" control={<Radio />} label="Nothing" />
-                  <FormControlLabel value="2" control={<Radio />} label="Very soft." />
-                  <FormControlLabel value="3" control={<Radio />} label="Soft." />
-                  <FormControlLabel value="4" control={<Radio />} label="Moderate." />
-                  <FormControlLabel value="5" control={<Radio />} label="Severe." />
-                  <FormControlLabel value="6" control={<Radio />} label="Very severe." />
+                  <FormControlLabel value="1" control={<Radio />} label={t("Nothing")} />
+                  <FormControlLabel value="2" control={<Radio />} label={t("Very soft.")} />
+                  <FormControlLabel value="3" control={<Radio />} label={t("Soft.")} />
+                  <FormControlLabel value="4" control={<Radio />} label={t("Moderate.")} />
+                  <FormControlLabel value="5" control={<Radio />} label={t("Severe.")} />
+                  <FormControlLabel value="6" control={<Radio />} label={t("Very severe.")} />
                 </RadioGroupRow>
               </Box>
               
               <RoundedTypography sx={{ marginTop: 2 }}>
-                During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?
+                {t('During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?')}
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
@@ -351,27 +354,27 @@ const MainSurvey = () => {
                   value={surveyData.paininterfere[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="1" control={<Radio />} label="No way." />
-                  <FormControlLabel value="2" control={<Radio />} label="Slightly." />
-                  <FormControlLabel value="3" control={<Radio />} label="Moderately." />
-                  <FormControlLabel value="4" control={<Radio />} label="Quite." />
-                  <FormControlLabel value="5" control={<Radio />} label="Extremely." />
+                  <FormControlLabel value="1" control={<Radio />} label={t("No way.")} />
+                  <FormControlLabel value="2" control={<Radio />} label={t("Slightly.")} />
+                  <FormControlLabel value="3" control={<Radio />} label={t("Moderately.")} />
+                  <FormControlLabel value="4" control={<Radio />} label={t("Quite.")} />
+                  <FormControlLabel value="5" control={<Radio />} label={t("Extremely.")} />
                 </RadioGroupRow>
               </Box>
                     
               <RoundedTypography sx={{ marginTop: 2 }}>
-                These questions are about how you are feeling and how things have been going for you in the last 4 weeks. For each question, please give the answer that is closest to how you felt.
+                {t('These questions are about how you are feeling and how things have been going for you in the last 4 weeks. For each question, please give the answer that is closest to how you felt.')}
               </RoundedTypography>
               {[
-                'Did you feel full of energy?',
-                'Were you very nervous?',
-                'Have you felt so low that nothing could cheer you up?',
-                'Have you felt calm and at peace?',
-                'Did you have a lot of energy?',
-                'Have you felt downhearted and blue?',
-                'Did you feel exhausted?',
-                'Have you been a happy person?',
-                'Did you feel tired?',
+                t('Did you feel full of energy?'),
+                t('Were you very nervous?'),
+                t('Have you felt so low that nothing could cheer you up?'),
+                t('Have you felt calm and at peace?'),
+                t('Did you have a lot of energy?'),
+                t('Have you felt downhearted and blue?'),
+                t('Did you feel exhausted?'),
+                t('Have you been a happy person?'),
+                t('Did you feel tired?'),
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
@@ -380,18 +383,18 @@ const MainSurvey = () => {
                     value={surveyData.feelings[index] || ''}
                     onChange={handleInputChange}
                   >
-                    <FormControlLabel value="1" control={<Radio />} label="All the time" />
-                    <FormControlLabel value="2" control={<Radio />} label="Most of the time" />
-                    <FormControlLabel value="3" control={<Radio />} label="Good part of the time" />
-                    <FormControlLabel value="4" control={<Radio />} label="Part of the time" />
-                    <FormControlLabel value="5" control={<Radio />} label="A small part of the time" />
-                    <FormControlLabel value="6" control={<Radio />} label="No time" />
+                    <FormControlLabel value="1" control={<Radio />} label={t("All the time")} />
+                    <FormControlLabel value="2" control={<Radio />} label={t("Most of the time")} />
+                    <FormControlLabel value="3" control={<Radio />} label={t("Good part of the time")} />
+                    <FormControlLabel value="4" control={<Radio />} label={t("Part of the time")} />
+                    <FormControlLabel value="5" control={<Radio />} label={t("A small part of the time")} />
+                    <FormControlLabel value="6" control={<Radio />} label={t("No time")} />
                   </RadioGroupRow>
                 </Box>
               ))}
                 
               <RoundedTypography sx={{ marginTop: 2 }}>
-                During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?
+                {t('During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?')}
               </RoundedTypography>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                 <RadioGroupRow
@@ -399,22 +402,22 @@ const MainSurvey = () => {
                   value={surveyData.socialInterference[0] || ''}
                   onChange={handleInputChange}
                 >
-                  <FormControlLabel value="1" control={<Radio />} label="All the time." />
-                  <FormControlLabel value="2" control={<Radio />} label="Most of the time." />
-                  <FormControlLabel value="3" control={<Radio />} label="Part of the time." />
-                  <FormControlLabel value="4" control={<Radio />} label="A little of the time." />
-                  <FormControlLabel value="5" control={<Radio />} label="None of the time." />
+                  <FormControlLabel value="1" control={<Radio />} label={t("All the time.")} />
+                  <FormControlLabel value="2" control={<Radio />} label={t("Most of the time.")} />
+                  <FormControlLabel value="3" control={<Radio />} label={t("Part of the time.")} />
+                  <FormControlLabel value="4" control={<Radio />} label={t("A little of the time.")} />
+                  <FormControlLabel value="5" control={<Radio />} label={t("None of the time.")} />
                 </RadioGroupRow>
               </Box>
                     
               <RoundedTypography sx={{ marginTop: 2 }}>
-                How much of the time during the last 4 weeks?
+                {t('How much of the time during the last 4 weeks?')}
               </RoundedTypography>
               {[
-                'I seem to get sick a little more than other people.',
-                'I am as healthy as anyone you know.',
-                'I hope my health gets worse.',
-                'My health is excellent.',
+                t('I seem to get sick a little more than other people.'),
+                t('I am as healthy as anyone you know.'),
+                t('I hope my health gets worse.'),
+                t('My health is excellent.'),
               ].map((question, index) => (
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2, width: '100%', }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
@@ -422,13 +425,12 @@ const MainSurvey = () => {
                     name={`healthTime${index}`}
                     value={surveyData.healthTime[index] || ''}
                     onChange={handleInputChange}
-                    
                   >
-                    <FormControlLabel value="1" control={<Radio />} label="Definitely right" />
-                    <FormControlLabel value="2" control={<Radio />} label="Mostly true" />
-                    <FormControlLabel value="3" control={<Radio />} label="Don't know" />
-                    <FormControlLabel value="4" control={<Radio />} label="Mostly false" />
-                    <FormControlLabel value="5" control={<Radio />} label="Definitely false" />
+                    <FormControlLabel value="1" control={<Radio />} label={t("Definitely right")} />
+                    <FormControlLabel value="2" control={<Radio />} label={t("Mostly true")} />
+                    <FormControlLabel value="3" control={<Radio />} label={t("Don't know")} />
+                    <FormControlLabel value="4" control={<Radio />} label={t("Mostly false")} />
+                    <FormControlLabel value="5" control={<Radio />} label={t("Definitely false")} />
                   </RadioGroupRow>
                 </Box>
               ))}
@@ -445,7 +447,7 @@ const MainSurvey = () => {
                 sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleSubmit}
               >
-                Continue
+                {t('Continue')}
               </Button>
           </Box>
       </FullScreenPaper>
