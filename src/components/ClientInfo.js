@@ -60,6 +60,31 @@ const ClientInfo = () => {
     return answers;
   };
 
+  const handleCertificateUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('certificate', file);
+      formData.append('userId', patientId);
+
+      try {
+        const response = await fetch(`https://medlevel.me/api/documents/upload-certificate`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          alert('Сертификат успешно загружен');
+        } else {
+          alert('Ошибка при загрузке сертификата');
+        }
+      } catch (error) {
+        console.error('Ошибка при загрузке сертификата', error);
+        alert('Ошибка при загрузке сертификата');
+      }
+    }
+  };
+
   return (
     <Background>
       <Container component="main" maxWidth="md">
@@ -136,6 +161,20 @@ const ClientInfo = () => {
                     </Button>
                   )}
                 </Box>
+                <Box sx={{ mt: 2 }}>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    sx={{ mt: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                  >
+                    {t('Add Certificate')}
+                    <input
+                      type="file"
+                      hidden
+                      onChange={handleCertificateUpload}
+                    />
+                  </Button>
+                </Box>
               </Box>
             ) : (
               <Typography variant="body1" sx={{ mt: 2, color: '#f44336' }}>
@@ -150,5 +189,6 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
 
 
