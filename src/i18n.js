@@ -34,7 +34,7 @@ const resources = {
       "View Certificate": "View Certificate",
       "Status": "Status",
       "Buy Certificate": "Buy Certificate",
-      "You can join the consultation only 15 minutes before its start": "You can join the consultation only 15 minutes before its start"
+      "You can join the consultation only 15 minutes before its start": "You can join the consultation only 15 minutes before its start",
       "First Name": "First Name",
       "Last Name": "Last Name",
       "Pathology": "Pathology",
@@ -114,7 +114,19 @@ const resources = {
       "success": "Success",
       "uploadSuccess": "Document uploaded successfully",
       "uploadError": "Error uploading document",
-      "mandatoryFields": "All fields are required"
+      "mandatoryFields": "All fields are required",
+      "Doctor Panel": "Doctor Panel",
+      "Add Free Slot": "Add Free Slot",
+      "Future Appointments": "Future Appointments",
+      "Free Dates": "Free Dates",
+      "Patient": "Patient",
+      "View Client Info": "View Client Info",
+      "Add Free Slot for Appointment": "Add Free Slot for Appointment",
+      "Date": "Date",
+      "Time": "Time",
+      "Cancel": "Cancel",
+      "Save": "Save",
+      "No appointments available": "No appointments available"
     }
   },
   es: {
@@ -146,7 +158,7 @@ const resources = {
       "View Certificate": "Ver certificado",
       "Status": "Estado",
       "Buy Certificate": "Comprar certificado",
-      "You can join the consultation only 15 minutes before its start": "Puede unirse a la consulta solo 15 minutos antes de su inicio"
+      "You can join the consultation only 15 minutes before its start": "Puede unirse a la consulta solo 15 minutos antes de su inicio",
       "First Name": "Nombre",
       "Last Name": "Apellido",
       "Pathology": "Patología",
@@ -226,7 +238,19 @@ const resources = {
       "success": "Éxito",
       "uploadSuccess": "Documento subido con éxito",
       "uploadError": "Error al subir el documento",
-      "mandatoryFields": "Todos los campos son obligatorios"
+      "mandatoryFields": "Todos los campos son obligatorios",
+      "Doctor Panel": "Panel del doctor",
+      "Add Free Slot": "Agregar franja libre",
+      "Future Appointments": "Citas futuras",
+      "Free Dates": "Fechas libres",
+      "Patient": "Paciente",
+      "View Client Info": "Ver información del cliente",
+      "Add Free Slot for Appointment": "Agregar franja libre para cita",
+      "Date": "Fecha",
+      "Time": "Hora",
+      "Cancel": "Cancelar",
+      "Save": "Guardar",
+      "No appointments available": "No hay citas disponibles"
     }
     }
   }
