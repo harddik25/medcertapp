@@ -127,7 +127,7 @@ async function uploadFilePart(client, localPath, remotePath, start, end, partNum
       .pipe(writeStream)
       .on('finish', async () => {
         try {
-          await client.uploadFrom(partPath, ${remotePath}.part${partNumber});
+          await client.uploadFrom(partPath, `${remotePath}.part${partNumber}`);
           fs.unlinkSync(partPath); // Удалить временный файл после успешной загрузки
           resolve();
         } catch (error) {
