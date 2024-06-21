@@ -44,6 +44,7 @@ exports.getClientInfo = async (req, res) => {
     console.error('Ошибка при получении информации о клиенте:', error);
     res.status(500).json({ message: 'Ошибка сервера' });
   }
+};
 async function uploadFilePart(client, localPath, remotePath, start, end, partNumber) {
   const partPath = `${localPath}.part${partNumber}`;
   const writeStream = fs.createWriteStream(partPath);
