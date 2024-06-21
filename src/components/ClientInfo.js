@@ -3,6 +3,8 @@ import { Container, Box, Typography, CssBaseline, Paper, Button, Table, TableBod
 import { styled } from '@mui/system';
 import { useParams, useNavigate } from 'react-router-dom';
 import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Background = styled('div')({
   display: 'flex',
@@ -14,20 +16,21 @@ const Background = styled('div')({
 });
 
 const staticQuestions = [
-  'General health',
-  'Comparing health',
-  'Day activities',
-  'Physical health',
-  'Depressed',
-  'Social activities with groups',
-  'Body pain',
-  'Pain interfere with work',
-  'Feelings',
-  'Social Interference',
-  'Health time'
+  'generalhealth',
+  'comparing',
+  'dayactivities',
+  'physicalhealth',
+  'depressed',
+  'socialactivitiesgroups',
+  'bodypain',
+  'paininterfere',
+  'feelings',
+  'socialInterference',
+  'healthTime'
 ];
 
 const ClientInfo = () => {
+  const { t } = useTranslation();
   const { patientId } = useParams();
   const [clientInfo, setClientInfo] = useState(null);
   const navigate = useNavigate();
@@ -69,11 +72,14 @@ const ClientInfo = () => {
               alignItems: 'center',
             }}
           >
-            <Button variant="contained" color="primary" onClick={handleBackClick} sx={{ mb: 2 }}>
-              Назад
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+              <Button variant="contained" color="primary" onClick={handleBackClick} sx={{ mb: 2 }}>
+                {t('Back')}
+              </Button>
+              <LanguageSwitcher />
+            </Box>
             <Typography component="h1" variant="h5" sx={{ color: '#388e3c' }}>
-              Информация о клиенте
+              {t('Client Info')}
             </Typography>
             {clientInfo ? (
               <Box sx={{ mt: 2, width: '100%' }}>
@@ -82,24 +88,24 @@ const ClientInfo = () => {
                 </Typography>
                 {clientInfo.pathology && (
                   <Typography variant="body1" sx={{ color: '#f44336', mb: 2 }}>
-                    Патологии: {clientInfo.pathology}
+                    {t('Pathology')}: {clientInfo.pathology}
                   </Typography>
                 )}
                 <Typography variant="h6" sx={{ color: '#388e3c' }}>
-                  Ответы на опросы
+                  {t('Survey Answers')}
                 </Typography>
                 <TableContainer component={Paper}>
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell>Вопрос</TableCell>
-                        <TableCell>Ответ</TableCell>
+                        <TableCell>{t('Question')}</TableCell>
+                        <TableCell>{t('Answer')}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {staticQuestions.map((question, index) => (
                         <TableRow key={index}>
-                          <TableCell>{question}</TableCell>
+                          <TableCell>{t(question)}</TableCell>
                           <TableCell>{formatAnswer(clientInfo.surveys[0][Object.keys(clientInfo.surveys[0])[index]])}</TableCell>
                         </TableRow>
                       ))}
@@ -115,7 +121,7 @@ const ClientInfo = () => {
                       href={`https://medlevel.me/api/documents/download/${patientId}/${clientInfo.documentType}/front/${clientInfo.surveys[0].frontDocument.split('/').pop()}`}
                       target="_blank"
                     >
-                      Скачать лицевую сторону
+                      {t('Download Front')}
                     </Button>
                   )}
                   {clientInfo.surveys[0].backDocument && (
@@ -126,14 +132,14 @@ const ClientInfo = () => {
                       href={`https://medlevel.me/api/documents/download/${patientId}/${clientInfo.documentType}/back/${clientInfo.surveys[0].backDocument.split('/').pop()}`}
                       target="_blank"
                     >
-                      Скачать обратную сторону
+                      {t('Download Back')}
                     </Button>
                   )}
                 </Box>
               </Box>
             ) : (
               <Typography variant="body1" sx={{ mt: 2, color: '#f44336' }}>
-                Информация о клиенте не найдена.
+                {t('Client information not found.')}
               </Typography>
             )}
           </Box>
@@ -144,6 +150,7 @@ const ClientInfo = () => {
 };
 
 export default ClientInfo;
+
 
 
 
