@@ -46,26 +46,6 @@ exports.getClientInfo = async (req, res) => {
   }
 };
 
-async function uploadFilePart(client, localPath, remotePath, start, end, partNumber) {
-  const partPath = `${localPath}.part${partNumber}`;
-  const writeStream = fs.createWriteStream(partPath);
-
-  return new Promise((resolve, reject) => {
-    fs.createReadStream(localPath, { start, end })
-      .pipe(writeStream)
-      .on('finish', async () => {
-        try {
-          await client.uploadFrom(partPath, `${remotePath}`);
-          fs.unlinkSync(partPath); // Удалить временный файл после успешной загрузки
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      })
-      .on('error', reject);
-  });
-}
-
 async function uploadToFTP(localPath, remotePath) {
   const client = new ftp.Client();
   client.ftp.verbose = true;
@@ -79,22 +59,8 @@ async function uploadToFTP(localPath, remotePath) {
       secure: false,
     });
 
-    const remoteDir = path.dirname(remotePath);
-    await client.ensureDir(remoteDir);
-
-    const fileSize = fs.statSync(localPath).size;
-    const partSize = 10 * 1024 * 1024; // Размер части 10 MB
-    let start = 0;
-    let partNumber = 1;
-
-    while (start < fileSize) {
-      const end = Math.min(start + partSize - 1, fileSize - 1);
-      await uploadFilePart(client, localPath, remotePath, start, end, partNumber);
-      start += partSize;
-      partNumber++;
-    }
-
-    console.log('File uploaded successfully in parts');
+    await client.uploadFrom(localPath, remotePath);
+    console.log('File uploaded successfully');
   } catch (error) {
     console.error('Error uploading to FTP:', error);
     throw error;
