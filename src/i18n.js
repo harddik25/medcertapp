@@ -105,7 +105,16 @@ const resources = {
       "I hope my health gets worse.": "I hope my health gets worse.",
       "My health is excellent.": "My health is excellent.",
       "Continue": "Continue",
-      "Please fill out all fields.": "Please fill out all fields."
+      "Please fill out all fields.": "Please fill out all fields.",
+      "title": "Document Upload",
+      "documentType": "Document Type",
+      "frontSide": "Front Side",
+      "backSide": "Back Side",
+      "upload": "Upload",
+      "success": "Success",
+      "uploadSuccess": "Document uploaded successfully",
+      "uploadError": "Error uploading document",
+      "mandatoryFields": "All fields are required"
     }
   },
   es: {
@@ -208,7 +217,16 @@ const resources = {
       "I hope my health gets worse.": "Espero que mi salud empeore.",
       "My health is excellent.": "Mi salud es excelente.",
       "Continue": "Continuar",
-      "Please fill out all fields.": "Por favor, complete todos los campos."
+      "Please fill out all fields.": "Por favor, complete todos los campos.",
+      "title": "Carga de documento",
+      "documentType": "Tipo de documento",
+      "frontSide": "Lado frontal",
+      "backSide": "Lado trasero",
+      "upload": "Subir",
+      "success": "Éxito",
+      "uploadSuccess": "Documento subido con éxito",
+      "uploadError": "Error al subir el documento",
+      "mandatoryFields": "Todos los campos son obligatorios"
     }
     }
   }
