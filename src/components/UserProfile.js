@@ -53,23 +53,27 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    const fetchCertificate = async () => {
-      if (user) {
-        try {
-          const response = await fetch(`https://medlevel.me/api/certificates/${user.id}`);
-          const data = await response.json();
-          if (data.certificate) {
-            setCertificate(data.certificate);
-          }
-        } catch (error) {
-          console.error('Ошибка при получении сертификата', error);
+  const fetchCertificate = async () => {
+    if (user) {
+      try {
+        console.log('Fetching certificate for user:', user.id); // Логирование ID пользователя
+        const response = await fetch(`https://medlevel.me/api/certificates/${user.id}`);
+        const data = await response.json();
+        console.log('Received certificate data:', data); // Логирование полученных данных сертификата
+        if (data.certificate) {
+          setCertificate(data.certificate);
+        } else {
+          console.log('No certificate found.');
         }
+      } catch (error) {
+        console.error('Ошибка при получении сертификата', error);
       }
-    };
+    }
+  };
 
-    fetchCertificate();
-  }, [user]);
-
+  fetchCertificate();
+}, [user]);
+  
   useEffect(() => {
     const fetchAppointment = async () => {
       if (user) {
@@ -187,7 +191,7 @@ const UserProfile = () => {
                     fullWidth
                     variant="contained"
                     sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                    href={`https://medlevel.me/api/documents/download/${user.id}/certificate/${certificate.filename}`}
+                    href={`https://medlevel.me/api/documents/download/${user.id}/certificate/${certificate}`}
                     target="_blank"
                   >
                     {t('Download Certificate')}
