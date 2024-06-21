@@ -141,7 +141,7 @@ async function uploadFilePart(client, localPath, remotePath, start, end, partNum
 async function ensureDir(client, remoteDir) {
   try {
     await client.ensureDir(remoteDir);
-    console.log`(Directory ${remoteDir} exists or created successfully.`);
+    console.log(`Directory ${remoteDir} exists or created successfully.`);
   } catch (error) {
     console.error(`Error ensuring directory ${remoteDir}:`, error);
     throw error;
