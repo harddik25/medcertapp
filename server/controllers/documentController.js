@@ -18,7 +18,7 @@ async function downloadFromFTP(client, remotePath, localPath) {
 
 exports.downloadDocument = async (req, res) => {
   const { userId, documentType, side, fileName } = req.params;
-  const remotePathBase = /var/www/user4806313/data/${userId}/${documentType}/${side}/${fileName};
+  const remotePathBase = `/var/www/user4806313/data/${userId}/${documentType}/${side}/${fileName}`;
   const localPath = path.join(__dirname, '..', 'downloads', userId, documentType, side, fileName);
 
   // Ensure local directory exists
@@ -78,7 +78,7 @@ exports.downloadDocument = async (req, res) => {
 
 exports.downloadCertificate = async (req, res) => {
   const { userId, fileName } = req.params;
-  const remotePath = /var/www/user4806313/data/${userId}/certificate/${fileName};
+  const remotePath = `/var/www/user4806313/data/${userId}/certificate/${fileName}`;
   const localPath = path.join(__dirname, '..', 'downloads', userId, 'certificate', fileName);
 
   // Ensure local directory exists
@@ -214,8 +214,8 @@ exports.uploadDocument = async (req, res) => {
     }
 
     // FTP remote path
-    const remotePathFront = /var/www/user4806313/data/${userId}/${documentType}/front/${frontDocument.originalname};
-    const remotePathBack = backDocument ? /var/www/user4806313/data/${userId}/${documentType}/back/${backDocument.originalname} : null;
+    const remotePathFront = `/var/www/user4806313/data/${userId}/${documentType}/front/${frontDocument.originalname}`;
+    const remotePathBack = backDocument ? `/var/www/user4806313/data/${userId}/${documentType}/back/${backDocument.originalname}` : null;
     await uploadToFTP(localPathFront, remotePathFront);
 
     if (backDocument) {
