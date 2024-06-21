@@ -7,6 +7,8 @@ import HttpApi from 'i18next-http-backend';
 const resources = {
   en: {
     translation: {
+      "Login via Telegram": "Login via Telegram",
+      "Loading...": "Loading...",
       "Welcome": "Welcome",
       "Video Consultation": "Video Consultation",
       "Date": "Date",
@@ -175,6 +177,8 @@ const resources = {
   },
   es: {
     translation: {
+      "Login via Telegram": "Iniciar sesión a través de Telegram",
+      "Loading...": "Cargando...",
       "Welcome": "Bienvenido",
       "Video Consultation": "Consulta de video",
       "Date": "Fecha",
