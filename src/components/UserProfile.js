@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Avatar, Paper, Snackbar, Alert } from '@mui/material';
-import { green, deepOrange } from '@mui/material/colors';
+import { green, deepOrange, orange } from '@mui/material/colors';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
 import { useTranslation } from 'react-i18next';
@@ -63,7 +63,7 @@ const StyledButton = styled(Button)({
   textTransform: 'none',
   borderRadius: 8,
   fontSize: '1.2rem',
-  color: '#fff',
+  color: orange[500], // Оранжевый цвет текста
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
@@ -301,6 +301,7 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
 
 
