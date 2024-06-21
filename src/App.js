@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import theme from './theme';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import theme from './theme'; // Убедитесь, что путь правильный
 
 import Login from './components/Login';
 import UserProfile from './components/UserProfile';
@@ -21,7 +21,7 @@ import ClientInfo from './components/ClientInfo';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -68,3 +68,4 @@ function App() {
 }
 
 export default App;
+
