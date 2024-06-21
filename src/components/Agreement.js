@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, CssBaseline, Paper } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CannabisBackground from './cannabis-background.webp';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const theme = createTheme();
 
@@ -17,6 +19,7 @@ const Background = styled('div')({
 
 const Agreement = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleAccept = () => {
     navigate('/main-survey');
@@ -44,11 +47,14 @@ const Agreement = () => {
                 alignItems: 'center',
               }}
             >
-              <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
-                Welcome
-              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
+                  {t('Welcome')}
+                </Typography>
+                <LanguageSwitcher />
+              </Box>
               <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                Please accept the data agreement before purchasing the certificate.
+                {t('Please accept the data agreement before purchasing the certificate.')}
               </Typography>
               <Button
                 fullWidth
@@ -56,7 +62,7 @@ const Agreement = () => {
                 sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleAccept}
               >
-                Accept
+                {t('Accept')}
               </Button>
               <Button
                 fullWidth
@@ -64,7 +70,7 @@ const Agreement = () => {
                 sx={{ mb: 2, backgroundColor: '#f44336', color: '#fff' }}
                 onClick={handleDecline}
               >
-                Decline
+                {t('Decline')}
               </Button>
               <Button
                 fullWidth
@@ -72,7 +78,7 @@ const Agreement = () => {
                 sx={{ mb: 2, color: '#4caf50' }}
                 onClick={handlePrivacyPolicy}
               >
-                Privacy Policy
+                {t('Privacy Policy')}
               </Button>
             </Box>
           </Paper>
