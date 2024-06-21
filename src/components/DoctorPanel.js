@@ -4,8 +4,10 @@ import { Container, Box, Typography, CssBaseline, List, ListItem, ListItemText, 
 import { styled } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
-import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
-import BackImage from './back.webp'; // Замените на путь к изображению кнопки "Назад"
+import CannabisBackground from './cannabis-background.webp';
+import BackImage from './back.webp';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Background = styled('div')({
   display: 'flex',
@@ -24,6 +26,7 @@ const Header = styled('div')({
 });
 
 const DoctorPanel = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [freeSlots, setFreeSlots] = useState([]);
   const [futureAppointments, setFutureAppointments] = useState([]);
@@ -65,7 +68,7 @@ const DoctorPanel = () => {
 
   const handleSave = async () => {
     if (!date || !time) {
-      alert('Дата и время обязательны');
+      alert(t('Date and time are required'));
       return;
     }
 
@@ -123,9 +126,9 @@ const DoctorPanel = () => {
               <img src={BackImage} alt="Back" style={{ width: '30px', height: '30px' }} />
             </IconButton>
             <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
-              Кабинет врача
+              {t('Doctor Panel')}
             </Typography>
-            <div style={{ width: '30px', height: '30px' }}></div> {/* Пустое место для центрирования */}
+            <LanguageSwitcher />
           </Header>
           <Box
             sx={{
@@ -136,13 +139,13 @@ const DoctorPanel = () => {
           >
             <Box sx={{ mt: 1, width: '100%' }}>
               <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
-                Добавить свободное время для приема
+                {t('Add Free Slot')}
               </Button>
               <Button variant="contained" color="secondary" sx={{ mb: 2 }} onClick={fetchFutureAppointments}>
-                Будущие консультации
+                {t('Future Appointments')}
               </Button>
               <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
-                Свободные даты
+                {t('Free Dates')}
               </Typography>
               <List>
                 {freeSlots.map((slot, index) => (
@@ -158,14 +161,14 @@ const DoctorPanel = () => {
                 ))}
               </List>
               <Typography variant="h6" sx={{ mt: 2, color: '#388e3c' }}>
-                Будущие консультации
+                {t('Future Appointments')}
               </Typography>
               <List>
                 {futureAppointments.map((appointment, index) => (
                   <ListItem key={index}>
                     <ListItemText
                       primary={`${appointment.date} ${appointment.time}`}
-                      secondary={`Пациент: ${appointment.patientName || 'Нет записей'}`}
+                      secondary={`${t('Patient')}: ${appointment.patientName || t('No appointments available')}`}
                       sx={{ color: '#388e3c' }}
                     />
                     <Button
@@ -174,7 +177,7 @@ const DoctorPanel = () => {
                       onClick={() => handleViewClientInfo(appointment.patientName)}
                       sx={{ ml: 2 }}
                     >
-                      Просмотреть информацию о клиенте
+                      {t('View Client Info')}
                     </Button>
                   </ListItem>
                 ))}
@@ -183,11 +186,11 @@ const DoctorPanel = () => {
           </Box>
         </Paper>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Добавить свободное время для приема</DialogTitle>
+          <DialogTitle>{t('Add Free Slot for Appointment')}</DialogTitle>
           <DialogContent>
             <TextField
               margin="dense"
-              label="Дата"
+              label={t('Date')}
               type="date"
               fullWidth
               InputLabelProps={{
@@ -198,7 +201,7 @@ const DoctorPanel = () => {
             />
             <TextField
               margin="dense"
-              label="Время"
+              label={t('Time')}
               type="time"
               fullWidth
               InputLabelProps={{
@@ -210,10 +213,10 @@ const DoctorPanel = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
-              Отмена
+              {t('Cancel')}
             </Button>
             <Button onClick={handleSave} color="primary">
-              Сохранить
+              {t('Save')}
             </Button>
           </DialogActions>
         </Dialog>
@@ -223,4 +226,5 @@ const DoctorPanel = () => {
 };
 
 export default DoctorPanel;
+
 
