@@ -15,7 +15,13 @@ const Background = styled('div')({
   backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
 });
-
+const Header = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  marginBottom: 16,
+});
 const UserProfile = () => {
   const { t } = useTranslation();
   const [user, setUser] = useState(null);
