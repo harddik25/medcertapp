@@ -40,7 +40,14 @@ const UserProfile = () => {
           const data = await response.json();
           const userWithRole = { ...telegramUser, role: data.role };
           setUser(userWithRole);
-          localStorage.setItem('telegramUser', JSON.stringify(userWithRole)); // Обновляем localStorage
+          localStorage.setItem('telegramUser', JSON.stringify(userWithRole));
+
+          // Fetch avatar
+          const avatarResponse = await fetch(`/api/users/avatar/${telegramUser.id}`);
+          const avatarData = await avatarResponse.json();
+          if (avatarData.avatarUrl) {
+            setAvatarUrl(avatarData.avatarUrl);
+          }
         } catch (error) {
           console.error('Ошибка при получении данных пользователя', error);
         }
@@ -49,7 +56,7 @@ const UserProfile = () => {
 
     fetchUser();
   }, []);
-
+  
   useEffect(() => {
     const fetchAppointment = async () => {
       if (user) {
@@ -108,7 +115,7 @@ const UserProfile = () => {
     setOpenSnackbar(false);
   };
 
-   return (
+    return (
     <Background>
       <Container component="main" maxWidth="md">
         <CssBaseline />
@@ -117,9 +124,13 @@ const UserProfile = () => {
             <Header>
               {user && (
                 <>
-                  <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80 }}>
-                    {user.first_name[0]}
-                  </Avatar>
+                  {avatarUrl ? (
+                    <Avatar src={avatarUrl} sx={{ width: 80, height: 80 }} />
+                  ) : (
+                    <Avatar sx={{ bgcolor: deepOrange[500], width: 80, height: 80 }}>
+                      {user.first_name[0]}
+                    </Avatar>
+                  )}
                   <LanguageSwitcher />
                 </>
               )}
