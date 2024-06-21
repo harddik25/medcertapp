@@ -71,7 +71,7 @@ const Login = () => {
       <Background>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
-          <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+          <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: 16 }}>
             <Box
               sx={{
                 marginTop: 8,
