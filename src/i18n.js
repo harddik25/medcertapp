@@ -147,7 +147,26 @@ const resources = {
       "Pain interfere with work": "Pain interfere with work",
       "Feelings": "Feelings",
       "Social Interference": "Social Interference",
-      "Health time": "Health time"
+      "Health time": "Health time",
+      "Medicinal Cannabis Certificate": "Medicinal Cannabis Certificate",
+  "This certificate allows the use of all cannabinoids (THC or CBD) legally, including carrying them in public and exempting drivers from penalties if prescribed by a doctor.": "This certificate allows the use of all cannabinoids (THC or CBD) legally, including carrying them in public and exempting drivers from penalties if prescribed by a doctor.",
+  "Who is this for?": "Who is this for?",
+  "People with certain pathologies who want to use Marijuana or CBD for treatment, enabling legal consumption without penalties.": "People with certain pathologies who want to use Marijuana or CBD for treatment, enabling legal consumption without penalties.",
+  "Validity": "Validity",
+  "Valid in Schengen Area countries.": "Valid in Schengen Area countries.",
+  "Requirements": "Requirements",
+  "1. Qualifying pathology.": "1. Qualifying pathology.",
+  "2. Valid DNI-NIE or Passport photo.": "2. Valid DNI-NIE or Passport photo.",
+  "3. Attach all documentation when contracting the service.": "3. Attach all documentation when contracting the service.",
+  "*If no medical history, fill out a form in our Telegram bot.": "*If no medical history, fill out a form in our Telegram bot.",
+  "Pathologies": "Pathologies",
+  "Alzheimer's, Anorexia, Anxiety, Asthma, Dependence, Depression, Chronic pain, Inflammatory diseases, Epilepsy, Fibromyalgia, Glaucoma, ADHD, Insomnia, Nausea, Skin problems, Tourette syndrome, Mixed syndromes, Psychiatric symptoms, Immune system, Hyperkinetic disorders": "Alzheimer's, Anorexia, Anxiety, Asthma, Dependence, Depression, Chronic pain, Inflammatory diseases, Epilepsy, Fibromyalgia, Glaucoma, ADHD, Insomnia, Nausea, Skin problems, Tourette syndrome, Mixed syndromes, Psychiatric symptoms, Immune system, Hyperkinetic disorders",
+  "Renewal": "Renewal",
+  "Annually, to ensure user safety.": "Annually, to ensure user safety.",
+  "Management": "Management",
+  "Managed by the Cannabis Federation in alliance with the Therapeutic Cabinet, ensuring strict control of sensitive information in compliance with data privacy laws.": "Managed by the Cannabis Federation in alliance with the Therapeutic Cabinet, ensuring strict control of sensitive information in compliance with data privacy laws.",
+  "Additional Info": "Additional Info",
+  "The UN Single Convention on Narcotic Drugs (1961) allows medical and scientific use of narcotics. In Spain, the therapeutic use of Cannabis has been legal since 1967, though strictly regulated.": "The UN Single Convention on Narcotic Drugs (1961) allows medical and scientific use of narcotics. In Spain, the therapeutic use of Cannabis has been legal since 1967, though strictly regulated."
     }
   },
   es: {
@@ -292,7 +311,26 @@ const resources = {
       "Pain interfere with work": "El dolor interfiere con el trabajo",
       "Feelings": "Sentimientos",
       "Social Interference": "Interferencia social",
-      "Health time": "Tiempo de salud"
+      "Health time": "Tiempo de salud",
+      "Medicinal Cannabis Certificate": "Certificado de Cannabis Medicinal",
+  "This certificate allows the use of all cannabinoids (THC or CBD) legally, including carrying them in public and exempting drivers from penalties if prescribed by a doctor.": "Este certificado permite el uso legal de todos los cannabinoides (THC o CBD), incluido su transporte en público y exime a los conductores de sanciones si son prescritos por un médico.",
+  "Who is this for?": "¿Para quién es esto?",
+  "People with certain pathologies who want to use Marijuana or CBD for treatment, enabling legal consumption without penalties.": "Personas con ciertas patologías que desean usar marihuana o CBD para el tratamiento, permitiendo el consumo legal sin sanciones.",
+  "Validity": "Validez",
+  "Valid in Schengen Area countries.": "Válido en los países del Espacio Schengen.",
+  "Requirements": "Requisitos",
+  "1. Qualifying pathology.": "1. Patología calificativa.",
+  "2. Valid DNI-NIE or Passport photo.": "2. Foto válida de DNI-NIE o pasaporte.",
+  "3. Attach all documentation when contracting the service.": "3. Adjuntar toda la documentación al contratar el servicio.",
+  "*If no medical history, fill out a form in our Telegram bot.": "*Si no hay historial médico, complete un formulario en nuestro bot de Telegram.",
+  "Pathologies": "Patologías",
+  "Alzheimer's, Anorexia, Anxiety, Asthma, Dependence, Depression, Chronic pain, Inflammatory diseases, Epilepsy, Fibromyalgia, Glaucoma, ADHD, Insomnia, Nausea, Skin problems, Tourette syndrome, Mixed syndromes, Psychiatric symptoms, Immune system, Hyperkinetic disorders": "Alzheimer, Anorexia, Ansiedad, Asma, Dependencia, Depresión, Dolor crónico, Enfermedades inflamatorias, Epilepsia, Fibromialgia, Glaucoma, TDAH, Insomnio, Náuseas, Problemas de piel, Síndrome de Tourette, Síndromes mixtos, Síntomas psiquiátricos, Sistema inmune, Trastornos hipercinéticos",
+  "Renewal": "Renovación",
+  "Annually, to ensure user safety.": "Anualmente, para garantizar la seguridad del usuario.",
+  "Management": "Gestión",
+  "Managed by the Cannabis Federation in alliance with the Therapeutic Cabinet, ensuring strict control of sensitive information in compliance with data privacy laws.": "Gestionado por la Federación de Cannabis en alianza con el Gabinete Terapéutico, asegurando un control estricto de la información sensible en cumplimiento con las leyes de privacidad de datos.",
+  "Additional Info": "Información adicional",
+  "The UN Single Convention on Narcotic Drugs (1961) allows medical and scientific use of narcotics. In Spain, the therapeutic use of Cannabis has been legal since 1967, though strictly regulated.": "La Convención Única de la ONU sobre Estupefacientes (1961) permite el uso médico y científico de narcóticos. En España, el uso terapéutico del cannabis es legal desde 1967, aunque está estrictamente regulado."
     }
     
   }
