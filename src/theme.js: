@@ -1,28 +1,20 @@
 import { createTheme } from '@mui/material/styles';
 
-const thema = createTheme({
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h5: {
-      fontWeight: 600,
-      letterSpacing: '0.5px',
-    },
-    body1: {
-      fontSize: '1rem',
-      letterSpacing: '0.5px',
-    },
-  },
+const theme = createTheme({
   palette: {
     primary: {
-      main: '#388e3c',
+      main: '#4caf50', // Зеленый цвет для основной палитры
     },
     secondary: {
-      main: '#f44336',
+      main: '#388e3c', // Темный зеленый для вторичной палитры
     },
     background: {
       default: '#f5f5f5',
     },
   },
+  typography: {
+    fontFamily: 'Roboto, Arial, sans-serif',
+  },
 });
 
-export default thema;
+export default theme;
