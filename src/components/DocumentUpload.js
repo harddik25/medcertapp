@@ -5,6 +5,7 @@ import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import CannabisBackground from './cannabis-background.webp';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Background = styled('div')({
   display: 'flex',
@@ -39,6 +40,7 @@ const SuccessText = styled(Typography)({
 });
 
 const DocumentUpload = () => {
+  const { t } = useTranslation();
   const [documentType, setDocumentType] = useState('');
   const [frontDocument, setFrontDocument] = useState(null);
   const [backDocument, setBackDocument] = useState(null);
@@ -69,7 +71,7 @@ const DocumentUpload = () => {
 
   const handleUpload = async () => {
     if (!documentType || !frontDocument || !userId || (documentType !== 'Passport' && !backDocument)) {
-      setUploadStatus('Все поля обязательны для заполнения');
+      setUploadStatus(t('Все поля обязательны для заполнения'));
       setOpenSnackbar(true);
       return;
     }
@@ -87,13 +89,13 @@ const DocumentUpload = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      setUploadStatus('Документ успешно загружен');
+      setUploadStatus(t('Документ успешно загружен'));
       setOpenSnackbar(true);
       setTimeout(() => {
         navigate('/consultation');
       }, 2000);
     } catch (error) {
-      setUploadStatus('Ошибка при загрузке документа');
+      setUploadStatus(t('Ошибка при загрузке документа'));
       setOpenSnackbar(true);
       console.error('Ошибка при загрузке документа:', error);
     }
@@ -116,14 +118,14 @@ const DocumentUpload = () => {
             }}
           >
             <Typography component="h1" variant="h5" sx={{ color: '#388e3c', marginBottom: 2 }}>
-              Загрузка документа
+              {t('Загрузка документа')}
             </Typography>
             <TextField
               select
               variant="outlined"
               margin="normal"
               fullWidth
-              label="Тип документа"
+              label={t('Тип документа')}
               value={documentType}
               onChange={(e) => setDocumentType(e.target.value)}
             >
@@ -138,10 +140,10 @@ const DocumentUpload = () => {
                 fullWidth
                 selected={frontSelected}
               >
-                Лицевая сторона
+                {t('Лицевая сторона')}
                 <input type="file" hidden onChange={(e) => handleFileChange(e, 'front')} />
               </StyledButton>
-              {frontSelected && <SuccessText>Успешно</SuccessText>}
+              {frontSelected && <SuccessText>{t('Успешно')}</SuccessText>}
             </Box>
             {(documentType === 'NIE' || documentType === 'DNI') && (
               <Box sx={{ position: 'relative', width: '100%' }}>
@@ -151,10 +153,10 @@ const DocumentUpload = () => {
                   fullWidth
                   selected={backSelected}
                 >
-                  Обратная сторона
+                  {t('Обратная сторона')}
                   <input type="file" hidden onChange={(e) => handleFileChange(e, 'back')} />
                 </StyledButton>
-                {backSelected && <SuccessText>Успешно</SuccessText>}
+                {backSelected && <SuccessText>{t('Успешно')}</SuccessText>}
               </Box>
             )}
             <Button
@@ -164,10 +166,10 @@ const DocumentUpload = () => {
               sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
               onClick={handleUpload}
             >
-              Загрузить
+              {t('Загрузить')}
             </Button>
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-              <Alert onClose={handleCloseSnackbar} severity={uploadStatus.includes('успешно') ? 'success' : 'error'}>
+              <Alert onClose={handleCloseSnackbar} severity={uploadStatus.includes(t('успешно')) ? 'success' : 'error'}>
                 {uploadStatus}
               </Alert>
             </Snackbar>
@@ -179,6 +181,5 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
-
 
 
