@@ -24,7 +24,17 @@ const resources = {
       "Name": "Name",
       "Pathologies": "Pathologies",
       "No": "No"
-      // Add other translations as needed
+      "User Profile": "User Profile",
+      "Welcome": "Welcome",
+      "Admin Panel": "Admin Panel",
+      "Doctor Panel": "Doctor Panel",
+      "Your consultation appointment is on": "Your consultation appointment is on",
+      "Join Consultation": "Join Consultation",
+      "About Certificate": "About Certificate",
+      "View Certificate": "View Certificate",
+      "Status": "Status",
+      "Buy Certificate": "Buy Certificate",
+      "You can join the consultation only 15 minutes before its start": "You can join the consultation only 15 minutes before its start"
     }
   },
   es: {
@@ -46,7 +56,18 @@ const resources = {
       "Name": "Nombre",
       "Pathologies": "Patologías",
       "No": "No"
-      // Add other translations as needed
+      "User Profile": "Perfil de usuario",
+      "Welcome": "Bienvenido",
+      "Admin Panel": "Panel de administración",
+      "Doctor Panel": "Panel del doctor",
+      "Your consultation appointment is on": "Su cita de consulta es el",
+      "Join Consultation": "Unirse a la consulta",
+      "About Certificate": "Sobre el certificado",
+      "View Certificate": "Ver certificado",
+      "Status": "Estado",
+      "Buy Certificate": "Comprar certificado",
+      "You can join the consultation only 15 minutes before its start": "Puede unirse a la consulta solo 15 minutos antes de su inicio"
+    }
     }
   }
 };
