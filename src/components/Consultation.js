@@ -3,7 +3,9 @@ import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, Snac
 import { useNavigate } from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/system';
+import { useTranslation } from 'react-i18next';
 import CannabisBackground from './cannabis-background.webp'; // Замените на путь к вашему фоновому изображению
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -19,6 +21,7 @@ const Background = styled('div')({
 });
 
 const Consultation = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -80,6 +83,7 @@ const Consultation = () => {
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+          <LanguageSwitcher />
           <Box
             sx={{
               display: 'flex',
