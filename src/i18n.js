@@ -23,7 +23,7 @@ const resources = {
       "Download Back Side": "Download Back Side",
       "Name": "Name",
       "Pathologies": "Pathologies",
-      "No": "No"
+      "No": "No",
       "User Profile": "User Profile",
       "Welcome": "Welcome",
       "Admin Panel": "Admin Panel",
@@ -168,7 +168,7 @@ const resources = {
       "Download Back Side": "Descargar lado posterior",
       "Name": "Nombre",
       "Pathologies": "Patologías",
-      "No": "No"
+      "No": "No",
       "User Profile": "Perfil de usuario",
       "Welcome": "Bienvenido",
       "Admin Panel": "Panel de administración",
