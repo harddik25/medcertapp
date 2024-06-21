@@ -294,7 +294,7 @@ const resources = {
       "Social Interference": "Interferencia social",
       "Health time": "Tiempo de salud"
     }
-    }
+    
   }
 };
 
