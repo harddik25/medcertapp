@@ -62,6 +62,14 @@ const StyledButton = styled(Button)({
   padding: '12px 24px',
   textTransform: 'none',
   borderRadius: 8,
+  fontSize: '1.2rem',
+  color: '#fff',
+  backgroundImage: `url(${CannabisBackground})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  '&:hover': {
+    backgroundColor: green[700],
+  },
 });
 
 const UserProfile = () => {
@@ -293,5 +301,6 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
 
 
