@@ -23,6 +23,7 @@ const Header = styled(Box)({
   width: '100%',
   marginBottom: 16,
 });
+
 const UserProfile = () => {
   const { t } = useTranslation();
   const [user, setUser] = useState(null);
@@ -50,7 +51,25 @@ const UserProfile = () => {
 
     fetchUser();
   }, []);
-  
+
+  useEffect(() => {
+    const fetchCertificate = async () => {
+      if (user) {
+        try {
+          const response = await fetch(`https://medlevel.me/api/certificates/${user.id}`);
+          const data = await response.json();
+          if (data.certificate) {
+            setCertificate(data.certificate);
+          }
+        } catch (error) {
+          console.error('Ошибка при получении сертификата', error);
+        }
+      }
+    };
+
+    fetchCertificate();
+  }, [user]);
+
   useEffect(() => {
     const fetchAppointment = async () => {
       if (user) {
@@ -109,7 +128,7 @@ const UserProfile = () => {
     setOpenSnackbar(false);
   };
 
-    return (
+  return (
     <Background>
       <Container component="main" maxWidth="md">
         <CssBaseline />
@@ -163,63 +182,55 @@ const UserProfile = () => {
                     {t('Doctor Panel')}
                   </Button>
                 )}
-                {appointment ? (
-                  <>
-                    <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
-                      {t('Your consultation appointment is on')} {appointment.date} {appointment.time}
-                    </Typography>
-                    {appointment.telegramLink && (
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                        onClick={handleJoinConsultation}
-                      >
-                        {t('Join Consultation')}
-                      </Button>
-                    )}
-                  </>
+                {certificate ? (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                    href={`https://medlevel.me/api/documents/download/${user.id}/certificate/${certificate.filename}`}
+                    target="_blank"
+                  >
+                    {t('Download Certificate')}
+                  </Button>
                 ) : (
                   <>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                      onClick={handleCertificateInfo}
-                    >
-                      {t('About Certificate')}
-                    </Button>
-                    {certificate ? (
-                      certificate.status === 'готов' ? (
-                        <Button
-                          component={Link}
-                          to="/certificate"
-                          fullWidth
-                          variant="contained"
-                          sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                        >
-                          {t('View Certificate')}
-                        </Button>
-                      ) : (
-                        <Button
-                          fullWidth
-                          variant="contained"
-                          sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                        >
-                          {t('Status')}: {certificate.status}
-                        </Button>
-                      )
+                    {appointment ? (
+                      <>
+                        <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
+                          {t('Your consultation appointment is on')} {appointment.date} {appointment.time}
+                        </Typography>
+                        {appointment.telegramLink && (
+                          <Button
+                            fullWidth
+                            variant="contained"
+                            sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                            onClick={handleJoinConsultation}
+                          >
+                            {t('Join Consultation')}
+                          </Button>
+                        )}
+                      </>
                     ) : (
                       <Button
                         fullWidth
                         variant="contained"
                         sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
-                        onClick={handleBuyCertificate}
+                        onClick={handleCertificateInfo}
                       >
-                        {t('Buy Certificate')}
+                        {t('About Certificate')}
                       </Button>
                     )}
                   </>
+                )}
+                {!certificate && !appointment && (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    sx={{ mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
+                    onClick={handleBuyCertificate}
+                  >
+                    {t('Buy Certificate')}
+                  </Button>
                 )}
               </>
             )}
@@ -236,6 +247,5 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
 
 
