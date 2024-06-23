@@ -256,7 +256,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={dayactivities'${index}'}
+                    name={'dayactivities${index}'}
                     value={surveyData.dayactivities[index] || ''}
                     onChange={handleInputChange}
                   >
@@ -279,7 +279,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={physicalhealth'${index}'}
+                    name={'physicalhealth${index}'}
                     value={surveyData.physicalhealth[index] || ''}
                     onChange={handleInputChange}
                   >
@@ -300,7 +300,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={depressed${index}}
+                    name={'depressed${index}'}
                     value={surveyData.depressed[index] || ''}
                     onChange={handleInputChange}
                   >
@@ -379,7 +379,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={feelings'${index}'}
+                    name={'feelings${index}'}
                     value={surveyData.feelings[index] || ''}
                     onChange={handleInputChange}
                   >
@@ -422,7 +422,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2, width: '100%', }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={healthTime${index}}
+                    name={'healthTime${index}'}
                     value={surveyData.healthTime[index] || ''}
                     onChange={handleInputChange}
                   >
