@@ -10,7 +10,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 # Инициализация бота
-TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+TOKEN = process.env.
 bot = Bot(TOKEN)
 updater = Updater(TOKEN, use_context=True)
 dispatcher = updater.dispatcher
