@@ -10,17 +10,6 @@ import CannabisBackground from './cannabis-background.webp';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#388e3c',
-    },
-    secondary: {
-      main: '#f44336',
-    },
-    background: {
-      default: '#f5f5f5',
-    },
-  },
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h5: {
@@ -32,6 +21,17 @@ const theme = createTheme({
       letterSpacing: '0.5px',
     },
   },
+  palette: {
+    primary: {
+      main: '#388e3c',
+    },
+    secondary: {
+      main: '#f44336',
+    },
+    background: {
+      default: '#f5f5f5',
+    },
+  },
 });
 
 const Header = styled('div')({
@@ -40,7 +40,6 @@ const Header = styled('div')({
   justifyContent: 'space-between',
   width: '100%',
 });
-
 const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -57,7 +56,7 @@ const FullScreenPaper = styled(Paper)({
   overflowY: 'auto',
   padding: 16,
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  margin: '0 20px',
+  margin: '0 20px', 
   maxWidth: '1200px',
   position: 'relative',
 });
@@ -91,7 +90,7 @@ const StyledButton = styled(Button)({
   color: '#000',
   boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
   '&:hover': {
-    backgroundColor: '#81d881',
+    backgroundColor: '#82e082',
   },
 });
 
@@ -259,7 +258,7 @@ const MainSurvey = () => {
                   <FormControlLabel value="5" control={<Radio />} label={t("Poor")} />
                 </RadioGroupRow>
               </Box>
-
+                    
               <RoundedTypography sx={{ marginTop: 2 }}>
                 {t('COMPARING IT WITH THE ONE OF A YEAR AGO:')}
               </RoundedTypography>
@@ -275,7 +274,7 @@ const MainSurvey = () => {
                   <FormControlLabel value="4" control={<Radio />} label={t("Much worse now than a year ago")} />
                 </RadioGroupRow>
               </Box>
-
+                    
               <RoundedTypography sx={{ marginTop: 2 }}>
                 {t('The following articles are about activities you can do during a typical day. Does your health now limit you in these activities? If so, how much?')}
               </RoundedTypography>
@@ -304,7 +303,7 @@ const MainSurvey = () => {
                   </RadioGroupRow>
                 </Box>
               ))}
-
+                
               <RoundedTypography sx={{ marginTop: 2 }}>
                 {t('During the last 4 weeks, have you had any of the following problems with your work or other normal daily activities as a result of your physical health?')}
               </RoundedTypography>
@@ -326,7 +325,7 @@ const MainSurvey = () => {
                   </RadioGroupRow>
                 </Box>
               ))}
-
+                
               <RoundedTypography sx={{ marginTop: 2 }}>
                 {t('During the last 4 weeks, have you had any of the following problems at work or with other usual daily activities as a result of an emotional problem (such as feeling depressed or anxious)?')}
               </RoundedTypography>
@@ -382,7 +381,7 @@ const MainSurvey = () => {
                   <FormControlLabel value="6" control={<Radio />} label={t("Very severe.")} />
                 </RadioGroupRow>
               </Box>
-
+              
               <RoundedTypography sx={{ marginTop: 2 }}>
                 {t('During the last 4 weeks, how much did pain interfere with your normal work (including both work outside the home and at home)?')}
               </RoundedTypography>
@@ -399,7 +398,7 @@ const MainSurvey = () => {
                   <FormControlLabel value="5" control={<Radio />} label={t("Extremely.")} />
                 </RadioGroupRow>
               </Box>
-
+                    
               <RoundedTypography sx={{ marginTop: 2 }}>
                 {t('These questions are about how you are feeling and how things have been going for you in the last 4 weeks. For each question, please give the answer that is closest to how you felt.')}
               </RoundedTypography>
@@ -430,7 +429,7 @@ const MainSurvey = () => {
                   </RadioGroupRow>
                 </Box>
               ))}
-
+                
               <RoundedTypography sx={{ marginTop: 2 }}>
                 {t('During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social activities (such as visiting with friends, relatives, etc.)?')}
               </RoundedTypography>
@@ -447,7 +446,7 @@ const MainSurvey = () => {
                   <FormControlLabel value="5" control={<Radio />} label={t("None of the time.")} />
                 </RadioGroupRow>
               </Box>
-
+                    
               <RoundedTypography sx={{ marginTop: 2 }}>
                 {t('How much of the time during the last 4 weeks?')}
               </RoundedTypography>
@@ -472,7 +471,7 @@ const MainSurvey = () => {
                   </RadioGroupRow>
                 </Box>
               ))}
-
+                
               <IconButton
                 sx={{ position: 'fixed', bottom: 30, right: 40, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleScrollToTop}
@@ -482,25 +481,23 @@ const MainSurvey = () => {
               <StyledButton
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
                 onClick={handleSubmit}
               >
                 {t('Continue')}
               </StyledButton>
-            </Box>
-          </FullScreenPaper>
-        </Container>
-        {errorMessage && (
-          <Snackbar open={true} autoHideDuration={6000} onClose={() => setErrorMessage('')}>
-            <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
-              {errorMessage}
-            </Alert>
-          </Snackbar>
-        )}
-      </Background>
-    </ThemeProvider>
-  );
+          </Box>
+      </FullScreenPaper>
+    </Container>
+    {errorMessage && (
+      <Snackbar open={true} autoHideDuration={6000} onClose={() => setErrorMessage('')}>
+        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+    )}
+  </Background>
+</ThemeProvider>
+);
 };
 
 export default MainSurvey;
-
