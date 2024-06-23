@@ -9,31 +9,7 @@ import { useTranslation } from 'react-i18next';
 import CannabisBackground from './cannabis-background.webp';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const theme = createTheme({
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h5: {
-      fontWeight: 600,
-      letterSpacing: '0.5px',
-    },
-    body1: {
-      fontSize: '1rem',
-      letterSpacing: '0.5px',
-    },
-  },
-  palette: {
-    primary: {
-      main: '#388e3c',
-    },
-    secondary: {
-      main: '#f44336',
-    },
-    background: {
-      default: '#f5f5f5',
-    },
-  },
-});
-
+const theme = createTheme();
 const Header = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -45,7 +21,7 @@ const Background = styled('div')({
   alignItems: 'center',
   justifyContent: 'center',
   minHeight: '100vh',
-  backgroundImage: `url(${CannabisBackground})`,
+  backgroundImage: url(${CannabisBackground}),
   backgroundSize: 'cover',
   paddingTop: '20px',
   paddingBottom: '20px',
@@ -79,19 +55,6 @@ const RadioGroupRow = styled(RadioGroup)({
   justifyContent: 'left',
   flexWrap: 'wrap',
   gap: '10px',
-});
-
-const StyledButton = styled(Button)({
-  marginBottom: 16,
-  padding: '12px 24px',
-  textTransform: 'none',
-  borderRadius: 8,
-  backgroundColor: '#96f296',
-  color: '#000',
-  boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-  '&:hover': {
-    backgroundColor: '#8ae58a',
-  },
 });
 
 const MainSurvey = () => {
@@ -211,9 +174,9 @@ const MainSurvey = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Header>
                 <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
-                  <ArrowBackIcon style={{ color: theme.palette.primary.main }} />
+                  <ArrowBackIcon style={{ color: '#388e3c' }} />
                 </IconButton>
-                <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, flexGrow: 1, textAlign: 'center' }}>
+                <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
                   {t('Health Survey')}
                 </Typography>
                 <LanguageSwitcher />
@@ -293,7 +256,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={`dayactivities${index}`}
+                    name={dayactivities${index}}
                     value={surveyData.dayactivities[index] || ''}
                     onChange={handleInputChange}
                   >
@@ -316,7 +279,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={`physicalhealth${index}`}
+                    name={physicalhealth${index}}
                     value={surveyData.physicalhealth[index] || ''}
                     onChange={handleInputChange}
                   >
@@ -337,7 +300,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={`depressed${index}`}
+                    name={depressed${index}}
                     value={surveyData.depressed[index] || ''}
                     onChange={handleInputChange}
                   >
@@ -416,7 +379,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2 }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={`feelings${index}`}
+                    name={feelings${index}}
                     value={surveyData.feelings[index] || ''}
                     onChange={handleInputChange}
                   >
@@ -459,7 +422,7 @@ const MainSurvey = () => {
                 <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 2, width: '100%', }}>
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{question}</Typography>
                   <RadioGroupRow
-                    name={`healthTime${index}`}
+                    name={healthTime${index}}
                     value={surveyData.healthTime[index] || ''}
                     onChange={handleInputChange}
                   >
@@ -473,18 +436,19 @@ const MainSurvey = () => {
               ))}
                 
               <IconButton
-                sx={{ position: 'fixed', bottom: 30, right: 40, backgroundColor: theme.palette.primary.main, color: '#fff' }}
+                sx={{ position: 'fixed', bottom: 30, right: 40, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleScrollToTop}
               >
                 <ArrowUpwardIcon />
               </IconButton>
-              <StyledButton
+              <Button
                 fullWidth
                 variant="contained"
+                sx={{ mt: 3, mb: 2, backgroundColor: '#4caf50', color: '#fff' }}
                 onClick={handleSubmit}
               >
                 {t('Continue')}
-              </StyledButton>
+              </Button>
           </Box>
       </FullScreenPaper>
     </Container>
