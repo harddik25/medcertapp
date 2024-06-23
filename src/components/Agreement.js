@@ -40,17 +40,18 @@ const Background = styled('div')({
   backgroundSize: 'cover',
 });
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
+const StyledButton = styled(Button)(({ colorType, theme }) => ({
+  backgroundColor: colorType === 'accept' ? '#388e3c' : '#7a2d2f',
   color: '#fff',
   '&:hover': {
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: colorType === 'accept' ? '#2e6c2f' : '#622526',
   },
   marginBottom: '16px',
   padding: '12px 24px',
   textTransform: 'none',
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+  fontSize: '1.1rem',
 }));
 
 const Agreement = () => {
@@ -92,10 +93,10 @@ const Agreement = () => {
               <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
                 {t('Please accept the data agreement before purchasing the certificate.')}
               </Typography>
-              <StyledButton fullWidth onClick={handleAccept}>
+              <StyledButton fullWidth onClick={handleAccept} colorType="accept">
                 {t('Accept')}
               </StyledButton>
-              <StyledButton fullWidth color="secondary" onClick={handleDecline}>
+              <StyledButton fullWidth colorType="decline" onClick={handleDecline}>
                 {t('Decline')}
               </StyledButton>
               <Button
@@ -115,5 +116,6 @@ const Agreement = () => {
 };
 
 export default Agreement;
+
 
 
