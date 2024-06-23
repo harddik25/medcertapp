@@ -181,19 +181,20 @@ const MainSurvey = () => {
   };
 
   const handleSubmit = async () => {
-    if (!validateSurveyData()) {
-      setErrorMessage(t('Please fill out all fields.'));
-      return;
-    }
-    try {
-      console.log('Submitting survey data:', surveyData); // Логирование данных перед отправкой
-      await axios.post('/api/surveys/save', surveyData);
-      navigate('/document-upload');
-    } catch (error) {
-      console.error('Error saving survey data:', error);
-      setErrorMessage(error.response ? error.response.data.details : 'An unknown error occurred');
-    }
-  };
+  if (!validateSurveyData()) {
+    setErrorMessage(t('Please fill out all fields.'));
+    return;
+  }
+  try {
+    console.log('Submitting survey data:', surveyData); // Логирование данных перед отправкой
+    const response = await axios.post('/api/surveys/save', surveyData);
+    console.log('Server response:', response); // Логирование полного ответа сервера
+    navigate('/document-upload');
+  } catch (error) {
+    console.error('Error saving survey data:', error);
+    setErrorMessage(error.response ? error.response.data.details : 'An unknown error occurred');
+  }
+};
 
   const handleBackClick = () => {
     navigate('/profile');
