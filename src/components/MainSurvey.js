@@ -235,7 +235,7 @@ const MainSurvey = () => {
                 <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
                   <ArrowBackIcon style={{ color: '#388e3c' }} />
                 </IconButton>
-                <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
+                <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, flexGrow: 1, textAlign: 'center' }}>
                   {t('Health Survey')}
                 </Typography>
                 <LanguageSwitcher />
@@ -522,3 +522,4 @@ const MainSurvey = () => {
 };
 
 export default MainSurvey;
+
