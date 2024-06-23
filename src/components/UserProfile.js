@@ -63,8 +63,8 @@ const StyledButton = styled(Button)({
   textTransform: 'none',
   borderRadius: 8,
   fontSize: '1.2rem',
-  color: '#000',
-  backgroundColor: '#96f296',
+  color: '#fff',
+  backgroundColor: '#388e3c',
   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
   '&:hover': {
     backgroundColor: '#82e082',
