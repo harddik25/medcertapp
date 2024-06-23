@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Box, Typography, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton, Snackbar, Alert, TextField, Button } from '@mui/material';
+import { Container, Box, Typography, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton, Snackbar, Alert, TextField } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -29,7 +29,7 @@ const theme = createTheme({
       main: '#ff6b72',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#f5f5eb',
     },
   },
 });
@@ -81,40 +81,18 @@ const RadioGroupRow = styled(RadioGroup)({
   gap: '10px',
 });
 
-const StyledButton = styled(Button)({
-  marginBottom: 16,
+const StyledButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: '#000',
+  '&:hover': {
+    backgroundColor: theme.palette.primary.dark,
+  },
+  marginBottom: '16px',
   padding: '12px 24px',
   textTransform: 'none',
-  borderRadius: 8,
-  fontSize: '1.2rem',
-  color: '#000',
-  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-  '&:hover': {
-    boxShadow: '0px 6px 8px rgba(0, 0, 0, 0.2)',
-  },
-});
-
-const AcceptButton = styled(StyledButton)({
-  backgroundColor: '#96f296',
-  '&:hover': {
-    backgroundColor: '#82e082',
-  },
-});
-
-const DeclineButton = styled(StyledButton)({
-  backgroundColor: '#ff6b72',
-  '&:hover': {
-    backgroundColor: '#ff5b62',
-  },
-});
-
-const InfoButton = styled(StyledButton)({
-  backgroundColor: '#f5f5eb',
-  color: '#000',
-  '&:hover': {
-    backgroundColor: '#e5e5db',
-  },
-});
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+}));
 
 const MainSurvey = () => {
   const { t } = useTranslation();
@@ -235,7 +213,7 @@ const MainSurvey = () => {
                 <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
                   <ArrowBackIcon style={{ color: '#388e3c' }} />
                 </IconButton>
-                <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, flexGrow: 1, textAlign: 'center' }}>
+                <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
                   {t('Health Survey')}
                 </Typography>
                 <LanguageSwitcher />
@@ -500,12 +478,9 @@ const MainSurvey = () => {
               >
                 <ArrowUpwardIcon />
               </IconButton>
-              <AcceptButton
-                fullWidth
-                onClick={handleSubmit}
-              >
+              <StyledButton fullWidth onClick={handleSubmit}>
                 {t('Continue')}
-              </AcceptButton>
+              </StyledButton>
           </Box>
       </FullScreenPaper>
     </Container>
@@ -522,4 +497,3 @@ const MainSurvey = () => {
 };
 
 export default MainSurvey;
-
