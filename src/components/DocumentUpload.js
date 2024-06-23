@@ -46,7 +46,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const StyledButton = styled(Button)(({ theme, selected }) => ({
-  background: selected ? 'linear-gradient(to right, #4caf50, orange)' : '#96f296',
+  background: selected ? 'linear-gradient(to right, #4caf50, orange)' : '#388e3c',
   color: '#fff',
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
@@ -54,7 +54,7 @@ const StyledButton = styled(Button)(({ theme, selected }) => ({
   padding: '12px 24px',
   boxShadow: selected ? '0 4px 8px rgba(0,0,0,0.2)' : 'none',
   '&:hover': {
-    background: selected ? 'linear-gradient(to right,  #388e3c,  #388e3c)' : '#96f296',
+    background: selected ? 'linear-gradient(to right,  #388e3c,  #388e3c)' : '#388e3c',
   },
   position: 'relative',
 }));
