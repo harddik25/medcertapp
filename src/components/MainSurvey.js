@@ -8,7 +8,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useTranslation } from 'react-i18next';
 import CannabisBackground from './cannabis-background.webp';
 import LanguageSwitcher from './LanguageSwitcher';
-import theme from '../theme'; // Убедитесь, что путь правильный
+import theme from '../theme'; // Убедитесь, что путь к теме правильный
 
 const Header = styled('div')({
   display: 'flex',
@@ -16,7 +16,6 @@ const Header = styled('div')({
   justifyContent: 'space-between',
   width: '100%',
 });
-
 const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -177,7 +176,7 @@ const MainSurvey = () => {
                 <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
                   <ArrowBackIcon style={{ color: '#388e3c' }} />
                 </IconButton>
-                <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, flexGrow: 1, textAlign: 'center' }}>
+                <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
                   {t('Health Survey')}
                 </Typography>
                 <LanguageSwitcher />
@@ -466,3 +465,4 @@ const MainSurvey = () => {
 };
 
 export default MainSurvey;
+
