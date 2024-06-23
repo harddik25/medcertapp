@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, Snackbar, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
-import { styled, createTheme, ThemeProvider } from '@mui/system';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import CannabisBackground from './cannabis-background.webp';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -199,5 +199,6 @@ const Consultation = () => {
 };
 
 export default Consultation;
+
 
 
