@@ -10,12 +10,38 @@ import CannabisBackground from './cannabis-background.webp';
 import LanguageSwitcher from './LanguageSwitcher';
 import theme from '../theme'; // Убедитесь, что путь к теме правильный
 
+const customTheme = createTheme({
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h5: {
+      fontWeight: 600,
+      letterSpacing: '0.5px',
+    },
+    body1: {
+      fontSize: '1rem',
+      letterSpacing: '0.5px',
+    },
+  },
+  palette: {
+    primary: {
+      main: '#388e3c',
+    },
+    secondary: {
+      main: '#f44336',
+    },
+    background: {
+      default: '#f5f5f5',
+    },
+  },
+});
+
 const Header = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   width: '100%',
 });
+
 const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -35,6 +61,8 @@ const FullScreenPaper = styled(Paper)({
   margin: '0 20px', 
   maxWidth: '1200px',
   position: 'relative',
+  borderRadius: 16,
+  boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
 });
 
 const RoundedTypography = styled(Typography)({
@@ -166,7 +194,7 @@ const MainSurvey = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={customTheme}>
       <Background>
         <Container component="main" maxWidth="md">
           <CssBaseline />
