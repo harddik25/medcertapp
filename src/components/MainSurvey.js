@@ -8,31 +8,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useTranslation } from 'react-i18next';
 import CannabisBackground from './cannabis-background.webp';
 import LanguageSwitcher from './LanguageSwitcher';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#388e3c',
-    },
-    secondary: {
-      main: '#f44336',
-    },
-    background: {
-      default: '#f5f5f5',
-    },
-  },
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h5: {
-      fontWeight: 600,
-      letterSpacing: '0.5px',
-    },
-    body1: {
-      fontSize: '1rem',
-      letterSpacing: '0.5px',
-    },
-  },
-});
+import theme from '../theme'; // Убедитесь, что путь правильный
 
 const Header = styled('div')({
   display: 'flex',
@@ -40,6 +16,7 @@ const Header = styled('div')({
   justifyContent: 'space-between',
   width: '100%',
 });
+
 const Background = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -95,10 +72,10 @@ const MainSurvey = () => {
     feelings: {},
     socialInterference: {},
     healthTime: {},
-    firstName: "",
-    lastName: "",
-    pathology: "",
-    telegramId: "",
+    firstName: "", // Добавлено поле для имени
+    lastName: "", // Добавлено поле для фамилии
+    pathology: "", // Добавлено поле для патологии
+    telegramId: "", // Добавлено поле для telegramId
     documentType: "Passport"
   });
   const [errorMessage, setErrorMessage] = useState('');
@@ -119,8 +96,8 @@ const MainSurvey = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const category = name.match(/[a-zA-Z]+/)[0];
-    const index = name.match(/\d+/) ? name.match(/\d+/)[0] : null;
+    const category = name.match(/[a-zA-Z]+/)[0]; // Извлекаем категорию из имени
+    const index = name.match(/\d+/) ? name.match(/\d+/)[0] : null; // Извлекаем индекс из имени, если есть
 
     if (index !== null) {
       setSurveyData((prevData) => ({
@@ -170,9 +147,8 @@ const MainSurvey = () => {
       return;
     }
     try {
-      console.log('Submitting survey data:', surveyData);
-      const response = await axios.post('/api/surveys/save', surveyData);
-      console.log('Server response:', response);
+      console.log('Submitting survey data:', surveyData); // Логирование данных перед отправкой
+      await axios.post('/api/surveys/save', surveyData);
       navigate('/document-upload');
     } catch (error) {
       console.error('Error saving survey data:', error);
@@ -199,7 +175,7 @@ const MainSurvey = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Header>
                 <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
-                  <ArrowBackIcon style={{ color: theme.palette.primary.main }} />
+                  <ArrowBackIcon style={{ color: '#388e3c' }} />
                 </IconButton>
                 <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, flexGrow: 1, textAlign: 'center' }}>
                   {t('Health Survey')}
