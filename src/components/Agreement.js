@@ -42,7 +42,7 @@ const Background = styled('div')({
 
 const StyledButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
-  color: '#000',
+  color: '#fff',
   '&:hover': {
     backgroundColor: theme.palette.primary.dark,
   },
