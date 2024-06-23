@@ -47,14 +47,14 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const StyledButton = styled(Button)(({ theme, selected }) => ({
   background: selected ? 'linear-gradient(to right, #4caf50, orange)' : '#96f296',
-  color: '#000',
+  color: '#fff',
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
   borderRadius: '8px',
   padding: '12px 24px',
   boxShadow: selected ? '0 4px 8px rgba(0,0,0,0.2)' : 'none',
   '&:hover': {
-    background: selected ? 'linear-gradient(to right, #388e3c, #e65100)' : '#96f296',
+    background: selected ? 'linear-gradient(to right,  #388e3c,  #388e3c)' : '#96f296',
   },
   position: 'relative',
 }));
@@ -64,7 +64,7 @@ const SuccessText = styled(Typography)({
   bottom: -20,
   left: '50%',
   transform: 'translateX(-50%)',
-  color: '#4caf50',
+  color: ' #388e3c',
 });
 
 const DocumentUpload = () => {
