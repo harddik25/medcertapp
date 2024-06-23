@@ -42,7 +42,7 @@ const Background = styled('div')({
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  background: '#96f296',
+  background: ' #388e3c',
   color: '#000',
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
