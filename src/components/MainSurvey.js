@@ -21,7 +21,7 @@ const Background = styled('div')({
   alignItems: 'center',
   justifyContent: 'center',
   minHeight: '100vh',
-  backgroundImage: 'url('${CannabisBackground}'),
+  backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
   paddingTop: '20px',
   paddingBottom: '20px',
