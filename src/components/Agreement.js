@@ -26,7 +26,7 @@ const theme = createTheme({
       main: '#ff6b72',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#f5f5eb',
     },
   },
 });
@@ -40,47 +40,18 @@ const Background = styled('div')({
   backgroundSize: 'cover',
 });
 
-const StyledPaper = styled(Paper)({
-  padding: 24,
-  backgroundColor: 'rgba(255, 255, 255, 0.9)',
-  borderRadius: 16,
-  boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-});
-
-const StyledButton = styled(Button)({
-  marginBottom: 16,
+const StyledButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: '#000',
+  '&:hover': {
+    backgroundColor: theme.palette.primary.dark,
+  },
+  marginBottom: '16px',
   padding: '12px 24px',
   textTransform: 'none',
-  borderRadius: 8,
-  fontSize: '1.2rem',
-  color: '#000',
-  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-  '&:hover': {
-    boxShadow: '0px 6px 8px rgba(0, 0, 0, 0.2)',
-  },
-});
-
-const AcceptButton = styled(StyledButton)({
-  backgroundColor: '#96f296',
-  '&:hover': {
-    backgroundColor: '#82e082',
-  },
-});
-
-const DeclineButton = styled(StyledButton)({
-  backgroundColor: '#ff6b72',
-  '&:hover': {
-    backgroundColor: '#ff5b62',
-  },
-});
-
-const InfoButton = styled(StyledButton)({
-  backgroundColor: '#f5f5eb',
-  color: '#000',
-  '&:hover': {
-    backgroundColor: '#e5e5db',
-  },
-});
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+}));
 
 const Agreement = () => {
   const navigate = useNavigate();
@@ -103,7 +74,7 @@ const Agreement = () => {
       <Background>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
-          <StyledPaper elevation={3}>
+          <Paper elevation={3} sx={{ padding: 3, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
             <Box
               sx={{
                 marginTop: 8,
@@ -121,29 +92,22 @@ const Agreement = () => {
               <Typography variant="body1" sx={{ mt: 2, mb: 4, color: '#4caf50' }}>
                 {t('Please accept the data agreement before purchasing the certificate.')}
               </Typography>
-              <AcceptButton
-                fullWidth
-                variant="contained"
-                onClick={handleAccept}
-              >
+              <StyledButton fullWidth onClick={handleAccept}>
                 {t('Accept')}
-              </AcceptButton>
-              <DeclineButton
-                fullWidth
-                variant="contained"
-                onClick={handleDecline}
-              >
+              </StyledButton>
+              <StyledButton fullWidth color="secondary" onClick={handleDecline}>
                 {t('Decline')}
-              </DeclineButton>
-              <InfoButton
+              </StyledButton>
+              <Button
                 fullWidth
-                variant="contained"
+                variant="outlined"
+                sx={{ mb: 2, color: '#4caf50' }}
                 onClick={handlePrivacyPolicy}
               >
                 {t('Privacy Policy')}
-              </InfoButton>
+              </Button>
             </Box>
-          </StyledPaper>
+          </Paper>
         </Container>
       </Background>
     </ThemeProvider>
@@ -151,4 +115,5 @@ const Agreement = () => {
 };
 
 export default Agreement;
+
 
