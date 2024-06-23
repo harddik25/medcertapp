@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Box, Typography, CssBaseline,Button, Paper, Radio, FormControlLabel, RadioGroup, IconButton, Snackbar, Alert, TextField } from '@mui/material';
+import { Container, Box, Typography, Button, CssBaseline, Paper, Radio, FormControlLabel, RadioGroup, IconButton, Snackbar, Alert, TextField } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -23,13 +23,13 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#96f296',
+      main: '#388e3c',
     },
     secondary: {
-      main: '#ff6b72',
+      main: '#f44336',
     },
     background: {
-      default: '#f5f5eb',
+      default: '#f5f5f5',
     },
   },
 });
@@ -81,18 +81,18 @@ const RadioGroupRow = styled(RadioGroup)({
   gap: '10px',
 });
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: '#000',
-  '&:hover': {
-    backgroundColor: theme.palette.primary.dark,
-  },
-  marginBottom: '16px',
+const StyledButton = styled(Button)({
+  marginBottom: 16,
   padding: '12px 24px',
   textTransform: 'none',
-  borderRadius: '8px',
+  borderRadius: 8,
+  backgroundColor: '#96f296',
+  color: '#000',
   boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-}));
+  '&:hover': {
+    backgroundColor: '#8ae58a',
+  },
+});
 
 const MainSurvey = () => {
   const { t } = useTranslation();
@@ -211,9 +211,9 @@ const MainSurvey = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Header>
                 <IconButton onClick={handleBackClick} sx={{ alignSelf: 'flex-start' }}>
-                  <ArrowBackIcon style={{ color: '#388e3c' }} />
+                  <ArrowBackIcon style={{ color: theme.palette.primary.main }} />
                 </IconButton>
-                <Typography component="h1" variant="h5" sx={{ color: '#388e3c', flexGrow: 1, textAlign: 'center' }}>
+                <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, flexGrow: 1, textAlign: 'center' }}>
                   {t('Health Survey')}
                 </Typography>
                 <LanguageSwitcher />
@@ -473,12 +473,16 @@ const MainSurvey = () => {
               ))}
                 
               <IconButton
-                sx={{ position: 'fixed', bottom: 30, right: 40, backgroundColor: '#4caf50', color: '#fff' }}
+                sx={{ position: 'fixed', bottom: 30, right: 40, backgroundColor: theme.palette.primary.main, color: '#fff' }}
                 onClick={handleScrollToTop}
               >
                 <ArrowUpwardIcon />
               </IconButton>
-              <StyledButton fullWidth onClick={handleSubmit}>
+              <StyledButton
+                fullWidth
+                variant="contained"
+                onClick={handleSubmit}
+              >
                 {t('Continue')}
               </StyledButton>
           </Box>
