@@ -99,7 +99,7 @@ const Consultation = () => {
       });
       const data = await response.json();
       if (data.url) {
-        window.location.href = data.url; // Перенаправление на страницу оплаты Stripe
+        window.location.href = 'https://buy.stripe.com/6oE9Ef8zM0iU6Sk4gh' // Перенаправление на страницу оплаты Stripe
       } else {
         setBookingStatus('Ошибка при создании Stripe сессии');
         setOpenSnackbar(true);
