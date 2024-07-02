@@ -42,7 +42,7 @@ const Background = styled('div')({
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  background: ' #388e3c',
+  background: '#388e3c',
   color: '#fff',
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
@@ -60,7 +60,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Consultation = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -101,7 +100,7 @@ const Consultation = () => {
       if (data.success) {
         setBookingStatus('Бронирование успешно! Ваше время: ' + date + ' ' + time);
         setOpenSnackbar(true);
-        navigate('/profile');
+        window.location.href = 'https://buy.stripe.com/aEU6s317k5De2C47ss';
       } else {
         setBookingStatus('Ошибка при бронировании консультации');
         setOpenSnackbar(true);
@@ -178,7 +177,7 @@ const Consultation = () => {
                       fullWidth
                       onClick={handleBooking}
                     >
-                      Забронировать
+                      Оплатить
                     </StyledButton>
                   </>
                 )}
@@ -199,6 +198,4 @@ const Consultation = () => {
 };
 
 export default Consultation;
-
-
 
