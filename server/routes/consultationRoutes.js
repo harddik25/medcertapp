@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const consultationController = require('../controllers/consultationController');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Импорт Stripe
 
 router.post('/add-free-slot', consultationController.addFreeSlot);
 router.get('/free-slots', consultationController.getFreeSlots);
