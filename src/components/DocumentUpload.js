@@ -55,7 +55,7 @@ const StyledButton = styled(Button)(({ theme, selected }) => ({
   padding: '12px 24px',
   boxShadow: selected ? '0 4px 8px rgba(0,0,0,0.2)' : 'none',
   '&:hover': {
-    background: selected ? 'linear-gradient(to right, #388e3c, #388e3c)' : '#388e3c',
+    background: selected ? 'linear-gradient(to right,  #388e3c,  #388e3c)' : '#388e3c',
   },
   position: 'relative',
 }));
@@ -65,7 +65,14 @@ const SuccessText = styled(Typography)({
   bottom: -20,
   left: '50%',
   transform: 'translateX(-50%)',
-  color: '#388e3c',
+  color: ' #388e3c',
+});
+
+const LoadingBox = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: 16,
 });
 
 const DocumentUpload = () => {
@@ -106,14 +113,13 @@ const DocumentUpload = () => {
       return;
     }
 
+    setLoading(true);
     const formData = new FormData();
     formData.append('documentType', documentType);
     formData.append('frontDocument', frontDocument);
     if (backDocument) formData.append('backDocument', backDocument);
     formData.append('userId', userId);
     if (surveyId) formData.append('surveyId', surveyId);
-
-    setLoading(true);
 
     try {
       const response = await axios.post('https://medlevel.me/api/documents/upload', formData, {
@@ -122,16 +128,16 @@ const DocumentUpload = () => {
         }
       });
       setUploadStatus(t('Документ успешно загружен'));
+      setLoading(false);
       setOpenSnackbar(true);
       setTimeout(() => {
-        window.location.href = 'https://buy.stripe.com/aEU6s317k5De2C47ss';
+        navigate('/consultation');
       }, 2000);
     } catch (error) {
       setUploadStatus(t('Ошибка при загрузке документа'));
+      setLoading(false);
       setOpenSnackbar(true);
       console.error('Ошибка при загрузке документа:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -152,10 +158,12 @@ const DocumentUpload = () => {
                 alignItems: 'center',
               }}
             >
-              <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, marginBottom: 2 }}>
-                {t('Загрузка документа')}
-              </Typography>
-              <LanguageSwitcher />
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, marginBottom: 2 }}>
+                  {t('Загрузка документа')}
+                </Typography>
+                <LanguageSwitcher />
+              </Box>
               <TextField
                 select
                 variant="outlined"
@@ -200,12 +208,13 @@ const DocumentUpload = () => {
                 fullWidth
                 onClick={handleUpload}
               >
-                {loading ? <CircularProgress color="inherit" size={24} /> : t('Загрузить')}
+                {t('Загрузить')}
               </StyledButton>
               {loading && (
-                <Typography variant="body2" sx={{ mt: 2, mb: 2 }}>
-                  {t('Загрузка...')}
-                </Typography>
+                <LoadingBox>
+                  <CircularProgress size={24} />
+                  <Typography variant="body2" sx={{ marginLeft: 2 }}>{t('Загрузка...')}</Typography>
+                </LoadingBox>
               )}
               <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                 <Alert onClose={handleCloseSnackbar} severity={uploadStatus.includes(t('успешно')) ? 'success' : 'error'}>
@@ -221,6 +230,4 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
-
-
 
