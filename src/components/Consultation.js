@@ -81,35 +81,35 @@ const Consultation = () => {
   }, []);
 
   const handleBooking = async () => {
-    const user = JSON.parse(localStorage.getItem('telegramUser'));
-    if (!user) {
-      setBookingStatus('Ошибка: пользователь не авторизован');
-      setOpenSnackbar(true);
-      return;
-    }
-    
-    try {
-      const response = await fetch('https://medlevel.me/api/consultations/book', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ date, time, userId: user.id }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        setBookingStatus('Бронирование успешно! Ваше время: ' + date + ' ' + time);
-        setOpenSnackbar(true);
-        window.location.href = 'https://buy.stripe.com/aEU6s317k5De2C47ss';
-      } else {
-        setBookingStatus('Ошибка при бронировании консультации');
-        setOpenSnackbar(true);
-      }
-    } catch (error) {
-      setBookingStatus('Ошибка при бронировании консультации');
+  const user = JSON.parse(localStorage.getItem('telegramUser'));
+  if (!user) {
+    setBookingStatus('Ошибка: пользователь не авторизован');
+    setOpenSnackbar(true);
+    return;
+  }
+
+  try {
+    // Создаем Stripe Checkout Session
+    const response = await fetch('https://medlevel.me/api/stripe/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ date, time, userId: user.id }),
+    });
+    const data = await response.json();
+
+    if (data.id) {
+      // Перенаправляем пользователя на страницу Stripe Checkout
+      window.location.href = data.url;
+    } else {
+      setBookingStatus('Ошибка при создании сессии оплаты');
       setOpenSnackbar(true);
     }
-  };
+  } catch (error) {
+    setBookingStatus('Ошибка при создании сессии оплаты');
+    setOpenSnackbar(true);
+  }
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
