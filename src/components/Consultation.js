@@ -42,7 +42,7 @@ const Background = styled('div')({
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  background: '#388e3c',
+  background: ' #388e3c',
   color: '#fff',
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
@@ -60,6 +60,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Consultation = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -81,35 +82,33 @@ const Consultation = () => {
   }, []);
 
   const handleBooking = async () => {
-  const user = JSON.parse(localStorage.getItem('telegramUser'));
-  if (!user) {
-    setBookingStatus('Ошибка: пользователь не авторизован');
-    setOpenSnackbar(true);
-    return;
-  }
+    const user = JSON.parse(localStorage.getItem('telegramUser'));
+    if (!user) {
+      setBookingStatus('Ошибка: пользователь не авторизован');
+      setOpenSnackbar(true);
+      return;
+    }
 
-  try {
-    // Создаем Stripe Checkout Session
-    const response = await fetch('https://medlevel.me/api/stripe/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ date, time, userId: user.id }),
-    });
-    const data = await response.json();
-
-    if (data.id) {
-      // Перенаправляем пользователя на страницу Stripe Checkout
-      window.location.href = data.url;
-    } else {
-      setBookingStatus('Ошибка при создании сессии оплаты');
+    try {
+      const response = await fetch('https://medlevel.me/api/consultations/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ date, time, userId: user.id }),
+      });
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url; // Перенаправление на страницу оплаты Stripe
+      } else {
+        setBookingStatus('Ошибка при создании Stripe сессии');
+        setOpenSnackbar(true);
+      }
+    } catch (error) {
+      setBookingStatus('Ошибка при создании Stripe сессии');
       setOpenSnackbar(true);
     }
-  } catch (error) {
-    setBookingStatus('Ошибка при создании сессии оплаты');
-    setOpenSnackbar(true);
-  }
+  };
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -177,7 +176,7 @@ const Consultation = () => {
                       fullWidth
                       onClick={handleBooking}
                     >
-                      Оплатить
+                      Забронировать
                     </StyledButton>
                   </>
                 )}
@@ -198,4 +197,5 @@ const Consultation = () => {
 };
 
 export default Consultation;
+
 
