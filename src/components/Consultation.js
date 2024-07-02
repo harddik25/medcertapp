@@ -42,7 +42,7 @@ const Background = styled('div')({
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  background: ' #388e3c',
+  background: '#388e3c',
   color: '#fff',
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
@@ -60,7 +60,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Consultation = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -88,9 +87,9 @@ const Consultation = () => {
       setOpenSnackbar(true);
       return;
     }
-
+    
     try {
-      const response = await fetch('https://medlevel.me/api/consultations/create-checkout-session', {
+      const response = await fetch('https://medlevel.me/api/consultations/book', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,14 +97,16 @@ const Consultation = () => {
         body: JSON.stringify({ date, time, userId: user.id }),
       });
       const data = await response.json();
-      if (data.url) {
-        window.location.href = 'https://buy.stripe.com/aEU6s317k5De2C47ss' // Перенаправление на страницу оплаты Stripe
+      if (data.success) {
+        setBookingStatus('Бронирование успешно! Ваше время: ' + date + ' ' + time);
+        setOpenSnackbar(true);
+        window.location.href = 'https://buy.stripe.com/aEU6s317k5De2C47ss';
       } else {
-        setBookingStatus('Ошибка при создании Stripe сессии');
+        setBookingStatus('Ошибка при бронировании консультации');
         setOpenSnackbar(true);
       }
     } catch (error) {
-      setBookingStatus('Ошибка при создании Stripe сессии');
+      setBookingStatus('Ошибка при бронировании консультации');
       setOpenSnackbar(true);
     }
   };
