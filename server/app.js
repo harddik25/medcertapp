@@ -16,6 +16,8 @@ const appointmentRoutes = require('./routes/appointmentRoutes');
 const userRoutes = require('./routes/userRoutes');
 const clientRoutes = require('./routes/сlientRoutes');
 const documentRoutes = require('./routes/documentRoutes');
+const stripeRoutes = require('./routes/stripeRoutes');
+const stripeWebhook = require('./routes/stripeWebhook');
 
 const app = express();
 
@@ -45,6 +47,8 @@ mongoose.connection.on('disconnected', () => {
 });
 
 // Настройка маршрутов
+app.use('/api/stripe', stripeRoutes);
+app.use('/api/stripe/webhook', stripeWebhook);
 app.use('/api/auth', authRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/consultations', consultationRoutes);
