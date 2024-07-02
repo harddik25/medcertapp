@@ -131,7 +131,7 @@ const DocumentUpload = () => {
       setLoading(false);
       setOpenSnackbar(true);
       setTimeout(() => {
-        navigate('/consultation');
+        window.location.href = 'https://buy.stripe.com/aEU6s317k5De2C47ss';
       }, 2000);
     } catch (error) {
       setUploadStatus(t('Ошибка при загрузке документа'));
@@ -230,4 +230,3 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
-
