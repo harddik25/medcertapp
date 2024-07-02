@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, MenuItem, Snackbar } from '@mui/material';
+import { Container, Box, Typography, Button, TextField, CssBaseline, Paper, MenuItem, Snackbar, CircularProgress } from '@mui/material';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import CannabisBackground from './cannabis-background.webp';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const theme = createTheme({
   typography: {
@@ -54,7 +55,7 @@ const StyledButton = styled(Button)(({ theme, selected }) => ({
   padding: '12px 24px',
   boxShadow: selected ? '0 4px 8px rgba(0,0,0,0.2)' : 'none',
   '&:hover': {
-    background: selected ? 'linear-gradient(to right,  #388e3c,  #388e3c)' : '#388e3c',
+    background: selected ? 'linear-gradient(to right, #388e3c, #388e3c)' : '#388e3c',
   },
   position: 'relative',
 }));
@@ -64,7 +65,7 @@ const SuccessText = styled(Typography)({
   bottom: -20,
   left: '50%',
   transform: 'translateX(-50%)',
-  color: ' #388e3c',
+  color: '#388e3c',
 });
 
 const DocumentUpload = () => {
@@ -78,6 +79,7 @@ const DocumentUpload = () => {
   const [surveyId, setSurveyId] = useState(''); // Example surveyId, you should replace it with the actual surveyId or null for new users
   const [uploadStatus, setUploadStatus] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -111,6 +113,8 @@ const DocumentUpload = () => {
     formData.append('userId', userId);
     if (surveyId) formData.append('surveyId', surveyId);
 
+    setLoading(true);
+
     try {
       const response = await axios.post('https://medlevel.me/api/documents/upload', formData, {
         headers: {
@@ -120,12 +124,14 @@ const DocumentUpload = () => {
       setUploadStatus(t('Документ успешно загружен'));
       setOpenSnackbar(true);
       setTimeout(() => {
-        navigate('/consultation');
+        window.location.href = 'https://buy.stripe.com/aEU6s317k5De2C47ss';
       }, 2000);
     } catch (error) {
       setUploadStatus(t('Ошибка при загрузке документа'));
       setOpenSnackbar(true);
       console.error('Ошибка при загрузке документа:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -149,6 +155,7 @@ const DocumentUpload = () => {
               <Typography component="h1" variant="h5" sx={{ color: theme.palette.primary.main, marginBottom: 2 }}>
                 {t('Загрузка документа')}
               </Typography>
+              <LanguageSwitcher />
               <TextField
                 select
                 variant="outlined"
@@ -193,8 +200,13 @@ const DocumentUpload = () => {
                 fullWidth
                 onClick={handleUpload}
               >
-                {t('Загрузить')}
+                {loading ? <CircularProgress color="inherit" size={24} /> : t('Загрузить')}
               </StyledButton>
+              {loading && (
+                <Typography variant="body2" sx={{ mt: 2, mb: 2 }}>
+                  {t('Загрузка...')}
+                </Typography>
+              )}
               <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                 <Alert onClose={handleCloseSnackbar} severity={uploadStatus.includes(t('успешно')) ? 'success' : 'error'}>
                   {uploadStatus}
@@ -209,5 +221,6 @@ const DocumentUpload = () => {
 };
 
 export default DocumentUpload;
+
 
 
