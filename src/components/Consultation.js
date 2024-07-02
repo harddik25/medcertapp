@@ -37,12 +37,12 @@ const Background = styled('div')({
   alignItems: 'center',
   justifyContent: 'center',
   height: '100vh',
-  backgroundImage: url(${CannabisBackground}),
+  backgroundImage: `url(${CannabisBackground})`,
   backgroundSize: 'cover',
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  background: ' #388e3c',
+  background: '#388e3c',
   color: '#fff',
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
@@ -60,7 +60,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Consultation = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -199,4 +198,3 @@ const Consultation = () => {
 };
 
 export default Consultation;
-
