@@ -124,6 +124,7 @@ exports.bookFreeSlot = async (req, res) => {
       date,
       time,
       patientName: userId,
+      status: 'pending',
       telegramLink  // Сохранение ссылки на видеоконференцию
     });
 
