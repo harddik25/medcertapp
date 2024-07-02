@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const bodyParser = require('body-parser');
-const { updateAppointmentStatus } = require('../services/appointmentService'); // функция для обновления статуса записи
+const Consultation = require('../models/Consultation');
 
 router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
@@ -19,8 +19,13 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
     const session = event.data.object;
     const userId = session.client_reference_id;
 
-    // Обновление статуса записи на консультацию
-    await updateAppointmentStatus(userId, 'paid');
+    // Обновление статуса бронирования
+    try {
+      await Consultation.updateOne({ patientName: userId, status: 'pending' }, { status: 'paid' });
+      console.log(`Consultation for user ${userId} marked as paid.`);
+    } catch (error) {
+      console.error('Error updating consultation status:', error);
+    }
   }
 
   res.sendStatus(200);
