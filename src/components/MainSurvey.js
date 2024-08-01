@@ -8,7 +8,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useTranslation } from 'react-i18next';
 import CannabisBackground from './cannabis-background.webp';
 import LanguageSwitcher from './LanguageSwitcher';
-import theme from '../theme'; // Убедитесь, что путь к теме правильный
+import theme from './theme'; // Убедитесь, что путь к теме правильный
 
 const customTheme = createTheme({
   typography: {
